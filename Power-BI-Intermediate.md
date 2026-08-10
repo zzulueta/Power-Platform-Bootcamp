@@ -17,10 +17,10 @@
 | 2 | Presentation: Data Modeling, Best Practices & Responsible Use | 35 min |
 | 3 | Lab A: Connect to Data & Build Your First Report | 25 min |
 | 4 | Lab B: Data Transformation with Power Query Editor | 30 min |
-| — | Break | 10 min |
+| — | Break | 15 min |
 | 5 | Lab C: Data Modeling & DAX Basics | 25 min |
-| 6 | Lab D: Publish to My Workspace & Explore the Power BI Service | 20 min |
-| 7 | Wrap-Up, Q&A & Next Steps | 5 min |
+| 6 | Lab D: Publish to My Workspace & Explore the Power BI Service | 30 min |
+| 7 | Wrap-Up, Q&A & Next Steps | 10 min |
 
 ---
 
@@ -130,7 +130,7 @@
 
 ---
 
-## — Break (10 minutes) —
+## — Break (15 minutes) —
 
 ---
 
@@ -165,7 +165,7 @@
 
 ---
 
-## Segment 6: Lab D — Publish to My Workspace & Explore the Power BI Service (20 minutes)
+## Segment 6: Lab D — Publish to My Workspace & Explore the Power BI Service (30 minutes)
 
 **Business Context:** Once a report is built in Power BI Desktop, publishing it to the Power BI Service makes it accessible from any browser without needing the Desktop app installed. Even with a free license, users can publish to their personal **My Workspace** to view and explore their reports online and pin visuals to a personal dashboard.
 
@@ -196,7 +196,7 @@
 
 ---
 
-## Segment 7: Wrap-Up, Q&A & Next Steps (5 minutes)
+## Segment 7: Wrap-Up, Q&A & Next Steps (10 minutes)
 
 - Recap of what was built today
 - Discuss report management: renaming, deleting, and updating reports in My Workspace

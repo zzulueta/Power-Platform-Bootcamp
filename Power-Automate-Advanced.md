@@ -17,10 +17,10 @@
 | 2 | Presentation: Desktop Flows, AI Builder & Responsible AI | 35 min |
 | 3 | Lab A: Automate a Desktop Application with Power Automate Desktop | 25 min |
 | 4 | Lab B: Extract Invoice Data with AI Builder Document Processing | 30 min |
-| — | Break | 10 min |
+| — | Break | 15 min |
 | 5 | Lab C: AI Builder Prompts — Summarise and Classify Text in a Flow | 25 min |
-| 6 | Lab D: End-to-End Flow — Email Attachment → AI Extract → Microsoft List | 20 min |
-| 7 | Wrap-Up, Q&A & Next Steps | 5 min |
+| 6 | Lab D: End-to-End Flow — Email Attachment → AI Extract → Microsoft List | 30 min |
+| 7 | Wrap-Up, Q&A & Next Steps | 10 min |
 
 ---
 
@@ -137,7 +137,7 @@
 
 ---
 
-## — Break (10 minutes) —
+## — Break (15 minutes) —
 
 ---
 
@@ -173,7 +173,7 @@
 
 ---
 
-## Segment 6: Lab D — End-to-End Flow: Email Attachment → AI Extract → Microsoft List (20 minutes)
+## Segment 6: Lab D — End-to-End Flow: Email Attachment → AI Extract → Microsoft List (30 minutes)
 
 **Business Context:** This lab consolidates the session's learning by combining an email trigger, AI Builder document extraction, and structured data storage into a single end-to-end process — simulating a real-world intelligent automation scenario that would typically require significant manual effort.
 
@@ -202,7 +202,7 @@
 
 ---
 
-## Segment 7: Wrap-Up, Q&A & Next Steps (5 minutes)
+## Segment 7: Wrap-Up, Q&A & Next Steps (10 minutes)
 
 - Recap of what was built today: Desktop flows, AI document extraction, AI Prompts, end-to-end integration
 - When to use Desktop flows vs. Cloud flows vs. AI Builder

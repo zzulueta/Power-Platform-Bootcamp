@@ -17,10 +17,10 @@
 | 2 | Presentation: Flow Design, Best Practices & Responsible Use | 35 min |
 | 3 | Lab A: Save Outlook Email Attachments to OneDrive | 25 min |
 | 4 | Lab B: Forms Submission → Approval + Microsoft List | 30 min |
-| — | Break | 10 min |
+| — | Break | 15 min |
 | 5 | Lab C: Manual Trigger — Bulk Upload Excel Data to Microsoft List | 25 min |
-| 6 | Lab D: New SharePoint File → Teams Notification | 20 min |
-| 7 | Wrap-Up, Q&A & Next Steps | 5 min |
+| 6 | Lab D: New SharePoint File → Teams Notification | 30 min |
+| 7 | Wrap-Up, Q&A & Next Steps | 10 min |
 
 ---
 
@@ -124,7 +124,7 @@
 
 ---
 
-## — Break (10 minutes) —
+## — Break (15 minutes) —
 
 ---
 
@@ -156,7 +156,7 @@
 
 ---
 
-## Segment 6: Lab D — New SharePoint File → Teams Notification (20 minutes)
+## Segment 6: Lab D — New SharePoint File → Teams Notification (30 minutes)
 
 **Business Context:** Teams often collaborate using shared SharePoint folders as drop locations for deliverables, reports, or files. This flow sends an automatic Teams message with a clickable file link whenever a new file is added, instantly notifying the team and improving visibility and collaboration without manual follow-ups.
 
@@ -180,7 +180,7 @@
 
 ---
 
-## Segment 7: Wrap-Up, Q&A & Next Steps (5 minutes)
+## Segment 7: Wrap-Up, Q&A & Next Steps (10 minutes)
 
 - Recap of what was built today
 - Discuss flow management: sharing, co-ownership, and turning flows on/off
