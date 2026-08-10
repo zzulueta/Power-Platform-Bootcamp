@@ -128,18 +128,6 @@
 | 7 | Lab E: AI Visuals & Copilot Capabilities | 25 min |
 | 8 | Wrap-Up, Q&A & Next Steps | 10 min |
 
-## All Sessions at a Glance
-
-| Session | Product | Level | Duration |
-|---|---|---|---|
-| 1 | Power Automate | Awareness | 1.5 hrs |
-| 2 | Power BI | Awareness | 1.5 hrs |
-| 3 | Power Automate | Intermediate | 3 hrs |
-| 4 | Power BI | Intermediate | 3 hrs |
-| 5 | Power BI | Advanced | 3.5 hrs |
-
-**Total Delivery Time:** 13.5 hours
-
 ---
 
 ## Session 1: Power Automate Awareness (1.5 hours)
