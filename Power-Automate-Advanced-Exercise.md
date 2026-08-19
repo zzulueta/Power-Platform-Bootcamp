@@ -85,7 +85,7 @@ Subflow: SearchCity
 ├── Launch browser → https://weather.com
 ├── Click city button (top navigation)
 ├── Type %CurrentItem% into search box     ← parameterised from recording
-├── Click matching city result             ← UI element uses Contains match
+├── Click matching city result             
 └── Click "10 Day" tab
 
 Subflow: ExtractForecast
@@ -509,9 +509,9 @@ Now switch back to the SearchCity subflow to replace the hardcoded city name and
 
 20. Select **Save**.
 
-### Update the City Result Click to Use a Partial Match
+### Update the City Result Click
 
-When the recorder captured the click on "Paris, France", it stored an exact text selector. Change this to a partial match so it works for "New York, New York" and "Tokyo, Tokyo Prefecture, Japan" as well.
+When the recorder captured the click on "Paris", it stored an exact text selector. Change this so it works for "New York City" and "Tokyo" as well.
 
 21. Find the **Click link on web page** action that clicks the city search result (e.g., "Paris").
 
