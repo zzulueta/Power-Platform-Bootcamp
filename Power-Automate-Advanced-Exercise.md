@@ -178,11 +178,11 @@ Before adding any actions, create the three subflows that will hold the browser 
 
 ### Create the Cities List Variable
 
-5. In the **Actions** panel on the left, expand **Variables**.
+12. In the **Actions** panel on the left, expand **Variables**.
 
-6. Double-click **Set variable** to add it to the canvas.
+13. Double-click **Set variable** to add it to the canvas.
 
-7. Configure the following:
+14. Configure the following:
 
    | Property | Value |
    |---|---|
@@ -191,14 +191,13 @@ Before adding any actions, create the three subflows that will hold the browser 
 
    > **Note:** In PAD, list literals are written as JSON arrays inside `%` delimiters. This creates a list variable with three text items.
 
-8. Select **Save** to confirm the action.
+15. Select **Save** to confirm the action.
 
 ### Create the Row Index Variable
 
-9. Add a second **Set variable** action below the first.
+16. Add a second **Set variable** action below the first.
 
-10. Configure it as follows:
-
+17. Configure it as follows:
     | Property | Value |
     |---|---|
     | Variable | `RowIndex` |
@@ -206,26 +205,26 @@ Before adding any actions, create the three subflows that will hold the browser 
 
     > **Why start at 2?** Row 1 will be reserved for the column headers you are about to write. Data rows start at row 2.
 
-11. Select **Save**.
+18. Select **Save**.
 
 ### Launch Excel and Write Headers
 
-12. In the **Actions** panel, expand **Excel**.
+19. In the **Actions** panel, expand **Excel**.
 
-13. Double-click **Launch Excel** to add it to the canvas.
+20. Double-click **Launch Excel** to add it to the canvas.
 
-14. Configure the action:
+21. Configure the action:
 
     | Property | Value |
     |---|---|
     | Launch Excel | with a blank document |
     | Make instance visible | On |
 
-15. Select **Save**. PAD stores the Excel instance in a variable called `ExcelInstance` by default.
+22. Select **Save**. PAD stores the Excel instance in a variable called `ExcelInstance` by default.
 
-16. Add a **Write to Excel worksheet** action.
+23. Add a **Write to Excel worksheet** action.
 
-17. Configure it to write the header row:
+24. Configure it to write the header row:
 
     | Property | Value |
     |---|---|
@@ -235,9 +234,9 @@ Before adding any actions, create the three subflows that will hold the browser 
     | Column | `A` |
     | Row | `1` |
 
-18. Select **Save**.
+25. Select **Save**.
 
-19. Add four more **Write to Excel worksheet** actions for the remaining headers. Use the same settings but change the column and value each time:
+26. Add four more **Write to Excel worksheet** actions for the remaining headers. Use the same settings but change the column and value each time:
 
     | Column | Value to write |
     |---|---|
@@ -248,7 +247,7 @@ Before adding any actions, create the three subflows that will hold the browser 
 
     > **Tip:** You can right-click any action on the canvas and select **Copy**, then paste and edit to save time repeating similar actions.
 
-20. Press **Ctrl + S** to save your flow.
+27. Press **Ctrl + S** to save your flow.
 
 ---
 
