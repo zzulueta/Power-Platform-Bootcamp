@@ -317,9 +317,7 @@ In this task you will use the PAD **Web Recorder** to capture a single manual br
     Click on Paragraph 'ParisFrance' of web page
     Click on Anchor '10 Day' of web page
     ```
-
-    > **Note:** The exact action names and count may vary depending on how many clicks the recorder captured. If a "Click" action was recorded for the notification dismiss, right-click it and select **Delete** — the flow should not depend on that popup appearing.
-
+    
 18. Press **Ctrl + S** to save your flow.
 
 ---
