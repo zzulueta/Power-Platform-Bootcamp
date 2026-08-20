@@ -528,8 +528,7 @@ When the recorder captured the click on "Paris", it stored an exact text selecto
     ```
     [Text*="%CurrentItem%"]
     ```
-    > Why remove the p tag prefix? The recorder locks the selector to a specific HTML element type (p), which can fail on different cities or page states. Using [Text*="%CurrentItem%"] matches any element whose text contains the city name, making it far more robust.
-
+    
 26. Select **Save** to close the UI Element editor, then **Save** the action.
 
 27. Press **Ctrl + S** to save your flow.
