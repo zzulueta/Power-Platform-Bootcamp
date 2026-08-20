@@ -283,7 +283,7 @@ In this task you will use the PAD **Web Recorder** to capture a single manual br
 
    > **Note:** A notification popup ("We'd like to send you notifications") may appear. Click **Dismiss** to close it before continuing. The recorder will capture this click — you can delete it from the generated actions afterwards.
 
-7. In the top navigation bar, click the button showing the current city name (e.g., **New York City** with a dropdown arrow). This opens the location search panel.
+7. In the top navigation bar, click the SVG drop down button beside the current city name (e.g., drop down arrow beside **New York City**). This opens the location search panel.
 
 8. The search box labelled **Search for a location** appears. Click inside it.
 
@@ -296,7 +296,7 @@ In this task you will use the PAD **Web Recorder** to capture a single manual br
 
 11. Wait for the dropdown results to appear.
 
-12. Click the result **Paris** from the dropdown list.
+12. Click the object **Paris Paragraph** from the dropdown list.
 
 13. Wait for the Paris weather page to load.
 
@@ -314,7 +314,7 @@ In this task you will use the PAD **Web Recorder** to capture a single manual br
     Launch new Microsoft Edge, navigate to 'https://weather.com' and store the instance into 'Browser'
     Click on Svg of web page
     Populate text field Input text with 'Paris' using emulated typing
-    Click on Paragraph 'ParisFrance' of web page
+    Click on Paragraph 'Paris' of web page
     Click on Anchor '10 Day' of web page
     ```
     
@@ -344,7 +344,7 @@ In this task you will add three actions to the **ExtractForecast** subflow to wa
    |---|---|
    | Web browser instance | `%Browser%` (the variable PAD created for your browser) |
    | Wait for page to | Contain element |
-   | UI element | Select and create a new UI element by clicking **Add UI element**, switching to your browser, and Ctrl + Click the **Daily Forecast** heading text on the page |
+   | UI element | Click the drop down. Select **Add UI element**, switch to your browser, and Ctrl + Click the **Daily Forecast** heading text on the page |
 
    > **Why wait first?** Weather.com loads forecast data asynchronously. Attempting to extract data before the elements exist in the DOM will cause the flow to fail. Waiting for the heading confirms the content is ready.
 

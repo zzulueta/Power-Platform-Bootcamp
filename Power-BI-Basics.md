@@ -28,7 +28,7 @@ This lab will guide you through the following tasks:
 - **Sample data access**: Download the CSV files (products.csv and customers.csv) from the sample-data folder
 - **Internet connection**: Required for accessing the Northwind OData service
 
-## Estimated Timing: 90 minutes
+## Estimated Timing: 150 minutes
 
 ## Lab Scenario
 
@@ -77,12 +77,14 @@ Power BI Desktop
 │   ├── Dimension Tables
 │   │   ├── Customers (one-to-many → Orders)
 │   │   ├── Products (one-to-many → Order_Details)
-│   │   └── Products (one-to-many → Orders via Order_Details)
+│   │   ├── Products (one-to-many → Orders via Order_Details)
+│   │   └── Date (one-to-many → Orders via OrderDate)
 │   │
 │   └── Relationships (one-to-many, single direction filter)
 │       ├── Customers[CustomerID] → Orders[CustomerID]
 │       ├── Products[ProductID] → Order_Details[ProductID]
-│       └── Orders[OrderID] → Order_Details[OrderID]
+│       ├── Orders[OrderID] → Order_Details[OrderID]
+│       └── Date[Date] → Orders[OrderDate]
 │
 ├── Report Canvas (3 pages)
 │   ├── Page 1: Sales Overview
@@ -143,6 +145,9 @@ By completing this lab, you will gain hands-on experience with the following Pow
 - Task 4: Create interactive reports with visualizations, filters, and slicers (25 minutes)
 - Task 5: Publish your report to the Power BI Service (10 minutes)
 - Task 6: Create and share a dashboard in the Power BI Service (10 minutes)
+- Task 7: Create a Date Table and Time Intelligence Measures (20 minutes)
+- Task 8: Conditional Formatting and Report Themes (20 minutes)
+- Task 9: Bookmarks, Buttons, and Report Navigation (20 minutes)
 
 ---
 
@@ -1153,6 +1158,289 @@ Subscriptions send regular email snapshots of your dashboard.
 
 ---
 
+## Task 7: Create a Date Table and Time Intelligence Measures
+
+In this task, you will create a proper Date table and use it to build time intelligence measures that compare sales performance across different time periods.
+
+> **Why a dedicated Date table?** Power BI's built-in auto date/time hierarchy works for basic charts, but for accurate time intelligence calculations (YTD, year-over-year, etc.) you need a dedicated Date table marked as a date table. This ensures DAX time intelligence functions work correctly in all scenarios.
+>
+> *Reference: [Use date tables in Power BI Desktop](https://learn.microsoft.com/power-bi/transform-model/desktop-date-tables)*
+
+### Create the Date Table Using DAX
+
+1. In Power BI Desktop, switch to **Report** view.
+
+2. On the **Home** ribbon, select **New table** from the **Calculations** group.
+
+3. In the formula bar, enter the following DAX expression:
+   ```
+   Date =
+   ADDCOLUMNS(
+       CALENDAR(DATE(1996,1,1), DATE(1998,12,31)),
+       "Year", YEAR([Date]),
+       "Month Number", MONTH([Date]),
+       "Month Name", FORMAT([Date], "MMMM"),
+       "Quarter", "Q" & QUARTER([Date]),
+       "Year-Month", FORMAT([Date], "YYYY-MM")
+   )
+   ```
+
+   > **What this does:** `CALENDAR` generates one row per day between the two dates (covering the Northwind data range). `ADDCOLUMNS` enriches each row with derived columns for Year, Month, Quarter, and a sortable Year-Month string.
+
+4. Press **Enter** to create the table.
+
+### Mark the Table as a Date Table
+
+1. In the **Fields** pane, select the **Date** table.
+
+2. On the **Table tools** ribbon, select **Mark as date table**.
+
+3. In the dialog, set **Date column** to **Date**.
+
+4. Select **Validate**. Power BI confirms the table is valid (no blanks, no duplicates, contiguous dates).
+
+5. Select **OK**.
+
+   > *Reference: [Set and use date tables in Power BI Desktop](https://learn.microsoft.com/power-bi/transform-model/desktop-date-tables#set-your-own-date-table)*
+
+### Create the Relationship to Orders
+
+1. Switch to **Model** view.
+
+2. Drag the **Date** column from the **Date** table to the **OrderDate** column in the **Orders** table.
+
+3. Verify the relationship properties:
+
+   | Setting | Value |
+   |---|---|
+   | Cardinality | One to many (1:*) |
+   | Cross filter direction | Single |
+   | Active | ✓ Yes |
+
+4. Select **OK**.
+
+### Create Time Intelligence Measures
+
+1. Switch to **Report** view.
+
+2. Right-click the **OrderDetails** table in the Fields pane and select **New measure**.
+
+3. Create a Year-to-Date revenue measure:
+   ```
+   Revenue YTD = TOTALYTD([Total Revenue], 'Date'[Date])
+   ```
+
+4. Add a same-period last year measure:
+   ```
+   Revenue Last Year = CALCULATE([Total Revenue], SAMEPERIODLASTYEAR('Date'[Date]))
+   ```
+
+5. Add a Year-over-Year growth percentage:
+   ```
+   YoY Growth % =
+   DIVIDE(
+       [Total Revenue] - [Revenue Last Year],
+       [Revenue Last Year],
+       0
+   )
+   ```
+
+   > *Reference: [Time intelligence functions (DAX)](https://learn.microsoft.com/dax/time-intelligence-functions-dax)*
+
+### Add a Year-over-Year Comparison Chart
+
+1. Navigate to the **Sales Overview** page.
+
+2. Add a **Line and clustered column chart** visual below the existing trend chart.
+
+3. Configure the visual:
+
+   | Well | Field |
+   |---|---|
+   | X-axis | **Year-Month** from the Date table |
+   | Column y-axis | **Total Revenue** measure |
+   | Line y-axis | **Revenue Last Year** measure |
+
+4. Add a title: **Revenue: Current vs Prior Year**
+   - In the Format pane, go to the General tab → **Title** → set Text to `Revenue: Current vs Prior Year`
+
+5. Add a fourth KPI card showing **YoY Growth %**:
+   - Add a **Card** visual and drag the **YoY Growth %** measure to it
+   - In the Format pane → **Callout** → **Value**, set **Display units** to **Auto** and **Value decimal places** to **1**
+   - Add title: **YoY Growth**
+
+6. Press **Ctrl + S** to save.
+
+> **Congratulations!** Your Sales Overview page now includes time intelligence KPIs backed by a proper Date table — the foundation of accurate date-based analysis in Power BI.
+
+---
+
+## Task 8: Conditional Formatting and Report Themes
+
+In this task, you will apply a report theme for consistent styling and use conditional formatting to make tables more visually informative at a glance.
+
+> *Reference: [Apply conditional formatting in tables and matrices](https://learn.microsoft.com/power-bi/create-reports/desktop-conditional-table-formatting)*
+>
+> *Reference: [Use report themes in Power BI Desktop](https://learn.microsoft.com/power-bi/create-reports/desktop-report-themes)*
+
+### Apply a Report Theme
+
+1. In Power BI Desktop, select the **View** ribbon.
+
+2. Select the **Themes** dropdown.
+
+3. Hover over each built-in theme to preview it applied to your report.
+
+4. Select **Accessible default** to apply a theme optimised for colour accessibility.
+
+   > **Why themes matter:** Themes enforce consistent colours, fonts, and visual formatting across every page of your report. When a theme is updated, all visuals update automatically.
+   >
+   > *Reference: [Report themes in Power BI Desktop](https://learn.microsoft.com/power-bi/create-reports/desktop-report-themes)*
+
+5. Observe how all visuals update immediately to reflect the new colour palette.
+
+### Add Conditional Formatting — Data Bars
+
+1. Navigate to the **Customer Analysis** page.
+
+2. Select the **Top Customers by Revenue** table visual.
+
+3. In the **Visualizations** pane, select the **Format** tab (paint roller icon).
+
+4. Expand **Cell elements**.
+
+5. Under the **Total Revenue** field, toggle **Data bars** to **On**.
+
+   > Data bars render an inline horizontal bar inside each cell, giving an immediate visual sense of relative values without requiring a separate chart visual.
+
+### Add Conditional Formatting — Colour Scale
+
+1. Still in the **Cell elements** section of the same table, expand the **Total Orders** field.
+
+2. Toggle **Background color** to **On**.
+
+3. Select the **fx** button to configure:
+   - **Format style**: Gradient
+   - **Minimum** colour: White
+   - **Maximum** colour: Select your theme's primary accent colour
+
+4. Select **OK**.
+
+### Add Conditional Formatting — Icons to Product Table
+
+1. Navigate to the **Product Performance** page.
+
+2. Select the **Product Sales Performance** table visual.
+
+3. In **Format** → **Cell elements**, under the **Total Revenue** field, toggle **Icons** to **On**.
+
+4. Select **fx** to configure rules:
+
+   | Rule | Condition | Icon |
+   |---|---|---|
+   | Rule 1 | Value < 5000 | Red circle |
+   | Rule 2 | Value >= 5000 and < 20000 | Yellow triangle |
+   | Rule 3 | Value >= 20000 | Green circle |
+
+5. Set **Icon layout** to **Left of data**.
+
+6. Select **OK**.
+
+   > Icons give users an at-a-glance status indicator, reducing cognitive load when scanning long product lists.
+
+7. Press **Ctrl + S** to save.
+
+> **Congratulations!** Your reports now have a consistent theme and tables enriched with conditional formatting that communicate performance levels visually.
+
+---
+
+## Task 9: Bookmarks, Buttons, and Report Navigation
+
+In this task, you will add a navigation bar so users can move between report pages, and create bookmarks to toggle between two different customer views.
+
+> *Reference: [Create bookmarks in Power BI Desktop to share and navigate report views](https://learn.microsoft.com/power-bi/create-reports/desktop-bookmarks)*
+>
+> *Reference: [Create a page navigation button in Power BI Desktop](https://learn.microsoft.com/power-bi/create-reports/desktop-buttons)*
+
+### Add a Page Navigator
+
+1. Navigate to the **Sales Overview** page.
+
+2. On the **Insert** ribbon, select **Buttons** → **Navigator** → **Page navigator**.
+
+   > **Page navigator** automatically generates one button per report page and stays in sync when pages are added or renamed — no manual wiring required.
+   >
+   > *Reference: [Create a page navigation button in Power BI Desktop](https://learn.microsoft.com/power-bi/create-reports/desktop-buttons#create-a-page-navigation-button)*
+
+3. A navigation bar appears on the canvas. Drag it to the top of the page and resize it to span the full width.
+
+4. In the **Format** pane, customise the button appearance:
+   - Go to **Visual** → **Buttons**
+   - Set **Shape** to **Rounded rectangle**
+   - Adjust **Fill** and **Font** colours to complement your theme
+
+5. Copy the navigation bar (**Ctrl + C**), navigate to the **Customer Analysis** page, and paste (**Ctrl + V**). Position it identically.
+
+6. Repeat for the **Product Performance** page.
+
+### Open the Bookmarks and Selection Panes
+
+1. Navigate to the **Customer Analysis** page.
+
+2. On the **View** ribbon, enable both **Bookmarks pane** and **Selection pane**.
+
+### Create an "All Customers" Bookmark
+
+1. Ensure no filters are active — click **Clear selections** on the country slicer if needed.
+
+2. In the **Bookmarks** pane, select **Add**.
+
+3. Double-click the new bookmark and rename it **All Customers**.
+
+4. Right-click the bookmark and select **Update**. Ensure **Data** is checked and **Display** is unchecked.
+
+   > Capturing **Data** only (not Display) means the bookmark saves the filter state, not the scroll position or visual selection.
+
+### Create a "Top 5 Customers" Bookmark
+
+1. Select the **Top Customers by Revenue** table visual.
+
+2. In the **Filters** pane, expand the **companyName** filter well.
+
+3. Set **Filter type** to **Top N**, **Show items** to **Top 5**, **By value** to **Total Revenue**.
+
+4. Select **Apply filter**. The table now shows only the top 5 customers.
+
+5. In the Bookmarks pane, select **Add**.
+
+6. Rename the bookmark to **Top 5 Customers**.
+
+7. Right-click → **Update** → ensure **Data** is checked, **Display** unchecked.
+
+   > *Reference: [Bookmarks capture the state of a report page](https://learn.microsoft.com/power-bi/create-reports/desktop-bookmarks#bookmarks-capture-the-state-of-a-report-page)*
+
+### Wire Buttons to Bookmarks
+
+1. On the **Insert** ribbon, select **Buttons** → **Blank**.
+
+2. In the **Format** pane:
+   - Turn **Title** on, set Text to **All Customers**
+   - Go to **Action**, turn it **On**
+   - Set **Type** to **Bookmark**
+   - Set **Bookmark** to **All Customers**
+
+3. Add a second blank button. Set its Title to **Top 5 Customers** and Action → Bookmark → **Top 5 Customers**.
+
+4. Position both buttons side by side in the top-right area of the Customer Analysis page, below the navigation bar.
+
+5. To test: hold **Ctrl** and click each button to switch between the two views.
+
+6. Press **Ctrl + S** to save.
+
+> **Congratulations!** Your report now has professional page navigation, conditional formatting-enhanced tables, and bookmark-driven interactive views — completing a full 150-minute end-to-end Power BI solution.
+
+---
+
 ## Lab Summary
 
 In this lab, you've learned the fundamentals of Power BI by completing a comprehensive end-to-end workflow:
@@ -1174,6 +1462,12 @@ In this lab, you've learned the fundamentals of Power BI by completing a compreh
 
 ✅ **Task 6**: Created and shared a dashboard highlighting key metrics
 
+✅ **Task 7**: Created a Date table, marked it as a date table, and built time intelligence measures (YTD, year-over-year)
+
+✅ **Task 8**: Applied a report theme and used conditional formatting (data bars, colour scales, icons) to improve data readability
+
+✅ **Task 9**: Added a page navigation bar, created bookmarks, and wired buttons to create an interactive view toggle
+
 ### Key Concepts You Learned
 
 - **Power BI Desktop vs. Service**: Desktop for creating, Service for sharing
@@ -1187,6 +1481,11 @@ In this lab, you've learned the fundamentals of Power BI by completing a compreh
 - **Publishing workflow**: From Desktop to Service
 - **Dashboards**: Single-page views with pinned tiles from reports
 - **Sharing**: Collaborating with colleagues (requires Power BI Pro for all users)
+- **Date tables**: Dedicated calendar tables marked for time intelligence
+- **Time intelligence**: YTD, year-over-year, and period comparison using DAX
+- **Report themes**: Consistent styling applied across all visuals
+- **Conditional formatting**: Data bars, colour scales, and icons in tables
+- **Bookmarks**: Saved report states wired to buttons for interactive navigation
 
 ### Next Steps
 
