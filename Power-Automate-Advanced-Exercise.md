@@ -392,7 +392,13 @@ In this task you will add three actions to the **ExtractForecast** subflow to wa
 
 18. Select **Save**. `ForecastData` is now a DataTable variable containing all forecast rows for the current city.
 
-19. Press **Ctrl + S** to save your flow.
+19. Add a **Close web browser** action to close the browser after extraction:
+
+    | Property | Value |
+    |---|---|
+    | Web browser instance | `%Browser%` |
+
+20. Press **Ctrl + S** to save your flow.
 
 ---
 
@@ -438,7 +444,7 @@ In this task you will build the **WriteRows** subflow that writes up to 5 foreca
 
    Set the **Row** property of all five actions to `%RowIndex%`.
 
-   > **Note:** `%CurrentItem%` is set by the **For each** loop in the Main flow. All subflows share variables with Main, so it is available here without any extra steps. DataTable row values are accessed by zero-based column index — adjust the indices if the extraction captured columns in a different order.
+   > **Note:** `%CurrentItem%` is set by the **For each** loop in the Main flow. Ignore the error message that it doesn't exist for now. DataTable row values are accessed by zero-based column index — adjust the indices if the extraction captured columns in a different order.
 
 6. After the five write actions (still inside the **If** block), add two **Increase variable** actions:
    - Increase `RowIndex` by `1`
@@ -538,7 +544,9 @@ In this task you will add the Excel save and close actions, then run the complet
 
 These actions go **outside and after** the For each loop, so they run once when all cities are complete.
 
-1. Add a **Save Excel** action from the **Excel** category:
+1. Go back to the Main subflow. Add a **Save Excel** action from the **Excel** category. This must be placed after the For each loop.
+
+    Configure it:
 
     | Property | Value |
     |---|---|
