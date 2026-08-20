@@ -91,8 +91,9 @@ Subflow: SearchCity
 Subflow: ExtractForecast
 ├── Wait for "Daily Forecast" heading
 ├── Scroll to "Daily Forecast" section     ← triggers lazy-load rendering
-└── Extract data from web page
-    └── ForecastData (DataTable: Day | Conditions | Low | High)
+├── Extract data from web page
+|   └── ForecastData (DataTable: Day | Conditions | Low | High)
+└── Close web browser
 
 Subflow: WriteRows
 ├── Set RowCounter = 0
@@ -528,7 +529,7 @@ When the recorder captured the click on "Paris", it stored an exact text selecto
     ```
     [Text*="%CurrentItem%"]
     ```
-    
+
 26. Select **Save** to close the UI Element editor, then **Save** the action.
 
 27. Press **Ctrl + S** to save your flow.
@@ -614,8 +615,7 @@ Save Excel → WeatherReport.xlsx
 Close Excel
 
 ── Subflow: SearchCity ────────────────────────────────────────────────
-Launch new Microsoft Edge
-Navigate to https://weather.com
+Launch new Microsoft Edge and navigate to https://weather.com
 Click city button (top nav)
 Populate text field: %CurrentItem%
 Click link containing: %CurrentItem%
@@ -625,6 +625,7 @@ Click "10 Day" tab
 Wait for web page content: "Daily Forecast" heading
 Scroll web page to: "Daily Forecast" heading
 Extract data from web page → ForecastData
+Close web browser
 
 ── Subflow: WriteRows ─────────────────────────────────────────────────
 Set variable: RowCounter = 0
