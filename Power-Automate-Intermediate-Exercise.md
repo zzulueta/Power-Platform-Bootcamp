@@ -465,7 +465,7 @@ Stretch, refill coffee, and reset. When you return, we move from event-driven fl
 
 ### Step 6: Mark the row as uploaded
 
-1. Inside the same **Apply to each**, directly after **Create item**, add an action: search **Update a row** and select **Update a row - Excel Online (Business)**.
+1. Inside the same **For each**, directly after **Create item**, add an action: search **Update a row** and select **Update a row - Excel Online (Business)**.
 
 2. Point it at the same workbook and table, then set the key and flag:
 
@@ -493,7 +493,7 @@ Stretch, refill coffee, and reset. When you return, we move from event-driven fl
 
 4. Run the flow a second time. Because all rows are already marked **Yes**, the **Filter Query** returns nothing and no duplicate items are created — proving the flow is safe to re-run.
 
-> **Performance note:** For large tables, this loop can be slow and may hit throttling. In production you would increase (carefully) or leave default the **Apply to each** concurrency, filter rows with the connector's **Filter Query**, or consider a data-flow/import approach. For this lab's small data set, defaults are fine.
+> **Performance note:** For large tables, this loop can be slow and may hit throttling. In production you would increase (carefully) or leave default the **For each** concurrency, filter rows with the connector's **Filter Query**, or consider a data-flow/import approach. For this lab's small data set, defaults are fine.
 
 > **Troubleshooting:** If **Table** is empty in the dropdown, re-open the workbook and confirm the range is formatted as a named table. If numbers import as text, check the Excel column data types.
 
