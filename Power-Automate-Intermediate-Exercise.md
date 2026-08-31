@@ -555,11 +555,45 @@ Stretch, refill coffee, and reset. When you return, we move from event-driven fl
 
 For a more polished notification:
 
-1. Instead of (or in addition to) the plain message, add **Post adaptive card in a chat or channel - Microsoft Teams**.
+1. Instead of (or in addition to) the plain message, add **Post adaptive card in a chat or channel - Microsoft Teams** and set **Post in**, **Team**, and **Channel** the same way as in Step 4.
 
-2. Paste a simple adaptive card JSON and bind fields to dynamic content, for example the file name and link. An adaptive card lets you present the file name, author, and a clickable **Open file** action button in a formatted card.
+2. In the **Adaptive Card** field, paste the JSON below. The `@{...}` expressions pull the file name and path straight from the trigger, so you don't need to insert dynamic content manually:
 
-   > *Reference: adaptive card designer at [https://adaptivecards.io/designer](https://adaptivecards.io/designer).*
+   ```json
+   {
+       "type": "AdaptiveCard",
+       "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+       "version": "1.4",
+       "body": [
+           {
+               "type": "TextBlock",
+               "size": "Medium",
+               "weight": "Bolder",
+               "text": "New file uploaded to OneDrive",
+               "wrap": true
+           },
+           {
+               "type": "FactSet",
+               "facts": [
+                   {
+                       "title": "File name",
+                       "value": "@{triggerOutputs()?['body/Name']}"
+                   },
+                   {
+                       "title": "Location",
+                       "value": "@{triggerOutputs()?['body/Path']}"
+                   },
+                   {
+                       "title": "Detected (UTC)",
+                       "value": "@{formatDateTime(utcNow(),'yyyy-MM-dd HH:mm')}"
+                   }
+               ]
+           }
+       ]
+   }
+   ```
+
+   > **Tip:** Preview or tweak the layout in the [Adaptive Card Designer](https://adaptivecards.io/designer) (choose **Microsoft Teams** as the host app). Teams supports Adaptive Cards up to version 1.5. If your trigger exposes different property names, adjust `body/Name` and `body/Path` to match.
 
 ### Step 6: Save and test
 
