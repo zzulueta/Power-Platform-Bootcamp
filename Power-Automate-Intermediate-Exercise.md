@@ -232,10 +232,10 @@ By completing this lab, you will gain hands-on experience with the following Pow
    | Question | Type |
    | --- | --- |
    | Item requested | Text |
-   | Estimated cost | Text |
+   | Estimated cost | Text (see note below) |
    | Business justification | Text (long answer) |
 
-   > **Note:** Microsoft Forms has no dedicated **Number** question type. For **Estimated cost**, add a **Text** question, then select **... (More settings) → Restrictions → Number** to force respondents to enter a numeric value. Even with this restriction, the response is returned to the flow as **text** (a string), which matters in Step 7.
+   > **Note:** Microsoft Forms has no dedicated **Number** question type. For **Estimated cost**, add a **Text** question, then select **... (More settings) → Restrictions → Number** to force respondents to enter a numeric value.
 
 4. Select **Collect responses** and ensure it is set so people **in your organization can respond**. 
 
