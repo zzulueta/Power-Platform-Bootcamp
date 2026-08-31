@@ -16,7 +16,7 @@ This lab will guide you through the following:
 - Build **Lab A** – automatically save Outlook email attachments to OneDrive
 - Build **Lab B** – route a Microsoft Forms submission through an approval and record the result in a Microsoft List
 - Build **Lab C** – manually trigger a bulk upload of Excel data into a Microsoft List
-- Build **Lab D** – notify a Teams channel when a new file is created in SharePoint
+- Build **Lab D** – notify a Teams channel when a new file is created in OneDrive
 
 ## Pre-requisites
 
@@ -39,7 +39,7 @@ This lab will guide you through the following:
 | B | Forms Submission → Approval + Microsoft List | 30 min |
 | — | Break | 15 min |
 | C | Manual Trigger — Bulk Upload Excel Data to Microsoft List | 25 min |
-| D | New SharePoint File → Teams Notification | 30 min |
+| D | New OneDrive File → Teams Notification | 30 min |
 
 ## Lab Scenario
 
@@ -50,7 +50,7 @@ By the end of the day you will have built:
 - An **automated flow** that files incoming Outlook attachments into OneDrive the moment they arrive.
 - An **approval flow** that turns a Microsoft Forms request into a tracked, auditable decision stored in a Microsoft List.
 - An **instant (manual) flow** that a person runs on demand to bulk-load an Excel table into a Microsoft List.
-- An **event-driven flow** that keeps a Teams channel informed whenever new content lands in a SharePoint library.
+- An **event-driven flow** that keeps a Teams channel informed whenever new content lands in a OneDrive folder.
 
 ## Architecture Overview
 
@@ -62,7 +62,7 @@ Triggers (events that start a flow)
 ├── Automated:  When a new email arrives (V3)            → Lab A
 ├── Automated:  When a new response is submitted (Forms) → Lab B
 ├── Instant:    Manually trigger a flow                  → Lab C
-└── Automated:  When a file is created (SharePoint)      → Lab D
+└── Automated:  When a file is created (OneDrive)        → Lab D
 
                     ↓ (Power Automate cloud flow engine)
 
@@ -82,11 +82,11 @@ Flows & Connectors
 ├── Lab C — Bulk Upload Excel to Microsoft List
 │   ├── Manual trigger (Instant cloud flow)
 │   ├── Excel Online (Business) (List rows present in a table)
-│   ├── Control: Apply to each (rows)
+│   ├── Control: For each (rows)
 │   └── SharePoint / Microsoft List (Create item)
 │
-└── Lab D — New SharePoint File → Teams Notification
-    ├── SharePoint (When a file is created - properties only)
+└── Lab D — New OneDrive File → Teams Notification
+    ├── OneDrive for Business (When a file is created - properties only)
     └── Microsoft Teams (Post message / adaptive card in a channel)
 
                     ↓ (Run history, monitoring, sharing)
@@ -503,15 +503,15 @@ Stretch, refill coffee, and reset. When you return, we move from event-driven fl
 
 ---
 
-## Lab D — New SharePoint File → Teams Notification (30 minutes)
+## Lab D — New OneDrive File → Teams Notification (30 minutes)
 
-**Goal:** Keep a team informed automatically. When a new file is created in a SharePoint document library, post a message (and optionally a rich adaptive card) to a Microsoft Teams channel with the file's name and a link.
+**Goal:** Keep a team informed automatically. When a new file is added to a OneDrive for Business folder, post a message (and optionally a rich adaptive card) to a Microsoft Teams channel with the file's name and location.
 
-> **Pattern learned:** Event-driven trigger on a SharePoint library → post to Teams. A staple of collaboration automation.
+> **Pattern learned:** Event-driven trigger on a OneDrive folder → post to Teams. A staple of collaboration automation.
 
-### Step 1: Identify your SharePoint library and Teams channel
+### Step 1: Prepare your OneDrive folder and Teams channel
 
-1. Choose (or create) a SharePoint document library, for example **Shared Documents** on a team site.
+1. In [OneDrive for Business](https://www.office.com/launch/onedrive), create a folder named **Uploads** (or reuse an existing one). The flow will watch this folder for new files.
 
 2. Choose a Microsoft Teams **team** and **channel** where notifications should appear (for example **General** in a "Project" team).
 
@@ -519,11 +519,11 @@ Stretch, refill coffee, and reset. When you return, we move from event-driven fl
 
 1. In [Power Automate](https://make.powerautomate.com), select **Create** → **Automated cloud flow**.
 
-2. Name it **New SharePoint File to Teams**.
+2. Name it **New OneDrive File to Teams**.
 
-3. Search the trigger **When a file is created (properties only) - SharePoint** and select it, then **Create**.
+3. Search the trigger **When a file is created (properties only) - OneDrive for Business** and select it, then **Create**.
 
-   > **Why "properties only"?** This lightweight trigger fires when a file is added and returns its metadata (name, link, author) without downloading the file content—perfect for a notification.
+   > **Why "properties only"?** This lightweight trigger fires when a file is added and returns its metadata (name, path, size) without downloading the file content—perfect for a notification.
 
 ### Step 3: Configure the trigger
 
@@ -531,8 +531,7 @@ Stretch, refill coffee, and reset. When you return, we move from event-driven fl
 
    | Parameter | Value |
    | --- | --- |
-   | **Site Address** | The site containing your library |
-   | **Library Name** | Shared Documents (or your chosen library) |
+   | **Folder** | Select the folder icon and choose **/Uploads** |
 
 ### Step 4: Post a message to Teams
 
@@ -548,7 +547,7 @@ Stretch, refill coffee, and reset. When you return, we move from event-driven fl
    | **Post in** | Channel |
    | **Team** | Your team |
    | **Channel** | Your channel |
-   | **Message** | Compose a message that includes dynamic content, for example: `New file added: ` + **File name with extension** + ` — ` + **Link to item** |
+   | **Message** | Compose a message with dynamic content, for example: `New file added: ` + **Name** + ` (` + **Path** + `)` |
 
 3. Rename the action **Notify Teams channel**.
 
@@ -566,13 +565,13 @@ For a more polished notification:
 
 1. Select **Save**.
 
-2. Upload a new file to the monitored SharePoint library.
+2. Upload a new file to the monitored OneDrive **Uploads** folder.
 
 3. Within a minute, confirm the notification appears in the chosen Teams channel with the correct file name and a working link.
 
-> **Troubleshooting:** The properties-only trigger can take a short time to fire and, by design, may not trigger for files created by the flow's own connection in some retention scenarios—upload manually to test. If the link doesn't open, verify recipients have permission to the library.
+> **Troubleshooting:** The properties-only trigger can take a short time to fire and, by design, may not trigger for files created by the flow's own connection in some scenarios—upload manually to test. If recipients can't open the file, share it with them from OneDrive first.
 
-> *References: [SharePoint connector](https://learn.microsoft.com/connectors/sharepointonline/) · [Microsoft Teams connector](https://learn.microsoft.com/connectors/teams/)*
+> *References: [OneDrive for Business connector](https://learn.microsoft.com/connectors/onedriveforbusiness/) · [Microsoft Teams connector](https://learn.microsoft.com/connectors/teams/)*
 
 > **Congratulations!** You closed the loop between document management and team communication—no manual pinging required.
 
