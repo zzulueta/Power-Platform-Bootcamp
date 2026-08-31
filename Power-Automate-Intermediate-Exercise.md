@@ -338,8 +338,6 @@ Do this in **both** branches so every request is logged.
    > ```
    > first(outputs('Start_and_wait_for_an_approval')?['body/responses'])?['comments']
    > ```
-   >
-   > Replace `Approval_-_Purchase_request` with your approval action's actual name if you renamed it differently (spaces become underscores).
 
 3. In the **False** branch, add another **Create item - SharePoint** with the same mapping, but set **Decision** to `Rejected`.
 
