@@ -609,4 +609,34 @@ For a more polished notification:
 
 > **Congratulations!** You closed the loop between document management and team communication—no manual pinging required.
 
+> **Note — making the file a clickable link:** The **properties only** trigger returns the file's **Path** (plain text), not a web URL, so it isn't clickable on its own. To post a working link:
+>
+> 1. Between the trigger and the Teams action, add **Create share link - OneDrive for Business** and set:
+>    - **File**: insert the trigger's **Id** dynamic content
+>    - **Link type**: `View` (or `Edit`)
+>    - **Link scope**: `Organization` (or `Anonymous`, if your tenant allows it)
+> 2. This action outputs a **webUrl**. Use it in the **Post message** action's **Message** field with Markdown link syntax so the file name becomes a hyperlink:
+>
+>    ```
+>    New file added: [Name](webUrl)
+>    ```
+>
+>    i.e. insert the **Name** dynamic content as the link text and the **webUrl** (from Create share link) as the target.
+> 3. For the adaptive card, add an **Action.OpenUrl** button that points to the same `webUrl`:
+>
+>    ```json
+>    {
+>        "type": "ActionSet",
+>        "actions": [
+>            {
+>                "type": "Action.OpenUrl",
+>                "title": "Open file",
+>                "url": "@{outputs('Create_share_link')?['body/link/webUrl']}"
+>            }
+>        ]
+>    }
+>    ```
+>
+> **Create share link** respects your tenant's sharing policies — if `Anonymous` is blocked, use `Organization` and ensure recipients have access. Avoid hand-building a URL from the path, as it breaks with special characters and tenant differences.
+
 
