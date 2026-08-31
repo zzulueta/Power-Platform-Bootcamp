@@ -324,6 +324,7 @@ Do this in **both** branches so every request is logged.
    | **DecisionComments** | Insert the approval **Responses Comments** |
 
    > **Site Address:** select **Enter custom value** and paste the URL of the SharePoint site hosting your list, then select the list from the **List Name** dropdown. 
+   >
    >**Number conversion:** Because **Estimated cost** arrives as text but **EstimatedCost** is a **Number** column, wrap the dynamic content in a `float()` (or `int()` for whole numbers) expression in the **fx** editor, for example:
    >
    > ```
