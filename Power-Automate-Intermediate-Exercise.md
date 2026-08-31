@@ -662,7 +662,7 @@ For a more polished notification:
 >                  "url": "@{outputs('Create_share_link')?['body/WebUrl']}"
 >            }
 >         ]
->   }
+>    }
 >    ```
 >
 > **Create share link** respects your tenant's sharing policies — if `Anonymous` is blocked, use `Organization` and ensure recipients have access. Avoid hand-building a URL from the path, as it breaks with special characters and tenant differences.
