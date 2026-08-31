@@ -143,7 +143,7 @@ By completing this lab, you will gain hands-on experience with the following Pow
 
 1. Select the **When a new email arrives (V3)** trigger to open its settings.
 
-2. Select **Show all** under Advanced parametersand set:
+2. Select **Show all** under Advanced parameters and set:
 
    | Parameter | Value |
    | --- | --- |
@@ -177,10 +177,21 @@ By completing this lab, you will gain hands-on experience with the following Pow
    | Parameter | Value |
    | --- | --- |
    | **Folder Path** | Select the folder icon and choose **/Email Attachments** |
-   | **File Name** | Insert dynamic content **Name** (Attachments Name) |
-   | **File Content** | Insert dynamic content **Content Bytes** (Attachments Content) |
+   | **File Name** | Attachment name (see note below) |
+   | **File Content** | Attachment content (see note below) |
 
-   > **Tip:** If the field shows the whole `Attachments` object instead of individual properties, make sure you are picking **Name** and **Content Bytes** from the **Apply to each** current item, not from the trigger body.
+   > **Important — if you don't see "Name" and "Content Bytes" in dynamic content:** In the new designer, when you loop over **Attachments** the dynamic content list often shows only **Current item**, not the individual attachment properties. Use expressions instead:
+   >
+   > - **File Name** — switch the field to the expression editor (the **fx** tab) and enter:
+   >   ```
+   >   items('Apply_to_each')?['name']
+   >   ```
+   > - **File Content** — in the expression editor, enter:
+   >   ```
+   >   items('Apply_to_each')?['contentBytes']
+   >   ```
+   >
+   > Replace `Apply_to_each` with your loop's actual name if you renamed it (spaces become underscores). The V3 trigger exposes each attachment's properties as `name` and `contentBytes`.
 
 7. Rename the action for clarity: select the action's **...** menu → **Rename**, and name it **Save attachment to OneDrive**.
 
