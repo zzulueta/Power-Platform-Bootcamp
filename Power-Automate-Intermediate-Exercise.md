@@ -336,7 +336,7 @@ Do this in **both** branches so every request is logged.
    > **DecisionComments:** Use the **fx** editor:
    >
    > ```
-   > first(outputs('Approval_-_Purchase_request')?['body/responses'])?['comments']
+   > first(outputs('Start_and_wait_for_an_approval')?['body/responses'])?['comments']
    > ```
    >
    > Replace `Approval_-_Purchase_request` with your approval action's actual name if you renamed it differently (spaces become underscores).
