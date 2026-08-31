@@ -353,8 +353,7 @@ Do this in **both** branches so every request is logged.
    | --- | --- |
    | **To** | Enable Use dynamic content then insert **Responders' Email** |
    | **Subject** | `Your purchase request was ` + `Approved` (or `Rejected` in the No branch) |
-   | **Body** | Include the item requested and the approver comment by adding the expression: |
-   | | ```first(outputs('Approval_-_Purchase_request')?['body/responses'])?['comments']``` |
+   | **Body** | Include the item requested and the approver comment by adding the decision comments expression above |
 
 ### Step 9: Save and test
 
