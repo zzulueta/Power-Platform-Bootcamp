@@ -143,17 +143,18 @@ By completing this lab, you will gain hands-on experience with the following Pow
 
 1. Select the **When a new email arrives (V3)** trigger to open its settings.
 
-2. Select **Show advanced options** (or the **...** / parameters list in the new designer) and set:
+2. Select **Show all** under Advanced parametersand set:
 
    | Parameter | Value |
    | --- | --- |
-   | **Folder** | Inbox |
    | **Include Attachments** | Yes |
+   | **Subject Filter** | Invoice |
    | **Only with Attachments** | Yes |
+   | **Folder** | Inbox |
 
-   > **Why these settings?** *Include Attachments = Yes* makes the attachment content available to later actions. *Only with Attachments = Yes* means the flow won't even start for emails that have nothing to save—an efficient trigger-level filter.
+   > **Why these settings?** *Include Attachments = Yes* makes the attachment content available to later actions. *Subject Filter = Invoice* ensures only emails with "Invoice" in the subject are processed. *Only with Attachments = Yes* means the flow won't even start for emails that have nothing to save—an efficient trigger-level filter. *Folder = Inbox* ensures the flow watches your main inbox, not subfolders.
 
-3. *(Optional)* To limit which emails are processed, set **Subject Filter** to a keyword such as `Invoice`. Only emails whose subject contains that word will trigger the flow.
+3. Ensure that your account has a connection. If not, create a new connection using your work account.
 
 ### Loop over the attachments and create files
 
