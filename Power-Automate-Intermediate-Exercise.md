@@ -179,9 +179,7 @@ By completing this lab, you will gain hands-on experience with the following Pow
    | **Folder Path** | Select the folder icon and choose **/Email Attachments** |
    | **File Name** | Attachment name (see note below) |
    | **File Content** | Attachment content (see note below) |
-
-   > **Important — if you don't see "Name" and "Content Bytes" in dynamic content:** In the new designer, when you loop over **Attachments** the dynamic content list often shows only **Current item**, not the individual attachment properties. Use expressions instead:
-   >
+   
    > - **File Name** — switch the field to the expression editor (the **fx** tab) and enter:
    >   ```
    >   items('Apply_to_each')?['name']
@@ -193,7 +191,7 @@ By completing this lab, you will gain hands-on experience with the following Pow
    >
    > Replace `Apply_to_each` with your loop's actual name if you renamed it (spaces become underscores). The V3 trigger exposes each attachment's properties as `name` and `contentBytes`.
 
-7. Rename the action for clarity: select the action's **...** menu → **Rename**, and name it **Save attachment to OneDrive**.
+7. Rename the action for clarity: select the action's name and name it **Save attachment to OneDrive**.
 
 ### Save and test the flow
 
