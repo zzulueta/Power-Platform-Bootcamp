@@ -235,15 +235,19 @@ By completing this lab, you will gain hands-on experience with the following Pow
    | Estimated cost | Text |
    | Business justification | Text (long answer) |
 
+   > **Note:** Microsoft Forms has no dedicated **Number** question type. For **Estimated cost**, add a **Text** question, then select **... (More settings) → Restrictions → Number** to force respondents to enter a numeric value. Even with this restriction, the response is returned to the flow as **text** (a string), which matters in Step 7.
+
 4. Select **Collect responses** and ensure it is set so people **in your organization can respond**. 
 
 5. Copy the link to a new browser. Submit one test response yourself so real data exists.
 
 ### Step 2: Create the Microsoft List
 
-1. Go to your SharePoint site (or [https://lists.live.com](https://www.microsoft.com/microsoft-365/microsoft-lists) via **Microsoft Lists**) and create a new **blank list** named **Purchase Requests**.
+1. Go to your SharePoint site (or [https://lists.live.com](https://www.microsoft.com/microsoft-365/microsoft-lists) via **Microsoft Lists**) 
 
-2. Add the following columns:
+2. Select **Create new** and create a new **blank list** named **Purchase Requests**.
+
+3. Add the following columns:
 
    | Column name | Type |
    | --- | --- |
@@ -315,11 +319,19 @@ Do this in **both** branches so every request is logged.
    | **Site Address** | Select the site hosting **Purchase Requests** |
    | **List Name** | Purchase Requests |
    | **Title** | Insert **Item requested** |
-   | **EstimatedCost** | Insert **Estimated cost** |
+   | **EstimatedCost** | Convert the text response to a number (see note below) |
    | **Justification** | Insert **Business justification** |
    | **Requester** | Insert **Responders' Email** (from Get response details) |
    | **Decision** | `Approved` |
    | **DecisionComments** | Insert the approval **Responses Comments** |
+
+   > **Number conversion:** Because **Estimated cost** arrives as text but **EstimatedCost** is a **Number** column, wrap the dynamic content in a `float()` (or `int()` for whole numbers) expression in the **fx** editor, for example:
+   >
+   > ```
+   > float(outputs('Get_response_details')?['body/<Estimated cost field id>'])
+   > ```
+   >
+   > The easiest way to build this: type `float(` in the expression editor, switch to the **Dynamic content** tab, select **Estimated cost**, then add the closing `)`. Without the conversion the value may fail to save or be stored incorrectly.
 
 3. In the **If no** branch, add another **Create item - SharePoint** with the same mapping, but set **Decision** to `Rejected`.
 
