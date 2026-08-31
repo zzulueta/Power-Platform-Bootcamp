@@ -12,9 +12,9 @@ These exercises accompany the Power Automate Advanced training session. Each lab
 This set of exercises covers the following labs:
 
 - **Lab A**: RPA — Global Weather Report using Power Automate Desktop *(this lab)*
-- **Lab B**: Extract Invoice Data with AI Builder Document Processing *(coming soon)*
-- **Lab C**: AI Builder Prompts — Summarise and Classify Text in a Flow *(coming soon)*
-- **Lab D**: End-to-End Flow — Email Attachment → AI Extract → Microsoft List *(coming soon)*
+- **Lab B**: Extract Invoice Data with AI Builder Document Processing
+- **Lab C**: AI Builder Prompts — Summarise and Classify Text in a Flow
+- **Lab D**: Resilient Flows — Try/Catch/Finally Error Handling
 
 ---
 
@@ -685,13 +685,211 @@ End
 
 # Lab B: Extract Invoice Data with AI Builder Document Processing
 
-> **Coming soon.** This lab will be added in a future revision of this exercise file.
->
-> **What you will build:** An automated cloud flow triggered by incoming emails with invoice attachments. AI Builder's pre-built invoice processing model extracts vendor name, invoice number, dates, and amounts. Results are logged to a Microsoft List with a conditional alert for low-confidence extractions.
->
-> **Concepts covered:** AI Builder pre-built models, confidence scores, dynamic content from AI actions, Microsoft Lists.
->
-> **License required:** AI Builder credits.
+## Lab Introduction
+
+In this lab you will build an **automated cloud flow** in the Power Automate web portal that reads incoming invoice emails and extracts their key data automatically. Instead of a person opening each PDF and retyping the vendor, invoice number, dates, and totals into a tracking list, AI Builder's **prebuilt invoice processing model** reads the document for you and returns structured fields — each with a **confidence score** so you can flag anything that needs a human check.
+
+This lab will guide you through the following tasks:
+
+- Create an automated cloud flow triggered by incoming Outlook emails that have attachments
+- Loop over each attachment and pass it to the AI Builder **Extract information from invoices** action
+- Branch on the model's **confidence score** to separate high-confidence results from those needing review
+- Log every extracted invoice as an item in a Microsoft List, flagging low-confidence extractions for follow-up
+- Test the flow end to end with a real invoice attachment
+
+> **Pattern learned:** Automated trigger → loop over documents → **AI extraction** → branch on confidence → write a record. This is the standard shape for intelligent document automation.
+
+## Estimated Timing: 30 minutes
+
+## Pre-requisites
+
+- **Power Automate Premium** license and **AI Builder credits** available in your environment.
+- A **Microsoft 365** account with access to Outlook, SharePoint / Microsoft Lists.
+- A sample **invoice** file (PDF or image). AI Builder's prebuilt invoice model supports PDF, JPG, PNG, and TIFF. A clear, English-language invoice works best for a first test.
+- Confirm the **default environment** (or a Managed Environment) has AI Builder enabled. See [AI Builder licensing](https://learn.microsoft.com/ai-builder/administer-licensing).
+
+## Lab Scenario
+
+Your accounts-payable team receives dozens of supplier invoices by email every week. Today, someone opens each attachment, reads off the vendor name, invoice number, date, and total, and types them into a tracking list by hand — slow, error-prone, and impossible to audit. Your task is to replace that manual data entry with an AI-powered flow that reads each invoice the moment it arrives, records the extracted fields automatically, and flags any invoice the model was unsure about so a human can verify it.
+
+## Architecture Overview
+
+```
+AI Builder Invoice Extraction Flow
+==================================
+
+Trigger
+└── Automated: When a new email arrives (V3)  [Only with Attachments = Yes]
+
+                    ↓
+
+Flow
+├── Control: Apply to each (Attachments)
+│   ├── AI Builder: Extract information from invoices
+│   │   └── Input: Attachment content (contentBytes)
+│   ├── Control: Condition — Invoice total confidence ≥ 0.80?
+│   │   ├── True  → Create item (Review = No)
+│   │   └── False → Create item (Review = Yes)  + Send review email
+│   └── (fields: Vendor, Invoice ID, Dates, Total, Confidence)
+│
+└── Output: Microsoft List "Invoice Register"
+```
+
+## Job Skills
+
+By completing this lab, you will gain hands-on experience with the following skills:
+
+| Task | Description | Duration |
+|---|---|---|
+| Task 1 | Create the **Invoice Register** Microsoft List | 5 min |
+| Task 2 | Build the automated flow and configure the email trigger | 5 min |
+| Task 3 | Add the AI Builder **Extract information from invoices** action | 8 min |
+| Task 4 | Branch on the confidence score and write to the list | 8 min |
+| Task 5 | Save, test, and verify the extraction | 4 min |
+
+---
+
+## Task 1: Create the Invoice Register Microsoft List
+
+1. Go to your SharePoint site (or [Microsoft Lists](https://www.microsoft.com/microsoft-365/microsoft-lists)) and select **Create new** → **Blank list**.
+
+2. Name it **Invoice Register**.
+
+3. Add the following columns:
+
+   | Column name | Type |
+   | --- | --- |
+   | Title (default) | Single line of text – reuse for **Vendor name** |
+   | InvoiceID | Single line of text |
+   | InvoiceDate | Date and time (Date only) |
+   | InvoiceTotal | Number |
+   | Confidence | Number |
+   | ReviewNeeded | Choice (Yes, No) |
+   | SourceEmail | Single line of text |
+
+   > **Tip:** Note each column's **internal name** (open **Column settings → Edit**). You will map the flow's fields to these later; mismatched internal names are the most common cause of a failed **Create item** action.
+
+---
+
+## Task 2: Build the Automated Flow and Configure the Trigger
+
+1. Sign in to [https://make.powerautomate.com](https://make.powerautomate.com) and confirm the correct environment is selected in the top-right picker.
+
+2. Select **Create** → **Automated cloud flow**.
+
+3. In **Flow name**, enter **Invoice Extraction to List**.
+
+4. Search the trigger **When a new email arrives (V3)** and select **When a new email arrives (V3) - Office 365 Outlook**, then select **Create**.
+
+   > If prompted, sign in to create the **Office 365 Outlook** connection using your work account.
+
+5. Select the trigger, choose **Show all** under Advanced parameters, and set:
+
+   | Parameter | Value |
+   | --- | --- |
+   | **Include Attachments** | Yes |
+   | **Only with Attachments** | Yes |
+   | **Subject Filter** | Invoice |
+   | **Folder** | Inbox |
+
+   > **Why these settings?** *Include Attachments = Yes* makes each file's bytes available to AI Builder. *Only with Attachments = Yes* stops the flow starting for mail that has nothing to read. *Subject Filter = Invoice* narrows processing to invoice emails.
+
+---
+
+## Task 3: Add the AI Builder Extract Information from Invoices Action
+
+1. Below the trigger, select the plus sign (**+**) → **Add an action**.
+
+2. Search for **Apply to each** and select the **Control** action **Apply to each**.
+
+3. In **Select an output from previous steps**, insert the dynamic content **Attachments** (from the trigger).
+
+   > The trigger returns a *collection* of attachments; `Apply to each` runs the inner actions once per attachment.
+
+4. Inside the loop, select **Add an action**. Search **Extract information from invoices** and select **Extract information from invoices - AI Builder**.
+
+   > If prompted, allow the flow to use AI Builder in this environment. This action uses the **prebuilt invoice processing model** — no training required.
+
+5. Configure the action:
+
+   | Parameter | Value |
+   | --- | --- |
+   | **Invoice file** | Switch the field to the **fx** editor and enter the expression below |
+
+   > **Invoice file** — in the expression editor enter:
+   >
+   > ```
+   > items('Apply_to_each')?['contentBytes']
+   > ```
+   >
+   > Replace `Apply_to_each` with your loop's actual name if you renamed it (spaces become underscores). The V3 trigger exposes each attachment's binary content as `contentBytes`.
+
+6. Rename the action **Extract invoice fields** for clarity.
+
+   > **What comes back?** The action returns dynamic content for each detected field as a **value** and a matching **confidence** (0–1), including *Vendor name*, *Invoice ID*, *Invoice date*, *Due date*, *Invoice total*, *Subtotal*, and *Total tax*. You will use *Invoice total* and its confidence to decide whether the record needs review.
+
+---
+
+## Task 4: Branch on Confidence and Write to the List
+
+1. Still inside **Apply to each**, below the AI Builder action, add a **Condition** control.
+
+2. Configure the condition:
+   - Left value: open the **fx** editor and insert the **Invoice total confidence** dynamic content from **Extract invoice fields**.
+   - Operator: **is greater than or equal to**
+   - Right value: `0.8`
+
+   > A confidence of **0.8 (80%)** is a reasonable starting threshold. Tune it to your tolerance: raise it to catch more borderline reads, lower it to send fewer items to review.
+
+3. In the **True** branch, add **Create item - SharePoint** and configure:
+
+   | Parameter | Value |
+   | --- | --- |
+   | **Site Address** | Select the site hosting **Invoice Register** |
+   | **List Name** | Invoice Register |
+   | **Title** | Insert **Vendor name** (value) |
+   | **InvoiceID** | Insert **Invoice ID** (value) |
+   | **InvoiceDate** | Insert **Invoice date** (value) |
+   | **InvoiceTotal** | Convert to a number (see note below) |
+   | **Confidence** | Insert **Invoice total confidence** |
+   | **ReviewNeeded** | `No` |
+   | **SourceEmail** | Insert the trigger's **From** |
+
+   > **Number conversion:** AI Builder returns amounts as text, so the Number column needs a conversion. In the **InvoiceTotal** field, open the **fx** editor, insert the **Invoice total** dynamic content, and wrap it in `float( … )` — for example `float(<Invoice total token>)`. Prefer the **dynamic content token** over a hand-typed output path, because the token stays correct even if the underlying JSON path changes between model versions.
+
+4. In the **False** branch, add another **Create item - SharePoint** with the same mapping, but set **ReviewNeeded** to `Yes`.
+
+5. Still in the **False** branch, add **Send an email (V2) - Office 365 Outlook** to alert a reviewer:
+
+   | Parameter | Value |
+   | --- | --- |
+   | **To** | Your accounts-payable reviewer (use your own address for testing) |
+   | **Subject** | `Low-confidence invoice needs review` |
+   | **Body** | Include the vendor, invoice ID, total, and confidence dynamic content |
+
+   > **Why branch on confidence?** Straight-through processing is only safe when the model is sure. Routing low-confidence reads to a human keeps the automation trustworthy without blocking the reliable majority.
+
+---
+
+## Task 5: Save, Test, and Verify
+
+1. Select **Save**.
+
+2. Select **Test** → **Manually** → **Test**.
+
+3. Send yourself an email whose **subject contains "Invoice"** with an invoice **PDF or image attached**.
+
+4. Return to Power Automate. Within a minute the run appears — select it and expand **Extract invoice fields** to inspect the extracted values and confidence scores.
+
+5. Open the **Invoice Register** list and confirm a new item was created with the vendor, invoice ID, date, total, and confidence.
+
+6. Test the review path: send an invoice that is blurry or partially cropped, and confirm the item is created with **ReviewNeeded = Yes** and the review email is sent.
+
+> **Troubleshooting:** If the AI action fails with an authorization error, confirm AI Builder is enabled and credits are available in the environment. If fields come back empty, the document may be low-quality or in an unsupported layout — try a clearer invoice. If **Create item** fails, verify the list column internal names match the fields you mapped.
+
+> *References: [AI Builder prebuilt invoice processing model](https://learn.microsoft.com/ai-builder/prebuilt-invoice-processing) · [Use the invoice processing model in Power Automate](https://learn.microsoft.com/ai-builder/invoice-processing-in-flow)*
+
+> **Congratulations!** You built an intelligent document-processing flow that reads invoices, records structured data, and escalates only what a human needs to check.
 
 ---
 
@@ -699,24 +897,502 @@ End
 
 # Lab C: AI Builder Prompts — Summarise and Classify Text in a Flow
 
-> **Coming soon.** This lab will be added in a future revision of this exercise file.
->
-> **What you will build:** A flow triggered by Microsoft Forms responses that uses an AI Builder GPT-based prompt to summarise and categorise customer feedback, stores results in a Microsoft List, and routes Technical Support responses to the IT team via email.
->
-> **Concepts covered:** AI Builder Prompts, structuring prompt inputs, parsing prompt output, conditional routing.
->
-> **License required:** AI Builder credits.
+## Lab Introduction
+
+In this lab you will build an **automated cloud flow** that turns free-text customer feedback into structured, actionable data using **AI Builder Prompts** (GPT). When a customer submits a feedback form, the flow uses a custom prompt to produce a short **summary** and assign a **category** (for example *Technical Support*, *Billing*, *Product Feedback*, or *Praise*). Results are stored in a Microsoft List, and any **Technical Support** item is automatically routed to the IT team by email.
+
+This lab will guide you through the following tasks:
+
+- Create a Microsoft Form to collect customer feedback
+- Create a Microsoft List to store the AI-enriched results
+- Build a custom **AI Builder Prompt** that returns a summary and a category as structured JSON
+- Call the prompt from a flow, parse its output, and write the results to the list
+- Conditionally route Technical Support feedback to the IT team
+
+> **Pattern learned:** Automated trigger → **generative AI prompt** → parse structured output → store and route. This is the core pattern for infusing generative AI into a business process.
+
+## Estimated Timing: 30 minutes
+
+## Pre-requisites
+
+- **Power Automate Premium** license and **AI Builder credits** in your environment.
+- Access to **Microsoft Forms**, **SharePoint / Microsoft Lists**, and **Outlook**.
+- AI Builder **Prompts** available in your region and environment. See [AI Builder prompts overview](https://learn.microsoft.com/ai-builder/prompts-overview).
+
+## Lab Scenario
+
+Your support team receives a steady stream of free-text feedback through an online form. Reading every message, boiling it down to a one-line summary, and sorting it into the right queue takes hours each week — and different people categorise inconsistently. Your task is to let a generative-AI prompt do the first pass: summarise each comment, classify it into a fixed set of categories, and route the technical issues straight to IT — so the team spends its time responding, not triaging.
+
+## Architecture Overview
+
+```
+AI Builder Prompt — Summarise & Classify Flow
+=============================================
+
+Trigger
+└── Automated: When a new response is submitted (Microsoft Forms)
+
+                    ↓
+
+Flow
+├── Microsoft Forms: Get response details
+├── AI Builder: Run a prompt  ("Feedback Triage")
+│   ├── Input:  feedback text (from form)
+│   └── Output: { "summary": "...", "category": "..." }  (JSON)
+├── Data operation: Parse JSON  (summary, category)
+├── SharePoint: Create item  (Summary, Category, Feedback)
+└── Control: Condition — Category = "Technical Support"?
+    └── True → Send an email to the IT team
+
+                    ↓
+
+Output: Microsoft List "Customer Feedback"
+```
+
+## Job Skills
+
+By completing this lab, you will gain hands-on experience with the following skills:
+
+| Task | Description | Duration |
+|---|---|---|
+| Task 1 | Create the feedback **Form** and results **List** | 5 min |
+| Task 2 | Build a custom **AI Builder Prompt** with structured output | 10 min |
+| Task 3 | Build the flow and call the prompt | 6 min |
+| Task 4 | Parse the output, write to the list, and route Technical Support | 6 min |
+| Task 5 | Save, test, and verify | 3 min |
+
+---
+
+## Task 1: Create the Feedback Form and Results List
+
+### Create the Microsoft Form
+
+1. Go to [https://forms.office.com](https://forms.office.com) and select **New Form**.
+
+2. Title it **Customer Feedback**.
+
+3. Add the following questions:
+
+   | Question | Type |
+   | --- | --- |
+   | Your name | Text |
+   | Your email | Text |
+   | Your feedback | Text (long answer) |
+
+4. Select **Collect responses** and set it so people **in your organization can respond**. Submit one test response so real data exists.
+
+### Create the Microsoft List
+
+1. Create a new **blank list** named **Customer Feedback** with these columns:
+
+   | Column name | Type |
+   | --- | --- |
+   | Title (default) | Single line of text – reuse for the AI **Summary** |
+   | Category | Choice (Technical Support, Billing, Product Feedback, Praise, Other) |
+   | OriginalFeedback | Multiple lines of text |
+   | SubmittedBy | Single line of text |
+
+---
+
+## Task 2: Build a Custom AI Builder Prompt
+
+1. In [Power Automate](https://make.powerautomate.com), in the left navigation select **AI hub** (or **AI Builder → Prompts**), then select **Create a prompt** (a **Custom prompt**).
+
+2. Name the prompt **Feedback Triage**.
+
+3. In the prompt editor, write instructions that ask for a summary and a category, and **require JSON output** so the flow can parse it reliably. Paste the following as the prompt text:
+
+   ```
+   You are a support triage assistant. Read the customer feedback provided and respond
+   with ONLY a JSON object, no extra text, in exactly this shape:
+
+   {
+     "summary": "<one concise sentence summarising the feedback>",
+     "category": "<one of: Technical Support, Billing, Product Feedback, Praise, Other>"
+   }
+
+   Customer feedback:
+   ```
+
+4. Add an **input** to the prompt so the flow can pass the feedback text at run time:
+   - Select **Add content** → **Text**, name the input **FeedbackText**, and place its token at the end of the prompt (right after `Customer feedback:`).
+
+5. Select **Test** and paste a sample comment (for example *"The app crashes every time I upload a file — please fix this urgently."*) to confirm the model returns valid JSON with a sensible category.
+
+6. Select **Save**, then **Publish** the prompt so it is available as an action in flows.
+
+   > **Why force JSON?** Generative models return free text by default. Instructing the model to emit a fixed JSON shape makes the output *parseable*, so downstream **Parse JSON** and **Condition** actions work every time.
+
+---
+
+## Task 3: Build the Flow and Call the Prompt
+
+1. Select **Create** → **Automated cloud flow**. Name it **Feedback Triage with AI**.
+
+2. Search the trigger **When a new response is submitted - Microsoft Forms** and select it, then **Create**.
+
+3. In the trigger, set **Form Id** to **Customer Feedback**.
+
+4. Add an action: search **Get response details** and select **Get response details - Microsoft Forms**. Set **Form Id** to **Customer Feedback** and **Response Id** to the trigger's **Response Id** dynamic content.
+
+5. Add an action: search for your published prompt. It appears as **Run a prompt** (or **Feedback Triage**) under the **AI Builder** connector. Select it.
+
+6. In the prompt action's **FeedbackText** input, insert the **Your feedback** dynamic content from **Get response details**.
+
+   > If prompted, allow the flow to use AI Builder in this environment.
+
+---
+
+## Task 4: Parse the Output, Write to the List, and Route
+
+1. Add a **Parse JSON** action (**Data Operation**):
+
+   | Parameter | Value |
+   | --- | --- |
+   | **Content** | Insert the prompt action's text output (e.g. **Response**/**Text**) |
+   | **Schema** | Paste the schema below |
+
+   ```json
+   {
+       "type": "object",
+       "properties": {
+           "summary": { "type": "string" },
+           "category": { "type": "string" }
+       }
+   }
+   ```
+
+   > **Tip:** If **Parse JSON** occasionally fails because the model wrapped the JSON in extra text, add a **Compose** step first that trims to the JSON, or tighten the prompt to *"respond with ONLY a JSON object"* (already included above).
+
+2. Add **Create item - SharePoint** and configure:
+
+   | Parameter | Value |
+   | --- | --- |
+   | **Site Address** | The site hosting **Customer Feedback** |
+   | **List Name** | Customer Feedback |
+   | **Title** | Insert **summary** (from Parse JSON) |
+   | **Category** | Insert **category** (from Parse JSON) |
+   | **OriginalFeedback** | Insert **Your feedback** (from Get response details) |
+   | **SubmittedBy** | Insert **Your email** (from Get response details) |
+
+3. Add a **Condition** control below **Create item**:
+   - Left value: insert **category** (from Parse JSON)
+   - Operator: **is equal to**
+   - Right value: `Technical Support`
+
+4. In the **True** branch, add **Send an email (V2) - Office 365 Outlook** to route the issue to IT:
+
+   | Parameter | Value |
+   | --- | --- |
+   | **To** | Your IT team distribution address (use your own for testing) |
+   | **Subject** | `New Technical Support feedback` |
+   | **Body** | Include the **summary** and **Your feedback** dynamic content |
+
+   > Leave the **False** branch empty — non-technical feedback is simply recorded in the list.
+
+---
+
+## Task 5: Save, Test, and Verify
+
+1. Select **Save**.
+
+2. Submit a new **Customer Feedback** form response describing a technical problem.
+
+3. Return to Power Automate, open the run, and confirm the prompt returned valid JSON and **Parse JSON** succeeded.
+
+4. Open the **Customer Feedback** list and confirm a new item with a concise **Summary** and the correct **Category**.
+
+5. Confirm the IT team email was sent for the Technical Support response. Submit a non-technical comment (e.g. praise) and confirm it is logged but **no** email is sent.
+
+> **Troubleshooting:** If **Parse JSON** fails, open the run and inspect the raw prompt output — tighten the prompt wording or add a **Compose** to strip surrounding text. If the category never matches, confirm the value casing exactly matches the list Choice options.
+
+> *References: [AI Builder prompts overview](https://learn.microsoft.com/ai-builder/prompts-overview) · [Use prompts in Power Automate](https://learn.microsoft.com/ai-builder/use-a-custom-prompt-in-flow)*
+
+> **Congratulations!** You infused generative AI into a business process — summarising and classifying free text, then routing it automatically.
 
 ---
 
 ---
 
-# Lab D: End-to-End Flow — Email Attachment → AI Extract → Microsoft List
+# Lab D: Resilient Flows — Try/Catch/Finally Error Handling
 
-> **Coming soon.** This lab will be added in a future revision of this exercise file.
->
-> **What you will build:** An end-to-end flow combining an email trigger, AI Builder document extraction, an AI Builder Prompt for summarisation, structured storage in a Microsoft List, and a Teams channel notification with a link to the new list item.
->
-> **Concepts covered:** Multi-action AI flows, chaining AI extraction into a prompt, Teams integration, flow run history debugging.
->
-> **License required:** Power Automate Premium + AI Builder credits.
+## Lab Introduction
+
+Automation is only valuable if it is trustworthy. A flow that silently fails — or, worse, half-completes — can be more damaging than no automation at all. In this lab you will harden the invoice-processing flow from **Lab B** with a **Try / Catch / Finally** pattern built from **Scope** actions and the **Configure run after** setting. When any step fails, the flow catches the error, records it in a SharePoint list, alerts the team, always runs its cleanup, and reports an accurate run status instead of a misleading "success".
+
+This lab will guide you through the following tasks:
+
+- Structure a flow into **Try**, **Catch**, and **Finally** `Scope` blocks
+- Use **Configure run after** so the Catch block runs *only* when the Try block fails
+- Capture the failing action and its error message with the `result()` expression
+- Log every failure to a **Flow Error Log** list and notify the team by email
+- Use **Terminate** and a **retry policy** so runs report correctly and recover from transient faults
+
+> **Pattern learned:** **Try** (do the work) → **Catch** (handle failure) → **Finally** (always clean up). This is the backbone of production-grade, unattended automation.
+
+## Estimated Timing: 35 minutes
+
+## Pre-requisites
+
+- Completion of **Lab B** is recommended — this lab hardens that invoice flow. (You can also apply the pattern to any existing flow of your own.)
+- Standard connectors only: **SharePoint** and **Office 365 Outlook**.
+- Permission to create a SharePoint list.
+
+## Lab Scenario
+
+Your invoice flow now runs unattended against a shared mailbox. Sooner or later something will break — a corrupt PDF, exhausted AI Builder credits, a renamed list column, or a transient network blip. Right now those failures are invisible until someone notices missing data. Your task is to make the flow fail *loudly and safely*: catch every error, record it where the team can see it, alert a human, always run cleanup, and mark the run as genuinely failed so it is easy to spot and re-run.
+
+## Architecture Overview
+
+```
+Try / Catch / Finally Error-Handling Pattern
+============================================
+
+Trigger (existing Lab B trigger)
+└── Initialize variable: HasError = false
+
+                    ↓
+
+Scope: TRY
+└── (the working actions moved here)
+    Apply to each → Extract invoice fields → Condition → Create item …
+
+                    ↓  (run after: Try HAS FAILED / IS SKIPPED / HAS TIMED OUT)
+
+Scope: CATCH
+├── Filter array: result('Try') where status = 'Failed'
+├── Compose: failed action name + error message
+├── Set variable: HasError = true
+├── SharePoint: Create item  → "Flow Error Log"
+└── Office 365 Outlook: Send an email (alert)
+
+                    ↓  (run after: Catch — ALL statuses → always runs)
+
+Scope: FINALLY
+└── Cleanup / completion marker
+
+                    ↓
+
+Condition: HasError = true?
+└── True → Terminate (Status = Failed, with error message)
+```
+
+## Job Skills
+
+By completing this lab, you will gain hands-on experience with the following skills:
+
+| Task | Description | Duration |
+|---|---|---|
+| Task 1 | Create the **Flow Error Log** Microsoft List | 4 min |
+| Task 2 | Add an error flag and wrap the work in a **Try** scope | 6 min |
+| Task 3 | Add a **Catch** scope with **Configure run after** | 6 min |
+| Task 4 | Capture and log the error inside **Catch** | 10 min |
+| Task 5 | Add a **Finally** scope, then **Terminate** with an accurate status | 6 min |
+| Task 6 | Test by forcing a failure | 3 min |
+
+---
+
+## Task 1: Create the Flow Error Log List
+
+1. Go to your SharePoint site (or [Microsoft Lists](https://www.microsoft.com/microsoft-365/microsoft-lists)) and select **Create new** → **Blank list**.
+
+2. Name it **Flow Error Log**.
+
+3. Add the following columns:
+
+   | Column name | Type |
+   | --- | --- |
+   | Title (default) | Single line of text – reuse for the **flow name** |
+   | FailedAction | Single line of text |
+   | ErrorMessage | Multiple lines of text |
+   | RunId | Single line of text |
+   | Timestamp | Date and time |
+   | Status | Choice (Caught, Resolved) |
+
+   > A shared error log turns invisible, one-off failures into a visible, auditable backlog the team can triage and mark **Resolved**.
+
+---
+
+## Task 2: Add an Error Flag and Wrap the Work in a Try Scope
+
+1. Open the **Invoice Extraction to List** flow you built in Lab B (open it and select **Edit**). If you prefer to keep Lab B intact, use **Save As** to make a copy named **Invoice Extraction (resilient)** and edit that.
+
+2. Directly **after the trigger** and before any other action, add **Initialize variable**:
+
+   | Parameter | Value |
+   | --- | --- |
+   | **Name** | `HasError` |
+   | **Type** | Boolean |
+   | **Value** | `false` |
+
+   > A single boolean flag lets the **Finally** stage decide, at the very end, whether the run should be reported as failed.
+
+3. Below the variable, add a **Scope** control (search **Scope**) and rename it **Try**.
+
+4. Move the existing working actions (the **Apply to each** loop with **Extract invoice fields**, the **Condition**, and the **Create item** actions) **inside** the **Try** scope. In the designer, drag each action into the Try scope, or cut and paste them.
+
+   > **What is a Scope?** A `Scope` groups a set of actions so they can be treated as one unit — it succeeds only if every action inside it succeeds, which is exactly what makes Try/Catch possible.
+
+5. *(Optional, recommended)* Select the **Extract invoice fields** action → **… (menu)** → **Settings**, and set a **Retry Policy** (for example, **Exponential**, count 4). This automatically retries transient faults *before* the Try scope is considered failed.
+
+---
+
+## Task 3: Add a Catch Scope with Configure Run After
+
+1. **After** the **Try** scope (not inside it), add another **Scope** control and rename it **Catch**.
+
+2. On the **Catch** scope, select **… (menu)** → **Configure run after**.
+
+3. Clear **is successful**, and select all three of:
+   - **has failed**
+   - **is skipped**
+   - **has timed out**
+
+   Select **Done**.
+
+   > **Configure run after** is the heart of the pattern: by default an action runs only when the previous one *is successful*. Flipping it so **Catch** runs after the Try scope **has failed / timed out / is skipped** means Catch executes *only* when something went wrong.
+
+---
+
+## Task 4: Capture and Log the Error Inside Catch
+
+All actions in this task go **inside** the **Catch** scope.
+
+1. Add a **Filter array** action (**Data Operation**) and rename it **Filter failed actions**:
+
+   | Parameter | Value |
+   | --- | --- |
+   | **From** | Switch to the **fx** editor and enter `result('Try')` |
+   | **Filter condition (left)** | Switch to the **fx** editor and enter `item()?['status']` |
+   | **Operator** | is equal to |
+   | **Filter condition (right)** | `Failed` |
+
+   > **`result('Try')`** returns an array describing the outcome of every action inside the **Try** scope. Filtering it to `status = Failed` isolates the action(s) that actually broke.
+
+2. Add a **Compose** action and rename it **Error details**. In its input, use the **fx** editor:
+
+   ```
+   concat('Action: ', coalesce(first(body('Filter_failed_actions'))?['name'], 'Unknown'),
+   ' | Error: ', coalesce(
+       first(body('Filter_failed_actions'))?['error']?['message'],
+       first(body('Filter_failed_actions'))?['outputs']?['body']?['error']?['message'],
+       first(body('Filter_failed_actions'))?['code'],
+       'No message'))
+   ```
+
+   > **Why `coalesce()`?** The exact location of an error message inside a `result()` item varies by connector — some expose `error/message`, others nest it under `outputs/body/error/message`, and some only return a `code`. `coalesce()` returns the first non-null value, so you capture *something* useful whatever the failure.
+
+3. Add a **Set variable** action:
+
+   | Parameter | Value |
+   | --- | --- |
+   | **Name** | `HasError` |
+   | **Value** | `true` |
+
+4. Add **Create item - SharePoint** to log the failure:
+
+   | Parameter | Value |
+   | --- | --- |
+   | **Site Address** | The site hosting **Flow Error Log** |
+   | **List Name** | Flow Error Log |
+   | **Title** | Use the **fx** editor: `workflow()?['tags']?['flowDisplayName']` (or type the flow name) |
+   | **FailedAction** | `first(body('Filter_failed_actions'))?['name']` |
+   | **ErrorMessage** | Insert the **Error details** output (from Compose) |
+   | **RunId** | Use the **fx** editor: `workflow()?['run']?['name']` |
+   | **Timestamp** | Use the **fx** editor: `utcNow()` |
+   | **Status** | `Caught` |
+
+5. Add **Send an email (V2) - Office 365 Outlook** to alert the team:
+
+   | Parameter | Value |
+   | --- | --- |
+   | **To** | Your support/ops address (use your own for testing) |
+   | **Subject** | `Invoice flow failed — action needed` |
+   | **Body** | Insert the **Error details** output and the **RunId** so the team can open the run |
+
+   > **Why log *and* email?** The list gives a durable, filterable record; the email gives an immediate nudge. Together they ensure no failure goes unnoticed.
+
+---
+
+## Task 5: Add a Finally Scope and Terminate with an Accurate Status
+
+1. **After** the **Catch** scope, add a third **Scope** control and rename it **Finally**.
+
+2. On the **Finally** scope, select **… (menu)** → **Configure run after**, and select **all four** statuses (**is successful**, **has failed**, **is skipped**, **has timed out**) so Finally **always runs**.
+
+3. Inside **Finally**, add a **Compose** action named **Run complete** with any cleanup or completion marker (for example the text `Flow finished — see Flow Error Log if HasError is true`).
+
+   > **Finally always runs** — whether the work succeeded or the Catch handled a failure. Use it for cleanup that must happen every time (releasing locks, closing records, final logging).
+
+4. **After** the **Finally** scope, add a **Condition** control:
+   - Left value: insert the **HasError** variable
+   - Operator: **is equal to**
+   - Right value: `true`
+
+5. In the **True** branch, add a **Terminate** control (search **Terminate**):
+
+   | Parameter | Value |
+   | --- | --- |
+   | **Status** | Failed |
+   | **Code** | `InvoiceFlowError` |
+   | **Message** | Insert the **Error details** output |
+
+   > **Why Terminate?** Because **Catch** handled the error, the run would otherwise be marked **Succeeded** — hiding the failure. **Terminate** with **Status = Failed** makes the run show as failed in run history (and triggers Power Automate's failure notifications), while your Catch block has already logged and alerted. Leave the **False** branch empty.
+
+6. Select **Save**.
+
+---
+
+## Task 6: Test by Forcing a Failure
+
+1. First confirm the **happy path** still works: send a valid invoice email (subject contains "Invoice") and verify the flow completes and creates the list item as in Lab B.
+
+2. Now **force a failure** to exercise the Catch path. Pick one:
+   - Temporarily change the **Create item** action's **List Name** to a list that doesn't exist, **or**
+   - Temporarily set the AI action's **Invoice file** to an invalid expression.
+
+3. **Save**, then send another invoice email (or **Test → Manually**).
+
+4. Verify the resilience behaviour:
+   - The run appears in history marked **Failed** (from **Terminate**).
+   - A new row appears in the **Flow Error Log** list with the failed action name and error message.
+   - The alert email arrives.
+   - The **Finally** scope's **Run complete** action ran regardless.
+
+5. **Undo** the deliberate break (restore the correct List Name / expression) and **Save**.
+
+> **Troubleshooting:** If **Catch** never runs, re-check its **Configure run after** (it must be set on the **Catch scope itself**, not an action inside it). If `result('Try')` errors, confirm the scope is named exactly `Try` (expressions use underscores for spaces, e.g. `result('Try')`). If the run shows **Succeeded** despite a failure, verify the final **Condition → Terminate** is *outside* the Finally scope.
+
+> *References: [Handle errors and exceptions (coding guidelines)](https://learn.microsoft.com/power-automate/guidance/coding-guidelines/error-handling) · [Catch and handle errors with run after](https://learn.microsoft.com/azure/logic-apps/error-exception-handling) · [Fix flow failures](https://learn.microsoft.com/power-automate/fix-flow-failures)*
+
+> **Congratulations!** You turned a fragile flow into a resilient one — it now catches failures, records them, alerts the team, always cleans up, and reports an honest run status.
+
+---
+
+## Labs B–D Summary
+
+### What You Accomplished
+
+✅ **Lab B**: Extracted structured invoice data with AI Builder's prebuilt invoice model and branched on confidence to keep the automation trustworthy.
+
+✅ **Lab C**: Used an AI Builder Prompt to summarise and classify free-text feedback, then routed technical issues automatically.
+
+✅ **Lab D**: Hardened the invoice flow with a Try/Catch/Finally pattern that catches failures, logs them, alerts the team, always cleans up, and reports an accurate run status.
+
+### Key Concepts You Practised
+
+| Concept | Where it appeared | Learn reference |
+|---|---|---|
+| Prebuilt document processing (invoices) | Lab B | [Prebuilt invoice processing](https://learn.microsoft.com/ai-builder/prebuilt-invoice-processing) |
+| Confidence scores and human-in-the-loop review | Lab B | [AI Builder in flows](https://learn.microsoft.com/ai-builder/use-in-flow-overview) |
+| AI Builder Prompts (GPT) with structured output | Lab C | [Prompts overview](https://learn.microsoft.com/ai-builder/prompts-overview) |
+| Parse JSON of structured output | Lab C | [Data Operations](https://learn.microsoft.com/power-automate/data-operations) |
+| Try/Catch/Finally with Scopes | Lab D | [Error handling guidance](https://learn.microsoft.com/power-automate/guidance/coding-guidelines/error-handling) |
+| Configure run after, result(), and Terminate | Lab D | [Catch and handle errors](https://learn.microsoft.com/azure/logic-apps/error-exception-handling) |
+| Logging failures and run-history debugging | Lab D | [Fix flow failures](https://learn.microsoft.com/power-automate/fix-flow-failures) |
+
+### Next Steps
+
+- **Add a shared mailbox trigger** so the flow processes a team inbox instead of a personal one.
+- **Store the original file**: add **Create file - OneDrive/SharePoint** to archive each invoice alongside its list record.
+- **Centralise error handling**: turn the Catch/logging block into a reusable **child flow** that any flow can call.
