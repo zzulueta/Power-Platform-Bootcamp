@@ -232,10 +232,12 @@ By completing this lab, you will gain hands-on experience with the following Pow
    | Question | Type |
    | --- | --- |
    | Item requested | Text |
-   | Estimated cost | Number |
+   | Estimated cost | Text |
    | Business justification | Text (long answer) |
 
-4. Select **Collect responses** and ensure it is set so people **in your organization can respond**. Submit one test response yourself so real data exists.
+4. Select **Collect responses** and ensure it is set so people **in your organization can respond**. 
+
+5. Copy the link to a new browser. Submit one test response yourself so real data exists.
 
 ### Step 2: Create the Microsoft List
 
