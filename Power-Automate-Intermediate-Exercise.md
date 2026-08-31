@@ -325,13 +325,13 @@ Do this in **both** branches so every request is logged.
 
    > **Site Address:** select **Enter custom value** and paste the URL of the SharePoint site hosting your list, then select the list from the **List Name** dropdown. 
    >
-   >**Number conversion:** Because **Estimated cost** arrives as text but **EstimatedCost** is a **Number** column, wrap the dynamic content in a `float()` (or `int()` for whole numbers) expression in the **fx** editor, for example:
+   >**Number conversion:** Because **Estimated cost** arrives as text but **EstimatedCost** is a **Number** column, insert the expression in the **fx** editor:
    >
    > ```
    > float(outputs('Get_response_details')?['body/<Estimated cost field id>'])
    > ```
    >
-   > The easiest way to build this: type `float(` in the expression editor, switch to the **Dynamic content** tab, select **Estimated cost**, then add the closing `)`. Without the conversion the value may fail to save or be stored incorrectly.
+   > Without the conversion the value may fail to save or be stored incorrectly.
 
 3. In the **False** branch, add another **Create item - SharePoint** with the same mapping, but set **Decision** to `Rejected`.
 
