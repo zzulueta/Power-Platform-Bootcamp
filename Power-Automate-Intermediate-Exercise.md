@@ -333,7 +333,7 @@ Do this in **both** branches so every request is logged.
    >
    > Without the conversion the value may fail to save or be stored incorrectly.
    >
-   > **DecisionComments** field, use the **fx** editor:
+   > **DecisionComments:** Use the **fx** editor:
    >
    > ```
    > first(outputs('Approval_-_Purchase_request')?['body/responses'])?['comments']
@@ -351,9 +351,10 @@ Do this in **both** branches so every request is logged.
 
    | Parameter | Value |
    | --- | --- |
-   | **To** | Insert **Responders' Email** |
+   | **To** | Enable Use dynamic content then insert **Responders' Email** |
    | **Subject** | `Your purchase request was ` + `Approved` (or `Rejected` in the No branch) |
-   | **Body** | Include the item requested and any approver comments |
+   | **Body** | Include the item requested and the approver comment by adding the expression: |
+   | | ```first(outputs('Approval_-_Purchase_request')?['body/responses'])?['comments']``` |
 
 ### Step 9: Save and test
 
