@@ -276,11 +276,9 @@ By completing this lab, you will gain hands-on experience with the following Pow
 
 3. Set **Response Id** to the dynamic content **Response Id** from the trigger.
 
-   > A common mistake is to place **Get response details** without a loop. Because the Forms trigger returns a single response id per run, no `Apply to each` is required here.
-
 ### Step 5: Start and wait for an approval
 
-1. Add an action: search **Start and wait for an approval** and select it (from the **Approvals** connector).
+1. Add an action: search **Start and wait for an approval** and select it (from the **Standard approvals** connector).
 
    > If this is the first approval flow in your environment, Power Automate provisions a Dataverse database automatically. See [Get started with approvals](https://learn.microsoft.com/power-automate/get-started-approvals).
 
@@ -310,13 +308,13 @@ By completing this lab, you will gain hands-on experience with the following Pow
 
 Do this in **both** branches so every request is logged.
 
-1. In the **If yes** branch, add **Create item - SharePoint**.
+1. In the **True** branch, add **Create item - SharePoint**.
 
 2. Configure:
 
    | Parameter | Value |
    | --- | --- |
-   | **Site Address** | Select the site hosting **Purchase Requests** |
+   | **Site Address** | Select the site hosting **Purchase Requests** (see note below) |
    | **List Name** | Purchase Requests |
    | **Title** | Insert **Item requested** |
    | **EstimatedCost** | Convert the text response to a number (see note below) |
@@ -325,7 +323,8 @@ Do this in **both** branches so every request is logged.
    | **Decision** | `Approved` |
    | **DecisionComments** | Insert the approval **Responses Comments** |
 
-   > **Number conversion:** Because **Estimated cost** arrives as text but **EstimatedCost** is a **Number** column, wrap the dynamic content in a `float()` (or `int()` for whole numbers) expression in the **fx** editor, for example:
+   > **Site Address:** select **Enter custom value** and paste the URL of the SharePoint site hosting your list, then select the list from the **List Name** dropdown. 
+   >**Number conversion:** Because **Estimated cost** arrives as text but **EstimatedCost** is a **Number** column, wrap the dynamic content in a `float()` (or `int()` for whole numbers) expression in the **fx** editor, for example:
    >
    > ```
    > float(outputs('Get_response_details')?['body/<Estimated cost field id>'])
@@ -333,7 +332,7 @@ Do this in **both** branches so every request is logged.
    >
    > The easiest way to build this: type `float(` in the expression editor, switch to the **Dynamic content** tab, select **Estimated cost**, then add the closing `)`. Without the conversion the value may fail to save or be stored incorrectly.
 
-3. In the **If no** branch, add another **Create item - SharePoint** with the same mapping, but set **Decision** to `Rejected`.
+3. In the **False** branch, add another **Create item - SharePoint** with the same mapping, but set **Decision** to `Rejected`.
 
 ### Step 8: Email the requester the outcome
 
