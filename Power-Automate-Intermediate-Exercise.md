@@ -125,7 +125,7 @@ By completing this lab, you will gain hands-on experience with the following Pow
 
 1. Sign in to [https://make.powerautomate.com](https://make.powerautomate.com).
 
-2. Confirm the correct environment is selected in the top-right environment picker.
+2. Confirm the correct environment is selected in the top-right environment picker and that you are in the New design experience.
 
 3. In the left navigation, select **Create**.
 
@@ -438,8 +438,6 @@ Stretch, refill coffee, and reset. When you return, we move from event-driven fl
 
 1. Add an action: search **Create item** and select **Create item - SharePoint**.
 
-   > Power Automate automatically wraps this action in an **Apply to each** because you're inserting per-row dynamic content. That's expected.
-
 2. Configure:
 
    | Parameter | Value |
@@ -448,8 +446,20 @@ Stretch, refill coffee, and reset. When you return, we move from event-driven fl
    | **List Name** | Product Catalog |
    | **Title** | Insert **ProductName** |
    | **Category** | Insert **Category** |
-   | **UnitPrice** | Insert **UnitPrice** |
-   | **InStock** | Insert **InStock** |
+   | **UnitPrice** | Convert to a number (see note below) |
+   | **InStock** | Convert to a number (see note below) |
+
+   > **Number conversion:** **UnitPrice** and **InStock** are **Number** columns, but the Excel connector returns cell values as text, so the plain dynamic content can't be dropped into a number field. In each field, open the **fx** editor and wrap the value in a conversion function — `float()` for the decimal price and `int()` for the whole-number stock:
+   >
+   > ```
+   > float(items('Apply_to_each')?['UnitPrice'])
+   > ```
+   >
+   > ```
+   > int(items('Apply_to_each')?['InStock'])
+   > ```
+   >
+   > Power Automate automatically wraps this action in a **For each** because you're inserting per-row dynamic content. That's expected.
 
 3. Rename the action **Create product item**.
 
