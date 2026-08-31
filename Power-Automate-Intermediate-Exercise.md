@@ -615,10 +615,10 @@ For a more polished notification:
 >    - **File**: insert the trigger's **Id** dynamic content
 >    - **Link type**: `View` (or `Edit`)
 >    - **Link scope**: `Organization` (or `Anonymous`, if your tenant allows it)
-> 2. This action outputs a **webUrl**. Use it in the **Post message** action's **Message** field with Markdown link syntax so the file name becomes a hyperlink:
+> 2. This action outputs a **Web Url**. Use it in the **Post message** action's **Message** field with Markdown link syntax so the file name becomes a hyperlink:
 >
 >    ```
->    New file added: [Name](webUrl)
+>    New file added: [Name](Web Url)
 >    ```
 >
 >    i.e. insert the **Name** dynamic content as the link text and the **webUrl** (from Create share link) as the target.
@@ -626,15 +626,43 @@ For a more polished notification:
 >
 >    ```json
 >    {
->        "type": "ActionSet",
->        "actions": [
+>         "type": "AdaptiveCard",
+>         "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+>         "version": "1.4",
+>         "body": [
 >            {
->                "type": "Action.OpenUrl",
->                "title": "Open file",
->                "url": "@{outputs('Create_share_link')?['body/link/webUrl']}"
+>                  "type": "TextBlock",
+>                  "size": "Medium",
+>                  "weight": "Bolder",
+>                  "text": "New file uploaded to OneDrive",
+>                  "wrap": true
+>            },
+>            {
+>                  "type": "FactSet",
+>                  "facts": [
+>                     {
+>                        "title": "File name",
+>                        "value": "@{triggerOutputs()?['body/Name']}"
+>                     },
+>                     {
+>                        "title": "Location",
+>                        "value": "@{triggerOutputs()?['body/Path']}"
+>                     },
+>                     {
+>                        "title": "Detected (UTC)",
+>                        "value": "@{formatDateTime(utcNow(),'yyyy-MM-dd HH:mm')}"
+>                     }
+>                  ]
 >            }
->        ]
->    }
+>         ],
+>         "actions": [
+>            {
+>                  "type": "Action.OpenUrl",
+>                  "title": "Open file",
+>                  "url": "@{outputs('Create_share_link')?['body/WebUrl']}"
+>            }
+>         ]
+>   }
 >    ```
 >
 > **Create share link** respects your tenant's sharing policies — if `Anonymous` is blocked, use `Organization` and ensure recipients have access. Avoid hand-building a URL from the path, as it breaks with special characters and tenant differences.
