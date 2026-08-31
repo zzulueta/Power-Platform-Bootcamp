@@ -179,7 +179,7 @@ By completing this lab, you will gain hands-on experience with the following Pow
    | **Folder Path** | Select the folder icon and choose **/Email Attachments** |
    | **File Name** | Attachment name (see note below) |
    | **File Content** | Attachment content (see note below) |
-   
+
    > - **File Name** — switch the field to the expression editor (the **fx** tab) and enter:
    >   ```
    >   items('Apply_to_each')?['name']
@@ -199,13 +199,15 @@ By completing this lab, you will gain hands-on experience with the following Pow
 
 2. Select **Test** → **Manually** → **Test**.
 
-3. From another mailbox (or the same account), send yourself an email **with a file attached** to the mailbox the flow monitors.
+3. From another mailbox (or the same account), send yourself an email **with files attached** to the mailbox the flow monitors. Ensure that the subject contains the word "Invoice" so it passes the filter.
 
 4. Return to Power Automate. Within a minute the run should appear. Select the run to inspect each step's inputs and outputs.
 
 5. Open OneDrive and confirm the attachment now appears in the **Email Attachments** folder.
 
-> **Troubleshooting:** If the flow runs but creates no file, open the run and expand **Apply to each** to confirm attachments were returned. If the file name collides with an existing file, OneDrive appends a number; consider prefixing the name with a timestamp using an expression like `concat(formatDateTime(utcNow(),'yyyyMMdd-HHmmss'),'-',items('Apply_to_each')?['Name'])`.
+6. Send yourself an email with a different subject (not containing "Invoice") and confirm the flow does not run.
+
+> **Troubleshooting:** If the flow runs but creates no file, open the run and expand **Apply to each** to confirm attachments were returned. If the file name collides with an existing file, OneDrive overwrites the existing file; consider prefixing the name with a timestamp using an expression like `concat(formatDateTime(utcNow(),'yyyyMMdd-HHmmss'),'-',items('Apply_to_each')?['Name'])`.
 
 > *References: [Office 365 Outlook connector](https://learn.microsoft.com/connectors/office365/) · [OneDrive for Business connector](https://learn.microsoft.com/connectors/onedriveforbusiness/)*
 
