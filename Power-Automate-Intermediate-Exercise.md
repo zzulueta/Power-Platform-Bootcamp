@@ -252,7 +252,7 @@ By completing this lab, you will gain hands-on experience with the following Pow
    | Column name | Type |
    | --- | --- |
    | Title (default) | Single line of text – reuse for **Item requested** |
-   | EstimatedCost | Number |
+   | EstimatedCost | Single line of text |
    | Justification | Multiple lines of text |
    | Requester | Single line of text |
    | Decision | Choice (Approved, Rejected) |
@@ -317,21 +317,13 @@ Do this in **both** branches so every request is logged.
    | **Site Address** | Select the site hosting **Purchase Requests** (see note below) |
    | **List Name** | Purchase Requests |
    | **Title** | Insert **Item requested** |
-   | **EstimatedCost** | Convert the text response to a number (see note below) |
+   | **EstimatedCost** | Insert **Estimated cost** |
    | **Justification** | Insert **Business justification** |
    | **Requester** | Insert **Responders' Email** (from Get response details) |
    | **Decision** | `Approved` |
    | **DecisionComments** | First approver's comments (see note below) |
 
    > **Site Address:** select **Enter custom value** and paste the URL of the SharePoint site hosting your list, then select the list from the **List Name** dropdown. 
-   >
-   >**Number conversion:** Because **Estimated cost** arrives as text but **EstimatedCost** is a **Number** column, insert the expression in the **fx** editor:
-   >
-   > ```
-   > float(outputs('Get_response_details')?['body/<Estimated cost field id>'])
-   > ```
-   >
-   > Without the conversion the value may fail to save or be stored incorrectly.
    >
    > **DecisionComments:** Use the **fx** editor:
    >
