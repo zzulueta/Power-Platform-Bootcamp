@@ -452,11 +452,11 @@ Stretch, refill coffee, and reset. When you return, we move from event-driven fl
    > **Number conversion:** **UnitPrice** and **InStock** are **Number** columns, but the Excel connector returns cell values as text, so the plain dynamic content can't be dropped into a number field. In each field, open the **fx** editor and wrap the value in a conversion function — `float()` for the decimal price and `int()` for the whole-number stock:
    >
    > ```
-   > float(items('Apply_to_each')?['UnitPrice'])
+   > float(items('For_each')?['UnitPrice'])
    > ```
    >
    > ```
-   > int(items('Apply_to_each')?['InStock'])
+   > int(items('For_each')?['InStock'])
    > ```
    >
    > Power Automate automatically wraps this action in a **For each** because you're inserting per-row dynamic content. That's expected.
