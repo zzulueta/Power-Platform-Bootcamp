@@ -321,7 +321,7 @@ Do this in **both** branches so every request is logged.
    | **Justification** | Insert **Business justification** |
    | **Requester** | Insert **Responders' Email** (from Get response details) |
    | **Decision** | `Approved` |
-   | **DecisionComments** | Insert the approval **Responses Comments** |
+   | **DecisionComments** | First approver's comments (see note below) |
 
    > **Site Address:** select **Enter custom value** and paste the URL of the SharePoint site hosting your list, then select the list from the **List Name** dropdown. 
    >
@@ -332,6 +332,14 @@ Do this in **both** branches so every request is logged.
    > ```
    >
    > Without the conversion the value may fail to save or be stored incorrectly.
+   >
+   > **DecisionComments** field, use the **fx** editor:
+   >
+   > ```
+   > first(outputs('Approval_-_Purchase_request')?['body/responses'])?['comments']
+   > ```
+   >
+   > Replace `Approval_-_Purchase_request` with your approval action's actual name if you renamed it differently (spaces become underscores).
 
 3. In the **False** branch, add another **Create item - SharePoint** with the same mapping, but set **Decision** to `Rejected`.
 
