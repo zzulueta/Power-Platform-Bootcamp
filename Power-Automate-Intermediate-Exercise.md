@@ -375,21 +375,24 @@ Stretch, refill coffee, and reset. When you return, we move from event-driven fl
 
 > **Pattern learned:** Manual trigger → read a data set → loop → bulk-create items. Ideal for one-off migrations and periodic data loads.
 
-### Step 1: Prepare the Excel workbook
+### Step 1: Upload the provided Excel workbook
 
-1. Create a new Excel workbook and save it to **OneDrive for Business** or a SharePoint document library (the file must be in the cloud, not local, for the connector to read it).
+1. Download the provided **Products.xlsx** workbook from the lab materials.
 
-2. Add these column headers in row 1: **ProductName**, **Category**, **UnitPrice**, **InStock**.
+2. Upload it to **OneDrive for Business** (or a SharePoint document library). The file must live in the cloud — the Excel Online (Business) connector cannot read files stored only on your local machine.
 
-3. Enter 5–10 rows of sample data.
+3. Open the file and confirm the data is already formatted as a named table called **Products** with the following columns:
 
-4. Select the data range including headers, then on the **Insert** ribbon choose **Table**. Confirm **My table has headers**.
+   | Column | Purpose |
+   | --- | --- |
+   | **ProductID** | Unique key for each row (used later to update the row) |
+   | **ProductName** | Product name |
+   | **Category** | Product category |
+   | **UnitPrice** | Price per unit |
+   | **InStock** | Units in stock |
+   | **Uploaded** | Tracks whether the row has already been added to the list. Every row starts as **No** |
 
-5. With the table selected, on the **Table Design** ribbon set the **Table Name** to **Products**.
-
-   > **Why a named table?** The Excel Online (Business) connector reads **tables**, not raw sheets. Naming the table makes it selectable in the flow and guarantees a stable structure.
-
-6. Save and close the workbook.
+   > **Why the Uploaded column?** It lets the flow process only new rows and mark each one **Yes** after it's added, so re-running the flow never creates duplicates. This is the *idempotent* pattern used for reliable data loads.
 
 ### Step 2: Create the destination Microsoft List
 
@@ -423,6 +426,14 @@ Stretch, refill coffee, and reset. When you return, we move from event-driven fl
    | **File** | Browse to your workbook |
    | **Table** | Products |
 
+3. Expand **Advanced parameters** and set **Filter Query** to:
+
+   ```
+   Uploaded eq 'No'
+   ```
+
+   > This returns only the rows that haven't been uploaded yet, so the flow skips any row already marked **Yes** — the key to making re-runs safe.
+
 ### Step 5: Create a list item per row
 
 1. Add an action: search **Create item** and select **Create item - SharePoint**.
@@ -442,11 +453,35 @@ Stretch, refill coffee, and reset. When you return, we move from event-driven fl
 
 3. Rename the action **Create product item**.
 
-### Step 6: Run and verify
+### Step 6: Mark the row as uploaded
+
+1. Inside the same **Apply to each**, directly after **Create item**, add an action: search **Update a row** and select **Update a row - Excel Online (Business)**.
+
+2. Point it at the same workbook and table, then set the key and flag:
+
+   | Parameter | Value |
+   | --- | --- |
+   | **Location** | Same as Step 4 |
+   | **Document Library** | Same as Step 4 |
+   | **File** | Same as Step 4 (Products.xlsx) |
+   | **Table** | Products |
+   | **Key Column** | ProductID |
+   | **Key Value** | Insert **ProductID** (current row) |
+   | **Uploaded** | Yes |
+
+   > Marking the flag *inside* the loop, immediately after the item is created, makes the flow **idempotent**: if it runs again, the already-processed rows are filtered out in Step 4 and never duplicated.
+
+3. Rename the action **Mark row as uploaded**.
+
+### Step 7: Run and verify
 
 1. Select **Save**, then **Test** → **Manually** → **Test** → **Run flow**.
 
 2. When the flow finishes, open the **Product Catalog** list and confirm one item exists per Excel row.
+
+3. Open the **Products.xlsx** workbook and confirm every processed row's **Uploaded** column is now **Yes**.
+
+4. Run the flow a second time. Because all rows are already marked **Yes**, the **Filter Query** returns nothing and no duplicate items are created — proving the flow is safe to re-run.
 
 > **Performance note:** For large tables, this loop can be slow and may hit throttling. In production you would increase (carefully) or leave default the **Apply to each** concurrency, filter rows with the connector's **Filter Query**, or consider a data-flow/import approach. For this lab's small data set, defaults are fine.
 
