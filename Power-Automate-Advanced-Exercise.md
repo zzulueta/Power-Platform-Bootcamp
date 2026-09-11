@@ -11,7 +11,7 @@ These exercises accompany the Power Automate Advanced training session. Each lab
 
 This set of exercises covers the following labs:
 
-- **Lab A**: RPA — Global Weather Report using Power Automate Desktop *(this lab)*
+- **Lab A**: RPA — Global Weather Report using Power Automate Desktop
 - **Lab B**: Extract Invoice Data with AI Builder Document Processing
 - **Lab C**: AI Builder Prompts — Summarise and Classify Text in a Flow
 - **Lab D**: Resilient Flows — Try/Catch/Finally Error Handling
@@ -27,8 +27,6 @@ This set of exercises covers the following labs:
 - **Edge or Chrome browser** installed (PAD web recorder supports both)
 - Signed in to Power Automate Desktop with your work account
 - Internet access to reach [weather.com](https://weather.com)
-
----
 
 ---
 
@@ -679,7 +677,6 @@ End
 - [Configure exception handling in Power Automate desktop](https://learn.microsoft.com/power-automate/desktop-flows/exception-handling)
 - [Automate repetitive tasks using loops](https://learn.microsoft.com/training/modules/pad-loops/)
 
----
 
 ---
 
