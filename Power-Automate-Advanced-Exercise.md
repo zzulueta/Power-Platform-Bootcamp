@@ -827,7 +827,7 @@ By completing this lab, you will gain hands-on experience with the following ski
 1. Still inside **Apply to each**, below the AI Builder action, add a **Condition** control.
 
 2. Configure the condition:
-   - Set value to **Or**
+   - Set value to **And**
    - Left value: open the **lightning** icon and insert the **Confidence of vendor name** dynamic content from **Process invoices**.
    - Operator: **is greater than or equal to**
    - Right value: `0.8`
@@ -859,7 +859,7 @@ By completing this lab, you will gain hands-on experience with the following ski
    | --- | --- |
    | **To** | Your accounts-payable reviewer (use your own address for testing) |
    | **Subject** | `Low-confidence invoice needs review` |
-   | **Body** | Insert the formula below to display all field |
+   | **Body** | Insert the formula below to display the fields |
 
    ```
    Vendor: @{outputs('Process_invoices')?['body/responsev2/predictionOutput/result/fields/vendorName/valueText']}
@@ -882,11 +882,11 @@ By completing this lab, you will gain hands-on experience with the following ski
 
 3. Send yourself an email whose **subject contains "Invoice"** with an invoice **PDF or image attached**.
 
-4. Return to Power Automate. Within a minute the run appears — select it and expand **Extract invoice fields** to inspect the extracted values and confidence scores.
+4. Return to Power Automate. Within a minute the run appears — select it and expand **Process invoices** to inspect the extracted values and confidence scores.
 
-5. Open the **Invoice Register** list and confirm a new item was created with the vendor, invoice ID, date, total, and confidence.
+5. Open the **Invoice Register** list and confirm a new item was created with the vendor, invoice ID, date, and total.
 
-6. Test the review path: send an invoice that is blurry or partially cropped, and confirm the item is created with **ReviewNeeded = Yes** and the review email is sent.
+6. Test the review path: send an invoice that is incorrect or incomplete, and confirm the item is created with **ReviewNeeded = Yes** and the review email is sent.
 
 > **Troubleshooting:** If the AI action fails with an authorization error, confirm AI Builder is enabled and credits are available in the environment. If fields come back empty, the document may be low-quality or in an unsupported layout — try a clearer invoice. If **Create item** fails, verify the list column internal names match the fields you mapped.
 
