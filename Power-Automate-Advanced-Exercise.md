@@ -1035,7 +1035,7 @@ By completing this lab, you will gain hands-on experience with the following ski
    Praise | "Your support team resolved my issue quickly and provided excellent service."
    Other | "I would like to learn more about upcoming training and certification opportunities."
 
-10. Select **Save**, then **Publish** the prompt so it is available as an action in flows.
+10. Select **Save** to save your prompt. Exit the prompt editor.
 
    > **Why force JSON?** Generative models return free text by default. Instructing the model to emit a fixed JSON shape makes the output *parseable*, so downstream **Parse JSON** and **Condition** actions work every time.
 
@@ -1051,11 +1051,7 @@ By completing this lab, you will gain hands-on experience with the following ski
 
 4. Add an action: search **Get response details** and select **Get response details - Microsoft Forms**. Set **Form Id** to **Customer Feedback** and **Response Id** to the trigger's **Response Id** dynamic content.
 
-5. Add an action: search for your published prompt. It appears as **Run a prompt** (or **Feedback Triage**) under the **AI Builder** connector. Select it.
-
-6. In the prompt action's **FeedbackText** input, insert the **Your feedback** dynamic content from **Get response details**.
-
-   > If prompted, allow the flow to use AI Builder in this environment.
+5. Add an action: search **Run a prompt** and select **Run a prompt - AI Builder**. Set **Prompt** to **Feedback Triage**. Set FeedbackText to the **Your feedback** dynamic content from **Get response details**.
 
 ---
 
