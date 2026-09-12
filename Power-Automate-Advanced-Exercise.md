@@ -689,7 +689,7 @@ In this lab you will build an **automated cloud flow** in the Power Automate web
 This lab will guide you through the following tasks:
 
 - Create an automated cloud flow triggered by incoming Outlook emails that have attachments
-- Loop over each attachment and pass it to the AI Builder **Extract information from invoices** action
+- Loop over each attachment and pass it to the AI Builder **Process invoices** action
 - Branch on the model's **confidence score** to separate high-confidence results from those needing review
 - Log every extracted invoice as an item in a Microsoft List, flagging low-confidence extractions for follow-up
 - Test the flow end to end with a real invoice attachment
@@ -722,9 +722,9 @@ Trigger
 
 Flow
 ├── Control: Apply to each (Attachments)
-│   ├── AI Builder: Extract information from invoices
+│   ├── AI Builder: Process invoices
 │   │   └── Input: Attachment content (contentBytes)
-│   ├── Control: Condition — Invoice total confidence ≥ 0.80?
+│   ├── Control: Condition — Confidence ≥ 0.80?
 │   │   ├── True  → Create item (Review = No)
 │   │   └── False → Create item (Review = Yes)  + Send review email
 │   └── (fields: Vendor, Invoice ID, Dates, Total, Confidence)
@@ -740,7 +740,7 @@ By completing this lab, you will gain hands-on experience with the following ski
 |---|---|---|
 | Task 1 | Create the **Invoice Register** Microsoft List | 5 min |
 | Task 2 | Build the automated flow and configure the email trigger | 5 min |
-| Task 3 | Add the AI Builder **Extract information from invoices** action | 8 min |
+| Task 3 | Add the AI Builder **Process invoices** action | 8 min |
 | Task 4 | Branch on the confidence score and write to the list | 8 min |
 | Task 5 | Save, test, and verify the extraction | 4 min |
 
@@ -760,7 +760,6 @@ By completing this lab, you will gain hands-on experience with the following ski
    | InvoiceID | Single line of text |
    | InvoiceDate | Date and time (Include Time = No) |
    | InvoiceTotal | Number |
-   | Confidence | Number |
    | ReviewNeeded | Choice (Yes, No) |
    | SourceEmail | Single line of text |
 
@@ -821,12 +820,6 @@ By completing this lab, you will gain hands-on experience with the following ski
    >
    > Replace `Apply_to_each` with your loop's actual name if you renamed it (spaces become underscores). The V3 trigger exposes each attachment's binary content as `contentBytes`.
 
-6. Rename the action **Process invoice** for clarity.
-
-   > **What comes back?** The action returns dynamic content for each detected field as a **value** and a matching **confidence** (0–1), including *Vendor name*, *Invoice ID*, *Invoice date*, *Due date*, *Invoice total*, *Subtotal*, and *Total tax*. You will use *Invoice total* and its confidence to decide whether the record needs review.
-   >
-   > **Note:** The dynamic content will now be under **Process invoice** instead of **Extract invoice fields**.
-
 ---
 
 ## Task 4: Branch on Confidence and Write to the List
@@ -834,9 +827,14 @@ By completing this lab, you will gain hands-on experience with the following ski
 1. Still inside **Apply to each**, below the AI Builder action, add a **Condition** control.
 
 2. Configure the condition:
-   - Left value: open the **fx** editor and insert the **Invoice total confidence** dynamic content from **Extract invoice fields**.
+   - Set value to **Or**
+   - Left value: open the **fx** editor and insert the **Confidence of vendor name** dynamic content from **Process invoices**.
    - Operator: **is greater than or equal to**
    - Right value: `0.8`
+   - Add row and do the same steps above for the following:
+      - **Confidence of invoice ID** 
+      - **Confidence of invoice date**
+      - **Confidence of invoice total**
 
    > A confidence of **0.8 (80%)** is a reasonable starting threshold. Tune it to your tolerance: raise it to catch more borderline reads, lower it to send fewer items to review.
 
@@ -848,13 +846,10 @@ By completing this lab, you will gain hands-on experience with the following ski
    | **List Name** | Invoice Register |
    | **Title** | Insert **Vendor name** (value) |
    | **InvoiceID** | Insert **Invoice ID** (value) |
-   | **InvoiceDate** | Insert **Invoice date** (value) |
-   | **InvoiceTotal** | Convert to a number (see note below) |
-   | **Confidence** | Insert **Invoice total confidence** |
+   | **InvoiceDate** | Insert **Invoice date (date)** (value) |
+   | **InvoiceTotal** | Insert **Invoice total (number)** (value) |
    | **ReviewNeeded** | `No` |
    | **SourceEmail** | Insert the trigger's **From** |
-
-   > **Number conversion:** AI Builder returns amounts as text, so the Number column needs a conversion. In the **InvoiceTotal** field, open the **fx** editor, insert the **Invoice total** dynamic content, and wrap it in `float( … )` — for example `float(<Invoice total token>)`. Prefer the **dynamic content token** over a hand-typed output path, because the token stays correct even if the underlying JSON path changes between model versions.
 
 4. In the **False** branch, add another **Create item - SharePoint** with the same mapping, but set **ReviewNeeded** to `Yes`.
 
@@ -889,8 +884,6 @@ By completing this lab, you will gain hands-on experience with the following ski
 > *References: [AI Builder prebuilt invoice processing model](https://learn.microsoft.com/ai-builder/prebuilt-invoice-processing) · [Use the invoice processing model in Power Automate](https://learn.microsoft.com/ai-builder/invoice-processing-in-flow)*
 
 > **Congratulations!** You built an intelligent document-processing flow that reads invoices, records structured data, and escalates only what a human needs to check.
-
----
 
 ---
 
