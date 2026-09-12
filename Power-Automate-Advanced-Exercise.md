@@ -859,7 +859,12 @@ By completing this lab, you will gain hands-on experience with the following ski
    | --- | --- |
    | **To** | Your accounts-payable reviewer (use your own address for testing) |
    | **Subject** | `Low-confidence invoice needs review` |
-   | **Body** | Include the vendor, invoice ID, total, and confidence dynamic content |
+   | **Body** | ''' Vendor: @{outputs('Process_invoices')?['body/responsev2/predictionOutput/result/fields/vendorName/valueText']}
+Confidence of Vendor Name: @{outputs('Process_invoices')?['body/responsev2/predictionOutput/result/fields/vendorName/confidence']}
+Invoice ID: @{outputs('Process_invoices')?['body/responsev2/predictionOutput/result/fields/invoiceId/valueText']}
+Confidence of Invoice ID: @{outputs('Process_invoices')?['body/responsev2/predictionOutput/result/fields/invoiceId/confidence']}
+Total: @{outputs('Process_invoices')?['body/responsev2/predictionOutput/result/fields/invoiceTotal/valueNumber']}
+Confidence Invoice amount: @{outputs('Process_invoices')?['body/responsev2/predictionOutput/result/fields/invoiceTotal/confidence']}'''|
 
    > **Why branch on confidence?** Straight-through processing is only safe when the model is sure. Routing low-confidence reads to a human keeps the automation trustworthy without blocking the reliable majority.
 
