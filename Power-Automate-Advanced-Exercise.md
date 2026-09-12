@@ -1099,7 +1099,7 @@ By completing this lab, you will gain hands-on experience with the following ski
    | --- | --- |
    | **To** | Your IT team distribution address (use your own for testing) |
    | **Subject** | `New Technical Support feedback` |
-   | **Body** | Enter the **summary** from the Parse JSON action and **Your feedback** from Get response detailsdynamic content |
+   | **Body** | Enter the **summary** from the Parse JSON action and **Your feedback** from Get response details dynamic content |
 
    > Leave the **False** branch empty — non-technical feedback is simply recorded in the list.
 
@@ -1122,8 +1122,6 @@ By completing this lab, you will gain hands-on experience with the following ski
 > *References: [AI Builder prompts overview](https://learn.microsoft.com/ai-builder/prompts-overview) · [Use prompts in Power Automate](https://learn.microsoft.com/ai-builder/use-a-custom-prompt-in-flow)*
 
 > **Congratulations!** You infused generative AI into a business process — summarising and classifying free text, then routing it automatically.
-
----
 
 ---
 
