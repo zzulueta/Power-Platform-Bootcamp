@@ -1022,11 +1022,20 @@ By completing this lab, you will gain hands-on experience with the following ski
 
 6. In the model response, select Output: **JSON**.
 
-7. Click the FeedbackText input and paste a sample comment (for example *"The app crashes every time I upload a file — please fix this urgently."*).
+7. Click the FeedbackText input and paste a sample comment in the Sample data field (for example *"The app crashes every time I upload a file — please fix this urgently."*).
 
 8. Select **Test** to confirm the model returns valid JSON with a sensible category.
 
-9. Select **Save**, then **Publish** the prompt so it is available as an action in flows.
+9. Test the other categories to ensure the model correctly classifies different types of feedback.
+   Category | Sample Comment
+   --- | ---
+   Technical Support | "The application freezes whenever I try to upload a file larger than 10 MB."
+   Billing | "I need clarification on a charge that appeared on my latest invoice."
+   Product Feedback | "A dark mode option would make the application more comfortable to use during long work sessions."
+   Praise | "Your support team resolved my issue quickly and provided excellent service."
+   Other | "I would like to learn more about upcoming training and certification opportunities."
+
+10. Select **Save**, then **Publish** the prompt so it is available as an action in flows.
 
    > **Why force JSON?** Generative models return free text by default. Instructing the model to emit a fixed JSON shape makes the output *parseable*, so downstream **Parse JSON** and **Condition** actions work every time.
 
