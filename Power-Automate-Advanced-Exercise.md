@@ -1061,7 +1061,7 @@ By completing this lab, you will gain hands-on experience with the following ski
 
    | Parameter | Value |
    | --- | --- |
-   | **Content** | Insert the prompt action's text output (e.g. **Response**/**Text**) |
+   | **Content** | Insert the prompt action's text output (**Text**) |
    | **Schema** | Paste the schema below |
 
    ```json
@@ -1080,12 +1080,13 @@ By completing this lab, you will gain hands-on experience with the following ski
 
    | Parameter | Value |
    | --- | --- |
-   | **Site Address** | The site hosting **Customer Feedback** |
+   | **Site Address** | Enter custom value then paste the URL of the site hosting **Customer Feedback** |
    | **List Name** | Customer Feedback |
    | **Title** | Insert **summary** (from Parse JSON) |
-   | **Category** | Insert **category** (from Parse JSON) |
+   | **Category** | Enter custom value then insert **category** (from Parse JSON) |
    | **OriginalFeedback** | Insert **Your feedback** (from Get response details) |
-   | **SubmittedBy** | Insert **Your email** (from Get response details) |
+   | **SubmittedBy** | Insert **Your name** (from Get response details) |
+   | **SubmittedEmail** | Insert **Your email** (from Get response details) |
 
 3. Add a **Condition** control below **Create item**:
    - Left value: insert **category** (from Parse JSON)
@@ -1098,7 +1099,7 @@ By completing this lab, you will gain hands-on experience with the following ski
    | --- | --- |
    | **To** | Your IT team distribution address (use your own for testing) |
    | **Subject** | `New Technical Support feedback` |
-   | **Body** | Include the **summary** and **Your feedback** dynamic content |
+   | **Body** | Enter the **summary** from the Parse JSON action and **Your feedback** from Get response detailsdynamic content |
 
    > Leave the **False** branch empty — non-technical feedback is simply recorded in the list.
 
