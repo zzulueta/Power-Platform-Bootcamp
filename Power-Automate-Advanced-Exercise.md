@@ -748,9 +748,9 @@ By completing this lab, you will gain hands-on experience with the following ski
 
 ## Task 1: Create the Invoice Register Microsoft List
 
-1. Go to your SharePoint site (or [Microsoft Lists](https://www.microsoft.com/microsoft-365/microsoft-lists)) and select **Create new** → **Blank list**.
+1. Go to [Microsoft Lists](https://www.microsoft.com/microsoft-365/microsoft-lists) and select **Create new** → **Create from blank** → **List**.
 
-2. Name it **Invoice Register**.
+2. Name it **Invoice Register**. Select **Create**.
 
 3. Add the following columns:
 
@@ -758,7 +758,7 @@ By completing this lab, you will gain hands-on experience with the following ski
    | --- | --- |
    | Title (default) | Single line of text – reuse for **Vendor name** |
    | InvoiceID | Single line of text |
-   | InvoiceDate | Date and time (Date only) |
+   | InvoiceDate | Date and time (Include Time = No) |
    | InvoiceTotal | Number |
    | Confidence | Number |
    | ReviewNeeded | Choice (Yes, No) |
@@ -803,7 +803,7 @@ By completing this lab, you will gain hands-on experience with the following ski
 
    > The trigger returns a *collection* of attachments; `Apply to each` runs the inner actions once per attachment.
 
-4. Inside the loop, select **Add an action**. Search **Extract information from invoices** and select **Extract information from invoices - AI Builder**.
+4. Inside the loop, select **Add an action**. Search **Process invoices** and select **Process invoices - AI Builder**.
 
    > If prompted, allow the flow to use AI Builder in this environment. This action uses the **prebuilt invoice processing model** — no training required.
 
@@ -821,9 +821,11 @@ By completing this lab, you will gain hands-on experience with the following ski
    >
    > Replace `Apply_to_each` with your loop's actual name if you renamed it (spaces become underscores). The V3 trigger exposes each attachment's binary content as `contentBytes`.
 
-6. Rename the action **Extract invoice fields** for clarity.
+6. Rename the action **Process invoice** for clarity.
 
    > **What comes back?** The action returns dynamic content for each detected field as a **value** and a matching **confidence** (0–1), including *Vendor name*, *Invoice ID*, *Invoice date*, *Due date*, *Invoice total*, *Subtotal*, and *Total tax*. You will use *Invoice total* and its confidence to decide whether the record needs review.
+   >
+   > **Note:** The dynamic content will now be under **Process invoice** instead of **Extract invoice fields**.
 
 ---
 
