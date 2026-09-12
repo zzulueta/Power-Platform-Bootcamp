@@ -727,7 +727,7 @@ Flow
 │   ├── Control: Condition — Confidence ≥ 0.80?
 │   │   ├── True  → Create item (Review = No)
 │   │   └── False → Create item (Review = Yes)  + Send review email
-│   └── (fields: Vendor, Invoice ID, Dates, Total, Confidence)
+│   └── (fields: Vendor, Invoice ID, Dates, Total)
 │
 └── Output: Microsoft List "Invoice Register"
 ```
@@ -880,7 +880,7 @@ By completing this lab, you will gain hands-on experience with the following ski
 
 2. Select **Test** → **Manually** → **Test**.
 
-3. Send yourself an email whose **subject contains "Invoice"** with an invoice **PDF or image attached**.
+3. Send yourself an email whose **subject contains "Invoice"** with an invoice **PDF or image attached**. Sample invoices can be downloaded from the Power-Automate-Advanced-Ref folder.
 
 4. Return to Power Automate. Within a minute the run appears — select it and expand **Process invoices** to inspect the extracted values and confidence scores.
 
@@ -970,7 +970,7 @@ By completing this lab, you will gain hands-on experience with the following ski
 
 1. Go to [https://forms.office.com](https://forms.office.com) and select **New Form**.
 
-2. Title it **Customer Feedback**.
+2. Exit from the Draft with Copilot. Title the form **Customer Feedback**.
 
 3. Add the following questions:
 
@@ -992,16 +992,17 @@ By completing this lab, you will gain hands-on experience with the following ski
    | Category | Choice (Technical Support, Billing, Product Feedback, Praise, Other) |
    | OriginalFeedback | Multiple lines of text |
    | SubmittedBy | Single line of text |
+   | SubmittedEmail | Single line of text |
 
 ---
 
 ## Task 2: Build a Custom AI Builder Prompt
 
-1. In [Power Automate](https://make.powerautomate.com), in the left navigation select **AI hub** (or **AI Builder → Prompts**), then select **Create a prompt** (a **Custom prompt**).
+1. In [Power Automate](https://make.powerautomate.com), in the left navigation select **More → Prompts**, then select **Build your own prompt**.
 
 2. Name the prompt **Feedback Triage**.
 
-3. In the prompt editor, write instructions that ask for a summary and a category, and **require JSON output** so the flow can parse it reliably. Paste the following as the prompt text:
+3. In the prompt editor, write instructions that ask for a summary and a category. Paste the following as the prompt text:
 
    ```
    You are a support triage assistant. Read the customer feedback provided and respond
@@ -1015,12 +1016,17 @@ By completing this lab, you will gain hands-on experience with the following ski
    Customer feedback:
    ```
 
-4. Add an **input** to the prompt so the flow can pass the feedback text at run time:
-   - Select **Add content** → **Text**, name the input **FeedbackText**, and place its token at the end of the prompt (right after `Customer feedback:`).
+4. Select **Add content** → **Text**, name the input **FeedbackText**, and place its token at the end of the prompt (right after `Customer feedback:`).
 
-5. Select **Test** and paste a sample comment (for example *"The app crashes every time I upload a file — please fix this urgently."*) to confirm the model returns valid JSON with a sensible category.
+5. Set the model to **GPT-5 chat**.
 
-6. Select **Save**, then **Publish** the prompt so it is available as an action in flows.
+6. In the model response, select Output: **JSON**.
+
+7. Click the FeedbackText input and paste a sample comment (for example *"The app crashes every time I upload a file — please fix this urgently."*).
+
+8. Select **Test** to confirm the model returns valid JSON with a sensible category.
+
+9. Select **Save**, then **Publish** the prompt so it is available as an action in flows.
 
    > **Why force JSON?** Generative models return free text by default. Instructing the model to emit a fixed JSON shape makes the output *parseable*, so downstream **Parse JSON** and **Condition** actions work every time.
 
