@@ -828,7 +828,7 @@ By completing this lab, you will gain hands-on experience with the following ski
 
 2. Configure the condition:
    - Set value to **Or**
-   - Left value: open the **fx** editor and insert the **Confidence of vendor name** dynamic content from **Process invoices**.
+   - Left value: open the **lightning** icon and insert the **Confidence of vendor name** dynamic content from **Process invoices**.
    - Operator: **is greater than or equal to**
    - Right value: `0.8`
    - Add row and do the same steps above for the following:
