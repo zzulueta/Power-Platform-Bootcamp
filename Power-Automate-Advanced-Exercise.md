@@ -1270,12 +1270,18 @@ All actions in this task go **inside** the **Catch** scope.
 
    | Parameter | Value |
    | --- | --- |
-   | **From** | Switch to the **fx** editor and enter `result('Try')` |
-   | **Filter condition (left)** | Switch to the **fx** editor and enter `item()?['status']` |
-   | **Operator** | is equal to |
-   | **Filter condition (right)** | `Failed` |
+   | **From** | Switch to the **fx** editor and enter `union(result('Try'), result('Apply_to_each'))` |
+   | **Filter Query** | Switch the Filter array to **advanced mode** (**Edit in advanced mode**) and paste the expression below |
 
-   > **`result('Try')`** returns an array describing the outcome of every action inside the **Try** scope. Filtering it to `status = Failed` isolates the action(s) that actually broke.
+   The **Filter Query** (advanced mode):
+
+   ```
+   @and(equals(item()?['status'], 'Failed'), not(equals(item()?['error']?['message'], 'An action failed. No dependent actions succeeded.')))
+   ```
+
+   > **Why `union(result('Try'), result('Apply_to_each'))`?** `result()` returns only the **first-level** actions of the named scope — *not* deeper nested actions. `result('Try')` therefore returns just the **Apply to each** loop wrapper, whose error is a generic *"An action failed. No dependent actions succeeded."* The real failure (e.g. an action inside the loop) is a first-level action of **Apply to each**, so you must also call `result('Apply_to_each')` and `union()` the two arrays. Use your loop's real name (spaces become underscores).
+
+   > **Why the second filter condition?** The union now contains *both* the generic loop wrapper **and** the real failing action. The `not(equals(... , 'An action failed. No dependent actions succeeded.'))` clause drops the generic wrapper, so `first(...)` in the next step returns the action that actually broke.
 
 2. Add a **Compose** action and rename it **Error details**. In its input, use the **fx** editor:
 
@@ -1283,12 +1289,13 @@ All actions in this task go **inside** the **Catch** scope.
    concat('Action: ', coalesce(first(body('Filter_failed_actions'))?['name'], 'Unknown'),
    ' | Error: ', coalesce(
        first(body('Filter_failed_actions'))?['error']?['message'],
+       first(first(body('Filter_failed_actions'))?['outputs'])?['error']?['message'],
        first(body('Filter_failed_actions'))?['outputs']?['body']?['error']?['message'],
        first(body('Filter_failed_actions'))?['code'],
        'No message'))
    ```
 
-   > **Why `coalesce()`?** The exact location of an error message inside a `result()` item varies by connector — some expose `error/message`, others nest it under `outputs/body/error/message`, and some only return a `code`. `coalesce()` returns the first non-null value, so you capture *something* useful whatever the failure.
+   > **Why `coalesce()`?** The exact location of an error message inside a `result()` item varies by connector and by depth. A top-level action exposes `error/message`; an action **inside a loop** nests it under `outputs[0]/error/message` (the second line drills into the first repetition); some connectors put it under `outputs/body/error/message`, and others only return a `code`. `coalesce()` returns the first non-null value, so you capture the *most specific* message available — for example a divide-by-zero returns *"Attempt to divide an integral or decimal value by zero in function 'div'."* instead of the generic loop error.
 
 3. Add a **Set variable** action:
 
