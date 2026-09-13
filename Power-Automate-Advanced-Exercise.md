@@ -1297,7 +1297,7 @@ All actions in this task go **inside** the **Catch** scope.
    | **Name** | `HasError` |
    | **Value** | `true` |
 
-4. Add **Create item - SharePoint** to log the failure:
+4. Add **Create item - SharePoint** to log the failure and rename it **Log Error**:
 
    | Parameter | Value |
    | --- | --- |
@@ -1322,7 +1322,7 @@ All actions in this task go **inside** the **Catch** scope.
 
    > **Tip:** With **RunLink** stored on every row, anyone triaging the **Flow Error Log** list can jump straight from a logged failure to the exact run in history — no need to open the alert email.
 
-5. Add **Send an email (V2) - Office 365 Outlook** to alert the team:
+5. Add **Send an email (V2) - Office 365 Outlook** to alert the team and rename it **Email Error**:
 
    | Parameter | Value |
    | --- | --- |
