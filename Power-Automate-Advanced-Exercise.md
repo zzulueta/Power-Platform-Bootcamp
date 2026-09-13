@@ -1304,8 +1304,8 @@ All actions in this task go **inside** the **Catch** scope.
    | **Site Address** | Select Enter custom value then enter the URL of the site hosting **Flow Error Log** |
    | **List Name** | Flow Error Log |
    | **Title** | Use the **fx** editor: `workflow()?['tags']?['flowDisplayName']` (or type the flow name) |
-   | **FailedAction** | `first(body('Filter_failed_actions'))?['name']` |
-   | **ErrorMessage** | Insert the **Error details** output (from Compose) |
+   | **FailedAction** | Use the **fx** editor: `first(body('Filter_failed_actions'))?['name']` |
+   | **ErrorMessage** | Insert the **Error details** Output (from Compose) |
    | **RunId** | Use the **fx** editor: `workflow()?['run']?['name']` |
    | **RunLink** | Use the **fx** editor and insert the expression below |
    | **Timestamp** | Use the **fx** editor: `utcNow()` |
@@ -1328,21 +1328,13 @@ All actions in this task go **inside** the **Catch** scope.
    | --- | --- |
    | **To** | Your support/ops address (use your own for testing) |
    | **Subject** | `Invoice flow failed — action needed` |
-   | **Body** | Insert the **Error details** output, the **RunId**, and a **direct link to the failed run** (see below) so the team can open it in one click |
-
-   To build a clickable link that opens the *exact* run that failed, switch the relevant part of the **Body** to the **fx** editor and enter:
-
-   ```
-   concat('https://make.powerautomate.com/environments/',
-       workflow()?['tags']?['environmentName'],
-       '/flows/', workflow()?['name'],
-       '/runs/', workflow()?['run']?['name'])
-   ```
-
-   For a nicer email, switch the **Body** to the **</> (code view)** and wrap it as a hyperlink:
+   | **Body** | Switch the **Body** to **</> (code view)** and paste the HTML below so the email shows the error details, the RunId, and a clickable link to the exact run |
 
    ```html
-   <a href="@{concat('https://make.powerautomate.com/environments/', workflow()?['tags']?['environmentName'], '/flows/', workflow()?['name'], '/runs/', workflow()?['run']?['name'])}">Open the failed run</a>
+   <p>The <strong>Invoice Extraction (resilient)</strong> flow failed and was caught by the error handler.</p>
+   <p><strong>Details:</strong> @{outputs('Error_details')}</p>
+   <p><strong>Run ID:</strong> @{workflow()?['run']?['name']}</p>
+   <p><a href="@{concat('https://make.powerautomate.com/environments/', workflow()?['tags']?['environmentName'], '/flows/', workflow()?['name'], '/runs/', workflow()?['run']?['name'])}">Open the failed run</a></p>
    ```
 
    > **How the link is built:** `workflow()` exposes everything needed to address a single run — `tags/environmentName` (which environment), `name` (the flow's ID), and `run/name` (this specific run's ID). Concatenated into the maker-portal URL, the recipient lands directly on the run that failed instead of hunting through run history. (This is the same link you stored in the **RunLink** column on the **Flow Error Log** list in the previous step.)
