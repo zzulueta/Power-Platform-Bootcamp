@@ -1217,6 +1217,7 @@ By completing this lab, you will gain hands-on experience with the following ski
    | FailedAction | Single line of text |
    | ErrorMessage | Multiple lines of text |
    | RunId | Single line of text |
+   | RunLink | Hyperlink |
    | Timestamp | Date and time |
    | Status | Choice (Caught, Resolved) |
 
@@ -1310,8 +1311,20 @@ All actions in this task go **inside** the **Catch** scope.
    | **FailedAction** | `first(body('Filter_failed_actions'))?['name']` |
    | **ErrorMessage** | Insert the **Error details** output (from Compose) |
    | **RunId** | Use the **fx** editor: `workflow()?['run']?['name']` |
+   | **RunLink** | Use the **fx** editor with the run-link expression below (in the **Hyperlink** field, set this as the address; use `Open the failed run` as the display text) |
    | **Timestamp** | Use the **fx** editor: `utcNow()` |
    | **Status** | `Caught` |
+
+   The **RunLink** address expression (same one used in the email):
+
+   ```
+   concat('https://make.powerautomate.com/environments/',
+       workflow()?['tags']?['environmentName'],
+       '/flows/', workflow()?['name'],
+       '/runs/', workflow()?['run']?['name'])
+   ```
+
+   > **Tip:** With **RunLink** stored on every row, anyone triaging the **Flow Error Log** list can jump straight from a logged failure to the exact run in history — no need to open the alert email.
 
 5. Add **Send an email (V2) - Office 365 Outlook** to alert the team:
 
@@ -1336,7 +1349,7 @@ All actions in this task go **inside** the **Catch** scope.
    <a href="@{concat('https://make.powerautomate.com/environments/', workflow()?['tags']?['environmentName'], '/flows/', workflow()?['name'], '/runs/', workflow()?['run']?['name'])}">Open the failed run</a>
    ```
 
-   > **How the link is built:** `workflow()` exposes everything needed to address a single run — `tags/environmentName` (which environment), `name` (the flow's ID), and `run/name` (this specific run's ID). Concatenated into the maker-portal URL, the recipient lands directly on the run that failed instead of hunting through run history. (Consider storing the same link in a **RunLink** column on the **Flow Error Log** list too.)
+   > **How the link is built:** `workflow()` exposes everything needed to address a single run — `tags/environmentName` (which environment), `name` (the flow's ID), and `run/name` (this specific run's ID). Concatenated into the maker-portal URL, the recipient lands directly on the run that failed instead of hunting through run history. (This is the same link you stored in the **RunLink** column on the **Flow Error Log** list in the previous step.)
 
    > **Why log *and* email?** The list gives a durable, filterable record; the email gives an immediate nudge. Together they ensure no failure goes unnoticed.
 
