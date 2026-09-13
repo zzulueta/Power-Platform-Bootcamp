@@ -1347,7 +1347,7 @@ All actions in this task go **inside** the **Catch** scope.
 
 1. **After** the **Catch** scope, add a third **Scope** control and rename it **Finally**.
 
-2. On the **Finally** scope, select **… (menu)** → **Configure run after**, and select **all four** statuses (**is successful**, **has failed**, **is skipped**, **has timed out**) so Finally **always runs**.
+2. On the **Finally** scope, select **Settings**, expand the Catch scope, and select **all four** statuses (**Is successful**, **Has failed**, **Is skipped**, **Has timed out**) so Finally **always runs**.
 
 3. Inside **Finally**, add a **Compose** action named **Run complete** with any cleanup or completion marker (for example the text `Flow finished — see Flow Error Log if HasError is true`).
 
