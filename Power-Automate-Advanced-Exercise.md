@@ -1147,7 +1147,7 @@ This lab will guide you through the following tasks:
 
 - Completion of **Lab B** is recommended — this lab hardens that invoice flow. (You can also apply the pattern to any existing flow of your own.)
 - Standard connectors only: **SharePoint** and **Office 365 Outlook**.
-- Permission to create a SharePoint list.
+- Permission to create a Microsoft list.
 
 ## Lab Scenario
 
@@ -1205,9 +1205,9 @@ By completing this lab, you will gain hands-on experience with the following ski
 
 ## Task 1: Create the Flow Error Log List
 
-1. Go to your SharePoint site (or [Microsoft Lists](https://www.microsoft.com/microsoft-365/microsoft-lists)) and select **Create new** → **Blank list**.
+1. Go to [Microsoft Lists](https://www.microsoft.com/microsoft-365/microsoft-lists) and select **Create new** → **Create from blank** → **List**.
 
-2. Name it **Flow Error Log**.
+2. Name it **Flow Error Log** then select **Create**.
 
 3. Add the following columns:
 
@@ -1319,7 +1319,24 @@ All actions in this task go **inside** the **Catch** scope.
    | --- | --- |
    | **To** | Your support/ops address (use your own for testing) |
    | **Subject** | `Invoice flow failed — action needed` |
-   | **Body** | Insert the **Error details** output and the **RunId** so the team can open the run |
+   | **Body** | Insert the **Error details** output, the **RunId**, and a **direct link to the failed run** (see below) so the team can open it in one click |
+
+   To build a clickable link that opens the *exact* run that failed, switch the relevant part of the **Body** to the **fx** editor and enter:
+
+   ```
+   concat('https://make.powerautomate.com/environments/',
+       workflow()?['tags']?['environmentName'],
+       '/flows/', workflow()?['name'],
+       '/runs/', workflow()?['run']?['name'])
+   ```
+
+   For a nicer email, switch the **Body** to the **</> (code view)** and wrap it as a hyperlink:
+
+   ```html
+   <a href="@{concat('https://make.powerautomate.com/environments/', workflow()?['tags']?['environmentName'], '/flows/', workflow()?['name'], '/runs/', workflow()?['run']?['name'])}">Open the failed run</a>
+   ```
+
+   > **How the link is built:** `workflow()` exposes everything needed to address a single run — `tags/environmentName` (which environment), `name` (the flow's ID), and `run/name` (this specific run's ID). Concatenated into the maker-portal URL, the recipient lands directly on the run that failed instead of hunting through run history. (Consider storing the same link in a **RunLink** column on the **Flow Error Log** list too.)
 
    > **Why log *and* email?** The list gives a durable, filterable record; the email gives an immediate nudge. Together they ensure no failure goes unnoticed.
 
