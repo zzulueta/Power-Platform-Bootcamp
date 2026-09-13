@@ -1383,10 +1383,9 @@ All actions in this task go **inside** the **Catch** scope.
 1. First confirm the **happy path** still works: send a valid invoice email (subject contains "Invoice") and verify the flow completes and creates the list item as in Lab B.
 
 2. Now **force a failure** to exercise the Catch path. Pick one:
-   - Temporarily change the **Create item** action's **List Name** to a list that doesn't exist, **or**
-   - Temporarily set the AI action's **Invoice file** to an invalid expression.
+   - Inside the Apply to each, add a Compose action with an invalid expression (for example, `div(1,0)`) to force a failure.
 
-3. **Save**, then send another invoice email (or **Test → Manually**).
+3. **Save**, then send another invoice email.
 
 4. Verify the resilience behaviour:
    - The run appears in history marked **Failed** (from **Terminate**).
@@ -1394,7 +1393,7 @@ All actions in this task go **inside** the **Catch** scope.
    - The alert email arrives.
    - The **Finally** scope's **Run complete** action ran regardless.
 
-5. **Undo** the deliberate break (restore the correct List Name / expression) and **Save**.
+5. **Undo** the deliberate break and **Save**.
 
 > **Troubleshooting:** If **Catch** never runs, re-check its **Configure run after** (it must be set on the **Catch scope itself**, not an action inside it). If `result('Try')` errors, confirm the scope is named exactly `Try` (expressions use underscores for spaces, e.g. `result('Try')`). If the run shows **Succeeded** despite a failure, verify the final **Condition → Terminate** is *outside* the Finally scope.
 
