@@ -1370,11 +1370,11 @@ All actions in this task go **inside** the **Catch** scope.
    | --- | --- |
    | **Status** | Failed |
    | **Code** | `InvoiceFlowError` |
-   | **Message** | Insert the **Error details** output |
+   | **Message** | Insert the **Error details** Output |
 
    > **Why Terminate?** Because **Catch** handled the error, the run would otherwise be marked **Succeeded** — hiding the failure. **Terminate** with **Status = Failed** makes the run show as failed in run history (and triggers Power Automate's failure notifications), while your Catch block has already logged and alerted. Leave the **False** branch empty.
 
-6. Select **Save**.
+6. Select **Save** and **Turn on** the flow. If you renamed the flow, make sure you **Turn off** the old version.
 
 ---
 
