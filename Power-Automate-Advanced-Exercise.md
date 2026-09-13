@@ -1349,9 +1349,22 @@ All actions in this task go **inside** the **Catch** scope.
 
 2. On the **Finally** scope, select **Settings**, expand the Catch scope, and select **all four** statuses (**Is successful**, **Has failed**, **Is skipped**, **Has timed out**) so Finally **always runs**.
 
-3. Inside **Finally**, add a **Compose** action named **Run complete** with any cleanup or completion marker (for example the text `Flow finished — see Flow Error Log if HasError is true`).
+3. Inside **Finally**, add a **Compose** action and rename it **Run complete**. This action marks that the flow reached the end regardless of outcome.
 
-   > **Finally always runs** — whether the work succeeded or the Catch handled a failure. Use it for cleanup that must happen every time (releasing locks, closing records, final logging).
+   - In the Compose action's **Inputs** field (the single box labelled **Inputs**), type a completion marker. The **Inputs** box must **not** be left empty — an empty Compose shows *"'Inputs' is required"* / **Invalid parameters** and blocks saving.
+   - For a plain marker, simply type:
+
+     ```
+     Flow finished — see Flow Error Log if HasError is true
+     ```
+
+   - *(Optional)* For a more useful marker that records the outcome, switch **Inputs** to the **fx** editor and enter:
+
+     ```
+     concat('Flow finished at ', utcNow(), ' — HasError = ', variables('HasError'))
+     ```
+
+   > **Finally always runs** — whether the work succeeded or the Catch handled a failure. Use it for cleanup that must happen every time (releasing locks, closing records, final logging). Because a `Compose` requires an **Inputs** value, always put *something* in the box — even a static line — so the action is valid.
 
 4. **After** the **Finally** scope, add a **Condition** control:
    - Left value: insert the **HasError** variable
