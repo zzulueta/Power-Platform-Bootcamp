@@ -1391,6 +1391,7 @@ All actions in this task go **inside** the **Catch** scope.
 
 2. Now **force a failure** to exercise the Catch path. Pick one:
    - Inside the Apply to each, add a Compose action with an invalid expression (for example, `div(1,0)`) to force a failure.
+   - Send an invoice with no Vendor in the email. Sample invoice can be found in the Power-Automate-Advanced-Ref folder. 
 
 3. **Save**, then send another invoice email.
 
