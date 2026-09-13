@@ -1351,14 +1351,7 @@ All actions in this task go **inside** the **Catch** scope.
 
 3. Inside **Finally**, add a **Compose** action and rename it **Run complete**. This action marks that the flow reached the end regardless of outcome.
 
-   - In the Compose action's **Inputs** field (the single box labelled **Inputs**), type a completion marker. The **Inputs** box must **not** be left empty — an empty Compose shows *"'Inputs' is required"* / **Invalid parameters** and blocks saving.
-   - For a plain marker, simply type:
-
-     ```
-     Flow finished — see Flow Error Log if HasError is true
-     ```
-
-   - *(Optional)* For a more useful marker that records the outcome, switch **Inputs** to the **fx** editor and enter:
+   - Switch **Inputs** to the **fx** editor and enter:
 
      ```
      concat('Flow finished at ', utcNow(), ' — HasError = ', variables('HasError'))
