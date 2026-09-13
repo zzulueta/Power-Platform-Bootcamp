@@ -1227,7 +1227,7 @@ By completing this lab, you will gain hands-on experience with the following ski
 
 ## Task 2: Add an Error Flag and Wrap the Work in a Try Scope
 
-1. Open the **Invoice Extraction to List** flow you built in Lab B (open it and select **Edit**). If you prefer to keep Lab B intact, use **Save As** to make a copy named **Invoice Extraction (resilient)** and edit that.
+1. In Power Automate go to My flows and select the  **Invoice Extraction to List** flow you built in Lab B. Select the ellipsis (**…**) and then **Save As**. Name the new flow **Invoice Extraction (resilient)** and select **Save**. Open the new flow and select **Edit**.
 
 2. Directly **after the trigger** and before any other action, add **Initialize variable**:
 
@@ -1241,11 +1241,9 @@ By completing this lab, you will gain hands-on experience with the following ski
 
 3. Below the variable, add a **Scope** control (search **Scope**) and rename it **Try**.
 
-4. Move the existing working actions (the **Apply to each** loop with **Extract invoice fields**, the **Condition**, and the **Create item** actions) **inside** the **Try** scope. In the designer, drag each action into the Try scope, or cut and paste them.
+4. Move the existing working actions (the **Apply to each** loop with **Process Invoices**, the **Condition**, and the **Create item** actions) **inside** the **Try** scope. In the designer, drag the Apply to each action into the Try scope, or cut and paste them.
 
    > **What is a Scope?** A `Scope` groups a set of actions so they can be treated as one unit — it succeeds only if every action inside it succeeds, which is exactly what makes Try/Catch possible.
-
-5. *(Optional, recommended)* Select the **Extract invoice fields** action → **… (menu)** → **Settings**, and set a **Retry Policy** (for example, **Exponential**, count 4). This automatically retries transient faults *before* the Try scope is considered failed.
 
 ---
 
