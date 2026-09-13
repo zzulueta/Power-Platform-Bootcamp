@@ -1241,7 +1241,7 @@ By completing this lab, you will gain hands-on experience with the following ski
 
 3. Below the variable, add a **Scope** control (search **Scope**) and rename it **Try**.
 
-4. Move the existing working actions (the **Apply to each** loop with **Process Invoices**, the **Condition**, and the **Create item** actions) **inside** the **Try** scope. In the designer, drag the Apply to each action into the Try scope, or cut and paste them.
+4. Move the existing working actions (the **Apply to each** loop with **Process invoices**, the **Condition**, and the **Create item** actions) **inside** the **Try** scope. In the designer, drag the Apply to each action into the Try scope, or cut and paste them.
 
    > **What is a Scope?** A `Scope` groups a set of actions so they can be treated as one unit — it succeeds only if every action inside it succeeds, which is exactly what makes Try/Catch possible.
 
@@ -1251,14 +1251,12 @@ By completing this lab, you will gain hands-on experience with the following ski
 
 1. **After** the **Try** scope (not inside it), add another **Scope** control and rename it **Catch**.
 
-2. On the **Catch** scope, select **… (menu)** → **Configure run after**.
+2. On the **Catch** scope, select **Settings** and expand the Try scope section.
 
-3. Clear **is successful**, and select all three of:
-   - **has failed**
-   - **is skipped**
-   - **has timed out**
-
-   Select **Done**.
+3. Uncheck **is successful**, and select all three of:
+   - **Has failed**
+   - **Is skipped**
+   - **Has timed out**
 
    > **Configure run after** is the heart of the pattern: by default an action runs only when the previous one *is successful*. Flipping it so **Catch** runs after the Try scope **has failed / timed out / is skipped** means Catch executes *only* when something went wrong.
 
