@@ -1253,7 +1253,7 @@ By completing this lab, you will gain hands-on experience with the following ski
 
 2. On the **Catch** scope, select **Settings** and expand the Try scope section.
 
-3. Uncheck **is successful**, and select all three of:
+3. Uncheck **Is successful**, and select all three of:
    - **Has failed**
    - **Is skipped**
    - **Has timed out**
@@ -1301,17 +1301,17 @@ All actions in this task go **inside** the **Catch** scope.
 
    | Parameter | Value |
    | --- | --- |
-   | **Site Address** | The site hosting **Flow Error Log** |
+   | **Site Address** | Select Enter custom value then enter the URL of the site hosting **Flow Error Log** |
    | **List Name** | Flow Error Log |
    | **Title** | Use the **fx** editor: `workflow()?['tags']?['flowDisplayName']` (or type the flow name) |
    | **FailedAction** | `first(body('Filter_failed_actions'))?['name']` |
    | **ErrorMessage** | Insert the **Error details** output (from Compose) |
    | **RunId** | Use the **fx** editor: `workflow()?['run']?['name']` |
-   | **RunLink** | Use the **fx** editor with the run-link expression below (in the **Hyperlink** field, set this as the address; use `Open the failed run` as the display text) |
+   | **RunLink** | Use the **fx** editor and insert the expression below |
    | **Timestamp** | Use the **fx** editor: `utcNow()` |
    | **Status** | `Caught` |
 
-   The **RunLink** address expression (same one used in the email):
+   The **RunLink** expression:
 
    ```
    concat('https://make.powerautomate.com/environments/',
