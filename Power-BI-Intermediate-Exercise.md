@@ -1367,7 +1367,7 @@ In this task, you will apply a report theme for consistent styling and use condi
 
 1. Navigate to the **Sales Analysis** page.
 
-2. Select the table visual.
+2. Select the Company Revenue table visual.
 
 3. In the **Visualizations** pane, select the **Format your visual** tab (paint roller icon).
 
@@ -1391,29 +1391,25 @@ In this task, you will apply a report theme for consistent styling and use condi
 
 4. Select **OK**.
 
-### Add Conditional Formatting — Icons to Product Table
+### Add Conditional Formatting — Icons
 
-1. Navigate to the **Product Performance** page.
+1. Still in the **Cell elements** section of the same table, set Series to **YoY Growth %**.
 
-2. Select the **Product Sales Performance** table visual.
+2. Toggle **Icons** to **On**.
 
-3. In **Format** → **Cell elements**, under the **Total Revenue** field, toggle **Icons** to **On**.
+3. Set **Icon layout** to **Right of data**.
 
-4. Select **fx** to configure rules:
+4. Select the **fx** button to configure:
+   - **Format style**: Rules
+   - **Rule 1:** If value >= -100 Number and < 0 Number then Icon: Gray downward-slanting arrow
+   - **Rule 2:** If value >= 0 Number and < 0.25 Number then Icon: Gray side arrow
+   - **Rule 3:** If value >= 0.25 Number and < 1000 Number then Icon: Green upward-slanting arrow
 
-   | Rule | Condition | Icon |
-   |---|---|---|
-   | Rule 1 | Value < 5000 | Red circle |
-   | Rule 2 | Value >= 5000 and < 20000 | Yellow triangle |
-   | Rule 3 | Value >= 20000 | Green circle |
-
-5. Set **Icon layout** to **Left of data**.
-
-6. Select **OK**.
+5. Select **OK**.
 
    > Icons give users an at-a-glance status indicator, reducing cognitive load when scanning long product lists.
 
-7. Press **Ctrl + S** to save.
+6. Press **Ctrl + S** to save.
 
 > **Congratulations!** Your reports now have a consistent theme and tables enriched with conditional formatting that communicate performance levels visually.
 
