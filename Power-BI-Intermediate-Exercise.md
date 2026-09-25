@@ -1279,16 +1279,37 @@ In this task, you will create a proper Date table and use it to build time intel
        0
    )
    ```
+   - On the **Measure tools** ribbon, set **Format** to **Percentage**.
+   - Set the decimal places to **2**.
 
    > *Reference: [Time intelligence functions (DAX)](https://learn.microsoft.com/dax/time-intelligence-functions-dax)*
 
 ### Add a Year-over-Year Comparison Chart
 
-1. Navigate to the **Sales Overview** page.
+1. Add a new report page by selecting the **+** icon at the bottom of the Power BI Desktop window.
 
-2. Add a **Line and clustered column chart** visual below the existing trend chart.
+2. Right-click the new page tab, select **Rename**, type **Sales Analysis**, and press **Enter**.
 
-3. Configure the visual:
+3. Add a **Slicer** visual and drag **Year** from the Date table to the Field well. Leave **1997** selected for the initial view.
+
+4. Add three **Card** visuals across the top of the page:
+   - **Revenue YTD** measure
+   - **Revenue Last Year** measure
+   - **YoY Growth %** measure
+
+   Format the cards consistently and add titles matching their measures. The `YoY Growth %` card should display a percentage value, such as `196.56%`.
+
+5. Add a **Table** visual below the cards. Configure it with:
+   - **CompanyName** from the Customers table
+   - **Revenue YTD** measure
+   - **Revenue Last Year** measure
+   - **YoY Growth %** measure
+
+   Sort the table by **Revenue YTD** descending.
+
+6. Add a **Line and clustered column chart** visual to the right of the table.
+
+7. Configure the visual:
 
    | Well | Field |
    |---|---|
@@ -1296,15 +1317,14 @@ In this task, you will create a proper Date table and use it to build time intel
    | Column y-axis | **Total Revenue** measure |
    | Line y-axis | **Revenue Last Year** measure |
 
-4. Add a title: **Revenue: Current vs Prior Year**
+8. Add a title: **Revenue: Current vs Prior Year**
    - In the Format pane, go to the General tab → **Title** → set Text to `Revenue: Current vs Prior Year`
 
-5. Add a fourth KPI card showing **YoY Growth %**:
-   - Add a **Card** visual and drag the **YoY Growth %** measure to it
-   - In the Format pane → **Callout** → **Value**, set **Display units** to **Auto** and **Value decimal places** to **1**
-   - Add title: **YoY Growth**
+9. For the **YoY Growth %** card, in the Format pane → **Callout** → **Value**, set **Display units** to **Auto** and **Value decimal places** to **2**. Confirm that the percentage format from the measure is preserved.
 
-6. Press **Ctrl + S** to save.
+10. Arrange the page so the year slicer is on the left, the customer table is in the centre, and the comparison chart is on the right, matching the lab screenshot.
+
+11. Press **Ctrl + S** to save.
 
 > **Congratulations!** Your Sales Overview page now includes time intelligence KPIs backed by a proper Date table — the foundation of accurate date-based analysis in Power BI.
 
