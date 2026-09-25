@@ -1252,7 +1252,7 @@ In this task, you will create a proper Date table and use it to build time intel
    | Cross filter direction | Single |
    | Active | ✓ Yes |
 
-4. Select **OK**.
+4. Select **Save**.
 
 ### Create Time Intelligence Measures
 
