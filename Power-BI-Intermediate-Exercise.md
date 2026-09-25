@@ -292,6 +292,10 @@ The Power Query Editor opens with your two queries listed on the left.
 
 6. Select the ShipCountry column, then go to the **Transform** tab and select **Format** → **UPPERCASE** to convert all text to uppercase.
 
+7. Select the ShippedDate column, then go to the **Transform** tab and select **Data Type** → **Date** to ensure the column is recognized as a date.
+
+8. Select the OrderDate column, then go to the **Transform** tab and select **Data Type** → **Date** to ensure the column is recognized as a date.
+
 ### Clean and Prepare Order Details Data
 
 1. In the **Queries** pane, select the **Order_Details** query.
