@@ -1525,7 +1525,7 @@ In this lab, you've learned the fundamentals of Power BI by completing a compreh
 
 ✅ **Task 7**: Created a Date table, marked it as a date table, and built time intelligence measures (YTD, year-over-year)
 
-✅ **Task 8**: Applied a report theme and used conditional formatting (data bars, colour scales, icons) to improve data readability
+✅ **Task 8**: Applied a report theme and used conditional formatting (data bars, color rules, icons) to improve data readability
 
 ✅ **Task 9**: Added a page navigation bar, created bookmarks, and wired buttons to create an interactive view toggle
 
@@ -1545,26 +1545,7 @@ In this lab, you've learned the fundamentals of Power BI by completing a compreh
 - **Date tables**: Dedicated calendar tables marked for time intelligence
 - **Time intelligence**: YTD, year-over-year, and period comparison using DAX
 - **Report themes**: Consistent styling applied across all visuals
-- **Conditional formatting**: Data bars, colour scales, and icons in tables
+- **Conditional formatting**: Data bars, color rules, and icons in tables
 - **Bookmarks**: Saved report states wired to buttons for interactive navigation
-
-### Next Steps
-
-Now that you've completed the basics, consider exploring these advanced topics:
-
-- **Advanced DAX**: Create more sophisticated calculations with time intelligence, ranking, and statistical functions
-- **Custom visuals**: Download additional visualizations from the AppSource marketplace
-- **Q&A**: Ask natural language questions about your data
-- **Power BI Mobile**: Access your reports and dashboards on mobile devices
-- **Dataflows**: Create reusable data preparation logic in the Power BI Service
-- **Paginated reports**: Create pixel-perfect reports for printing and PDF export
-- **Row-level security**: Restrict data access based on user roles
-
-### Additional Resources
-
-- [Microsoft Power BI Documentation](https://learn.microsoft.com/power-bi/)
-- [Power BI Community Forums](https://community.powerbi.com/)
-- [Power BI Guided Learning](https://learn.microsoft.com/training/powerplatform/power-bi)
-- [DAX Reference Guide](https://dax.guide/)
 
 **Thank you for completing this lab!** You now have practical experience with Power BI and are ready to create your own reports and dashboards using real-world data.
