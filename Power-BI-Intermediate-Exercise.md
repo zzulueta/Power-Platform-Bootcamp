@@ -1371,7 +1371,7 @@ In this task, you will apply a report theme for consistent styling and use condi
 
 3. In the **Visualizations** pane, select the **Format your visual** tab (paint roller icon).
 
-4. Expand **Cell elements**.
+4. Expand **Visual** → **Cell elements**.
 
 5. Set Series to **Revenue YTD** then toggle **Data bars** to **On**.
 
@@ -1397,19 +1397,18 @@ In this task, you will apply a report theme for consistent styling and use condi
 
 2. Toggle **Icons** to **On**.
 
-3. Set **Icon layout** to **Right of data**.
-
-4. Select the **fx** button to configure:
+3. Select the **fx** button to configure:
    - **Format style**: Rules
+   - **Icon layout**: **Right of data**
    - **Rule 1:** If value >= -100 Number and < 0 Number then Icon: Gray downward-slanting arrow
    - **Rule 2:** If value >= 0 Number and < 0.25 Number then Icon: Gray side arrow
    - **Rule 3:** If value >= 0.25 Number and < 1000 Number then Icon: Green upward-slanting arrow
 
-5. Select **OK**.
+4. Select **OK**.
 
    > Icons give users an at-a-glance status indicator, reducing cognitive load when scanning long product lists.
 
-6. Press **Ctrl + S** to save.
+5. Press **Ctrl + S** to save.
 
 > **Congratulations!** Your reports now have a consistent theme and tables enriched with conditional formatting that communicate performance levels visually.
 
