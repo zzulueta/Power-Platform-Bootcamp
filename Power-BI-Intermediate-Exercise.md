@@ -283,6 +283,7 @@ The Power Query Editor opens with your two queries listed on the left.
    - OrderID
    - CustomerID
    - OrderDate
+   - ShippedDate
    - Freight
    - ShipCity
    - ShipCountry
