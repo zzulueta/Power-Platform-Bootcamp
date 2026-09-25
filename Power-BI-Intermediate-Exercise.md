@@ -1284,7 +1284,7 @@ In this task, you will create a proper Date table and use it to build time intel
 
    > *Reference: [Time intelligence functions (DAX)](https://learn.microsoft.com/dax/time-intelligence-functions-dax)*
 
-### Add a Year-over-Year Comparison Chart
+### Add a Sales Analysis Page
 
 1. Add a new report page by selecting the **+** icon at the bottom of the Power BI Desktop window.
 
