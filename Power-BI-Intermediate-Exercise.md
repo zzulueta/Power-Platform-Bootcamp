@@ -763,9 +763,9 @@ Let's create a second page focused on customer insights.
 1. Add a **Table** visual from the Visualizations pane.
 
 2. Configure the table with these fields from the Customers table:
-   - companyName
-   - country
-   - city
+   - CompanyName
+   - Country
+   - City
 
 3. Add the **Total Revenue** measure to the table.
 
@@ -788,7 +788,7 @@ Let's create a second page focused on customer insights.
 1. Add a **Treemap** visual from the Visualizations pane.
 
 2. Configure:
-   - **Category**: Drag **country** from Customers table
+   - **Category**: Drag **Country** from Customers table
    - **Values**: Drag **Total Revenue** measure
 
 3. The treemap displays rectangles showing revenue by country, with larger rectangles representing higher revenue.
@@ -804,7 +804,7 @@ Let's create a second page focused on customer insights.
 
 1. Add a **Slicer** visual.
 
-2. Drag **country** from Customers table to the Field well.
+2. Drag **Country** from Customers table to the Field well.
 
 3. Format:
    - Go to Format pane → Visual → Slicer settings → Selection
@@ -816,6 +816,10 @@ Let's create a second page focused on customer insights.
    - In Format your visual pane, go to General tab
    - Turn **Title** to **On**
    - Change **Text** to "Filter by Country"
+
+6. Turn Background to **On**
+   - In Format your visual pane, go to General tab
+   - Turn **Background** to **On**
 
 #### Rename Page 2
 
@@ -834,8 +838,8 @@ Create a third page focusing on product-level insights.
 1. Add a **Table** visual.
 
 2. Configure with these fields:
-   - **productName** from Products table
-   - **categoryID** from Products table (shows product category)
+   - **ProductName** from Products table
+   - **CategoryID** from Products table (shows product category)
    - **Total Revenue** measure
    - **Quantity** from OrderDetails table (Power BI will sum it automatically)
 
@@ -856,13 +860,13 @@ Create a third page focusing on product-level insights.
 1. Add a **Clustered column chart** visual (vertical bars).
 
 2. Configure:
-   - **X-axis**: Drag **productName** from Products table
+   - **X-axis**: Drag **ProductName** from Products table
    - **Y-axis**: Drag **Total Revenue** measure
 
 3. Show only top products:
    - Select the visual
    - Go to **Filters** pane on the right
-   - Expand the **productName** filter
+   - Expand the **ProductName** filter
    - Change **Filter type** to **Top N**
    - Set **Show items** to **Top 10**
    - Set **By value** to **Total Revenue**
@@ -884,7 +888,7 @@ Create a third page focusing on product-level insights.
 
 1. Add a **Slicer** visual.
 
-2. Drag **categoryID** from Products table to the Field well.
+2. Drag **CategoryID** from Products table to the Field well.
 
 3. Format as a vertical list.
    - Go to Format pane → Visual → Slicer settings → Options
