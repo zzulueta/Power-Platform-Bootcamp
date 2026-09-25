@@ -603,7 +603,7 @@ Let's create the first page showing high-level sales KPIs and trends.
 
 2. You should see a blank report page labeled "Page 1" at the bottom.
 
-3. Let's create a card showing total revenue. Select the Card icon in the Visualizations pane.
+3. Let's create a card showing total revenue. In the Visualizations pane, select the ellipsis (...) and then select **Restore default visuals**. After that, select the Card icon in the Visualizations pane.
 
 4. A card visual appears on your canvas.
 
