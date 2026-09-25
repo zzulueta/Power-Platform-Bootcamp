@@ -1,13 +1,13 @@
 ---
-  title: 'Lab Power BI Basics: Reports and Dashboards'
-  module: 'Power BI Fundamentals Lab'
+  title: 'Lab Power BI Intermediate: Reports and Dashboards'
+  module: 'Power BI Intermediate Lab'
 ---
 
-# Lab Power BI Basics – Reports and Dashboards
+# Lab Power BI Intermediate – Reports and Dashboards
 
 ## Lab Introduction
 
-In this introductory lab, you will learn the fundamentals of Power BI by building a complete end-to-end analytics solution. You will work with Power BI Desktop to connect to data, create a data model, build interactive reports, and then publish your work to the Power BI Service where you'll create and share a dashboard.
+In this lab, you will learn the fundamentals of Power BI by building a complete end-to-end analytics solution. You will work with Power BI Desktop to connect to data, create a data model, build interactive reports, and then publish your work to the Power BI Service where you'll create and share a dashboard.
 
 This lab will guide you through the following tasks:
 
@@ -22,10 +22,10 @@ This lab will guide you through the following tasks:
 ## Pre-requisites
 
 - **Power BI Desktop installed**: Download and install the free Power BI Desktop application from [Microsoft's website](https://powerbi.microsoft.com/desktop)
-- **Power BI Pro license**: Both you (the creator) and anyone you share content with must have a Power BI Pro license
+- **Power BI Pro license (Optional)**: Both you (the creator) and anyone you share content with must have a Power BI Pro license
 - **Power BI Service account**: Sign up for a free account at [https://app.powerbi.com](https://app.powerbi.com)
 - **Workspace access**: Access to a workspace in the Power BI Service (you'll create or use "My Workspace" in this lab)
-- **Sample data access**: Download the CSV files (products.csv and customers.csv) from the sample-data folder
+- **Sample data access**: Download the CSV files (products.csv and customers.csv) from the Power-BI-Intermediate-Ref folder
 - **Internet connection**: Required for accessing the Northwind OData service
 
 ## Estimated Timing: 150 minutes
