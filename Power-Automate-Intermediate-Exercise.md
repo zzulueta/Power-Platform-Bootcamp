@@ -215,7 +215,7 @@ By completing this lab, you will gain hands-on experience with the following Pow
 
 ---
 
-## Segment 4: Lab B — Forms Submission → Approval + Microsoft List (30 minutes)
+## Lab B — Forms Submission → Approval + Microsoft List (30 minutes)
 
 **Goal:** When someone submits a Microsoft Form (for example a purchase or time-off request), route it to an approver. Record every decision—approved or rejected—as an item in a Microsoft List, and email the requester the outcome.
 
