@@ -1418,10 +1418,6 @@ In this task, you will apply a report theme for consistent styling and use condi
 
 In this task, you will add a navigation bar so users can move between report pages, and create bookmarks to toggle between two different customer views.
 
-> *Reference: [Create bookmarks in Power BI Desktop to share and navigate report views](https://learn.microsoft.com/power-bi/create-reports/desktop-bookmarks)*
->
-> *Reference: [Create a page navigation button in Power BI Desktop](https://learn.microsoft.com/power-bi/create-reports/desktop-buttons)*
-
 ### Add a Page Navigator
 
 1. Navigate to the **Sales Overview** page.
