@@ -1494,7 +1494,7 @@ In this task, you will add a navigation bar so users can move between report pag
 
 5. To test: hold **Ctrl** and click each button to switch between the two views.
 
-6. Press **Ctrl + S** to save.
+6. Go to the Sales Overview page. Press **Ctrl + S** to save.
 
 7. Publish your report to the Power BI Service if you haven't already and verify that the bookmarks and buttons work as expected online.
 
