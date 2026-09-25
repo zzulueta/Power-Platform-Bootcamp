@@ -323,7 +323,7 @@ The Power Query Editor opens with your two queries listed on the left.
 
 Now let's add the product catalog data from a CSV file.
 
-1. Download the **products.csv** file from the sample-data folder of this repository.
+1. Download the **products.csv** file.
 
 2. Head back to the Power BI Desktop. In Power Query Editor, select **Home** → **New Source** → **More**.
 
@@ -353,7 +353,7 @@ Now let's add the product catalog data from a CSV file.
 
 ### Connect to CSV File for Customers Data
 
-1. Download the **customers.csv** file from the sample-data folder of this repository.
+1. Download the **customers.csv** file.
 
 2. Head back to Power BI Desktop. In Power Query Editor, select **Home** → **New Source** → **Text/CSV**.
 
