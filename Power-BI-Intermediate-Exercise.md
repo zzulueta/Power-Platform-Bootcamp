@@ -62,7 +62,7 @@ Data Sources
 │   ├── Orders table (order header data)
 │   └── Order_Details table (order line item data)
 │
-└── CSV Files (sample-data folder)
+└── CSV Files (Power-BI-Intermediate-Ref folder)
     ├── products.csv (product catalog)
     └── customers.csv (customer information)
 
@@ -252,6 +252,7 @@ The Northwind OData service is a publicly available demo service that provides s
    - OrderID (unique identifier for each order)
    - CustomerID (links to customer)
    - OrderDate (when the order was placed)
+   - ShippedDate (when the order was shipped)
    - Freight (shipping cost)
    - ShipCountry, ShipCity (delivery location)
 
