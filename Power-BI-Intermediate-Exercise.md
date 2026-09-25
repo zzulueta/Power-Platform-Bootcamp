@@ -1290,14 +1290,17 @@ In this task, you will create a proper Date table and use it to build time intel
 
 2. Right-click the new page tab, select **Rename**, type **Sales Analysis**, and press **Enter**.
 
-3. Add a **Slicer** visual and drag **Year** from the Date table to the Field well. Leave **1997** selected for the initial view.
-
+3. Add a **Slicer** visual and drag **Year** from the Date table to the Field well.
+   - In the Format your visual pane, go to the Visual tab → **Slicer Settings** → **Options** and set Style to `Vertical list`
+   - Expand **Slicer Settings** → **Selection** and set Single select to `On`.
+   - Go to the General tab and turn the Title **On**  
+   - Expand **Title** and set Text to `Select Year`
+   - Expand **Effects** and set Background to **On**
+   
 4. Add three **Card** visuals across the top of the page:
    - **Revenue YTD** measure
    - **Revenue Last Year** measure
    - **YoY Growth %** measure
-
-   Format the cards consistently and add titles matching their measures. The `YoY Growth %` card should display a percentage value, such as `196.56%`.
 
 5. Add a **Table** visual below the cards. Configure it with:
    - **CompanyName** from the Customers table
@@ -1317,10 +1320,14 @@ In this task, you will create a proper Date table and use it to build time intel
    | Column y-axis | **Total Revenue** measure |
    | Line y-axis | **Revenue Last Year** measure |
 
-8. Add a title: **Revenue: Current vs Prior Year**
-   - In the Format pane, go to the General tab → **Title** → set Text to `Revenue: Current vs Prior Year`
+   Sort by **Year-Month** ascending.
 
-9. For the **YoY Growth %** card, in the Format pane → **Callout** → **Value**, set **Display units** to **Auto** and **Value decimal places** to **2**. Confirm that the percentage format from the measure is preserved.
+8. Add a title: **Revenue: Current vs Prior Year**
+   - In the Format your visual pane, go to the General tab → **Title** → set Text to `Revenue: Current vs Prior Year`
+   - Turn the Subtitle **On**
+   - Expand **Subtitle** and set Text to `Comparison of current year revenue versus prior year`
+
+9. For the **YoY Growth %** card, in the Format your visual pane → **Visual** → **Callout value**, set **Display units** to **Auto** and **Value decimal places** to **2**. Confirm that the percentage format from the measure is preserved.
 
 10. Arrange the page so the year slicer is on the left, the customer table is in the centre, and the comparison chart is on the right, matching the lab screenshot.
 
