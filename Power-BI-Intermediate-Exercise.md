@@ -1428,16 +1428,16 @@ In this task, you will add a navigation bar so users can move between report pag
    >
    > *Reference: [Create a page navigation button in Power BI Desktop](https://learn.microsoft.com/power-bi/create-reports/desktop-buttons#create-a-page-navigation-button)*
 
-3. A navigation bar appears on the canvas. Drag it to the top of the page and resize it to span the full width.
+3. A navigation bar appears on the canvas. Drag it to the top of the page and resize it to span the full width. Adjust the other visual elements on the page as needed to accommodate the navigation bar.
 
 4. In the **Format** pane, customise the button appearance:
-   - Go to **Visual** → **Buttons**
-   - Set **Shape** to **Rounded rectangle**
-   - Adjust **Fill** and **Font** colours to complement your theme
+   - Go to **Visual** → **Shape**
+   - Set **Shape** to **Rounded rectangle (%)**
+   - Set **Corner radius** to **25%**
 
 5. Copy the navigation bar (**Ctrl + C**), navigate to the **Customer Analysis** page, and paste (**Ctrl + V**). Position it identically.
 
-6. Repeat for the **Product Performance** page.
+6. Repeat for the **Product Performance** and **Sales Analysis** pages.
 
 ### Open the Bookmarks and Selection Panes
 
@@ -1447,7 +1447,7 @@ In this task, you will add a navigation bar so users can move between report pag
 
 ### Create an "All Customers" Bookmark
 
-1. Ensure no filters are active — click **Clear selections** on the country slicer if needed.
+1. Ensure no filters are active.
 
 2. In the **Bookmarks** pane, select **Add**.
 
@@ -1457,19 +1457,19 @@ In this task, you will add a navigation bar so users can move between report pag
 
    > Capturing **Data** only (not Display) means the bookmark saves the filter state, not the scroll position or visual selection.
 
-### Create a "Top 5 Customers" Bookmark
+### Create a "Top 15 Customers" Bookmark
 
 1. Select the **Top Customers by Revenue** table visual.
 
-2. In the **Filters** pane, expand the **companyName** filter well.
+2. In the **Filters** pane, expand the **CompanyName** filter well.
 
-3. Set **Filter type** to **Top N**, **Show items** to **Top 5**, **By value** to **Total Revenue**.
+3. Set **Filter type** to **Top N**, **Show items** to **Top 15**, **By value** to **Total Revenue**.
 
-4. Select **Apply filter**. The table now shows only the top 5 customers.
+4. Select **Apply filter**. The table now shows only the top 15 customers.
 
 5. In the Bookmarks pane, select **Add**.
 
-6. Rename the bookmark to **Top 5 Customers**.
+6. Rename the bookmark to **Top 15 Customers**.
 
 7. Right-click → **Update** → ensure **Data** is checked, **Display** unchecked.
 
@@ -1480,18 +1480,23 @@ In this task, you will add a navigation bar so users can move between report pag
 1. On the **Insert** ribbon, select **Buttons** → **Blank**.
 
 2. In the **Format** pane:
-   - Turn **Title** on, set Text to **All Customers**
-   - Go to **Action**, turn it **On**
+   - Go to **Button** tab
+   - Expand Style section
+   - Turn **Text** on
+   - Set **Text** to **All Customers**
+   - Turn **Action** on
    - Set **Type** to **Bookmark**
    - Set **Bookmark** to **All Customers**
 
-3. Add a second blank button. Set its Title to **Top 5 Customers** and Action → Bookmark → **Top 5 Customers**.
+3. Add a second blank button. Set its Text to **Top 15 Customers** and Action → Bookmark → **Top 15 Customers**.
 
-4. Position both buttons side by side in the top-right area of the Customer Analysis page, below the navigation bar.
+4. Position both buttons side by side in the bottom-left area of the Customer Analysis page, below the Top Customers by Revenue table.
 
 5. To test: hold **Ctrl** and click each button to switch between the two views.
 
 6. Press **Ctrl + S** to save.
+
+7. Publish your report to the Power BI Service if you haven't already and verify that the bookmarks and buttons work as expected online.
 
 > **Congratulations!** Your report now has professional page navigation, conditional formatting-enhanced tables, and bookmark-driven interactive views — completing a full 150-minute end-to-end Power BI solution.
 
