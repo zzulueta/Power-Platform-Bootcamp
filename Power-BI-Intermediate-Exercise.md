@@ -387,6 +387,15 @@ Now let's add the product catalog data from a CSV file.
 
 10. Also select **Format** → **Clean** to remove any non-printable characters.
 
+11. Let's rename the column names in the **customers** query for consistency:
+    - customerID → CustomerID
+    - companyName → CompanyName
+    - contactName → ContactName
+    - contactTitle → ContactTitle
+    - city → City
+    - country → Country
+
+    To do this, right-click each column header, select **Rename**, and type the new name as listed above.
 
 ### Rename Queries for Consistency
 
