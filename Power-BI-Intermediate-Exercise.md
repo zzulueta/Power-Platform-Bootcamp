@@ -695,7 +695,7 @@ Let's create the first page showing high-level sales KPIs and trends.
 
 3. Format the line chart:
    - Select the visual
-   - Go to Format pane → **X-axis**
+   - Go to Format your visual pane → **X-axis**
    - Turn **Title** to **On**
    - Change **Title text** to "Order Date"
    - Go to **Y-axis**
@@ -719,7 +719,7 @@ Let's create the first page showing high-level sales KPIs and trends.
    - Select **Sort by** → **Sort descending**
 
 4. Add title: "Orders by Country"
-   - In Format pane, go to the General tab
+   - In Format your visual pane, go to the General tab
    - Turn **Title** to **On**
    - Change **Text** to "Orders by Country"
 
@@ -733,14 +733,14 @@ Let's create the first page showing high-level sales KPIs and trends.
 
 3. Change the slicer style:
    - Select the slicer
-   - Go to Format pane → Visual → Slicer settings
+   - Go to Format your visual pane → Visual → Slicer settings
    - Expand **Options**
    - Select **Between** (shows a slider with two handles for date range selection)
 
 4. Position the slicer at the bottom of the page, spanning the full width.
 
 5. Add title: "Select Date Range"
-   - Select the General tab in the Format pane
+   - Select the General tab in the Format your visual pane
    - Turn **Title** to **On**
    - Change **Text** to "Select Date Range"
 
@@ -779,7 +779,7 @@ Let's create a second page focused on customer insights.
 6. Resize the table to take up the left half of the page.
 
 7. Add title: "Top Customers by Revenue"
-   - In Format pane, go to General tab
+   - In Format your visual pane, go to General tab
    - Turn **Title** to **On**
    - Change **Text** to "Top Customers by Revenue"
 
@@ -796,7 +796,7 @@ Let's create a second page focused on customer insights.
 4. Position the treemap on the right side of the page, taking up the remaining space.
 
 5. Add title: "Revenue by Customer Location"
-   - In Format pane, go to General tab
+   - In Format your visual pane, go to General tab
    - Turn **Title** to **On**
    - Change **Text** to "Revenue by Customer Location"
 
@@ -813,7 +813,7 @@ Let's create a second page focused on customer insights.
 4. Position the slicer at the bottom of the page.
 
 5. Add title: "Filter by Country"
-   - In Format pane, go to General tab
+   - In Format your visual pane, go to General tab
    - Turn **Title** to **On**
    - Change **Text** to "Filter by Country"
 
@@ -847,7 +847,7 @@ Create a third page focusing on product-level insights.
 4. Resize to take up about 60% of the page width on the left side.
    
 5. Add title: "Product Sales Performance"
-   - In Format pane, go to General tab
+   - In Format your visual pane, go to General tab
    - Turn **Title** to **On**
    - Change **Text** to "Product Sales Performance"
 
@@ -876,7 +876,7 @@ Create a third page focusing on product-level insights.
 5. Position on the right side of the page.
 
 6. Add title: "Top 10 Products by Revenue"
-   - In Format pane, go to General tab
+   - In Format your visual pane, go to General tab
    - Turn **Title** to **On**
    - Change **Text** to "Top 10 Products by Revenue"
 
@@ -893,7 +893,7 @@ Create a third page focusing on product-level insights.
 4. Position at the bottom of the page.
 
 5. Add title: "Filter by Category"
-   - In Format pane, go to General tab
+   - In Format your visual pane, go to General tab
    - Turn **Title** to **On**
    - Change **Text** to "Filter by Category"
 
