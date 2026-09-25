@@ -348,8 +348,16 @@ Now let's add the product catalog data from a CSV file.
 
 9. The **products** query now appears in your Queries pane on the left.
 
-10. In the **products** query, let's remove the **unitCost** column since we won't need it for this analysis:
-    - Right-click the **unitCost** column header and select **Remove**.
+10. Let's rename the column names in the **products** query for consistency:
+    - productID → ProductID
+    - productName → ProductName
+    - quantityPerUnit → QuantityPerUnit
+    - unitPrice → UnitPrice
+    - discontinued → Discontinued
+    - categoryID → CategoryID
+    - unitCost → UnitCost
+
+    To do this, right-click each column header, select **Rename**, and type the new name as listed above.
 
 ### Connect to CSV File for Customers Data
 
