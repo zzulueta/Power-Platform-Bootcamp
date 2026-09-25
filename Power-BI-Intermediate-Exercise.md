@@ -1203,7 +1203,7 @@ In this task, you will create a proper Date table and use it to build time intel
 
 ### Create the Date Table Using DAX
 
-1. In Power BI Desktop, switch to **Report** view.
+1. In Power BI Desktop, switch to **Table** view.
 
 2. On the **Home** ribbon, select **New table** from the **Calculations** group.
 
@@ -1230,11 +1230,11 @@ In this task, you will create a proper Date table and use it to build time intel
 
 2. On the **Table tools** ribbon, select **Mark as date table**.
 
-3. In the dialog, set **Date column** to **Date**.
+3. In the dialog, set the following
+   - Enable **Mark as date table** 
+   -  **Choose a date column**: **Date**.
 
-4. Select **Validate**. Power BI confirms the table is valid (no blanks, no duplicates, contiguous dates).
-
-5. Select **OK**.
+4. Select **Save**.
 
    > *Reference: [Set and use date tables in Power BI Desktop](https://learn.microsoft.com/power-bi/transform-model/desktop-date-tables#set-your-own-date-table)*
 
