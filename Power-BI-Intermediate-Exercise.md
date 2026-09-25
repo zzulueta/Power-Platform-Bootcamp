@@ -1365,28 +1365,29 @@ In this task, you will apply a report theme for consistent styling and use condi
 
 ### Add Conditional Formatting — Data Bars
 
-1. Navigate to the **Customer Analysis** page.
+1. Navigate to the **Sales Analysis** page.
 
-2. Select the **Top Customers by Revenue** table visual.
+2. Select the table visual.
 
-3. In the **Visualizations** pane, select the **Format** tab (paint roller icon).
+3. In the **Visualizations** pane, select the **Format your visual** tab (paint roller icon).
 
 4. Expand **Cell elements**.
 
-5. Under the **Total Revenue** field, toggle **Data bars** to **On**.
+5. Set Series to **Revenue YTD** then toggle **Data bars** to **On**.
 
    > Data bars render an inline horizontal bar inside each cell, giving an immediate visual sense of relative values without requiring a separate chart visual.
 
-### Add Conditional Formatting — Colour Scale
+### Add Conditional Formatting — Rules
 
-1. Still in the **Cell elements** section of the same table, expand the **Total Orders** field.
+1. Still in the **Cell elements** section of the same table, set Series to **YoY Growth %**.
 
 2. Toggle **Background color** to **On**.
 
 3. Select the **fx** button to configure:
-   - **Format style**: Gradient
-   - **Minimum** colour: White
-   - **Maximum** colour: Select your theme's primary accent colour
+   - **Format style**: Rules
+   - **Rule 1:** If value >= -100 Number and < 0 Number then colour: #FF0000
+   - **Rule 2:** If value >= 0 Number and < 0.25 Number then colour: #FFFF00
+   - **Rule 3:** If value >= 0.25 Number and < 1000 Number then colour: #00FF00
 
 4. Select **OK**.
 
