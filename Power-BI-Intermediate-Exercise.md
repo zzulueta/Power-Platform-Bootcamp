@@ -1341,10 +1341,6 @@ In this task, you will create a proper Date table and use it to build time intel
 
 In this task, you will apply a report theme for consistent styling and use conditional formatting to make tables more visually informative at a glance.
 
-> *Reference: [Apply conditional formatting in tables and matrices](https://learn.microsoft.com/power-bi/create-reports/desktop-conditional-table-formatting)*
->
-> *Reference: [Use report themes in Power BI Desktop](https://learn.microsoft.com/power-bi/create-reports/desktop-report-themes)*
-
 ### Apply a Report Theme
 
 1. In Power BI Desktop, select the **View** ribbon.
@@ -1353,13 +1349,19 @@ In this task, you will apply a report theme for consistent styling and use condi
 
 3. Hover over each built-in theme to preview it applied to your report.
 
-4. Select **Accessible default** to apply a theme optimised for colour accessibility.
+4. Select any built-in theme to apply it to your report.
 
    > **Why themes matter:** Themes enforce consistent colours, fonts, and visual formatting across every page of your report. When a theme is updated, all visuals update automatically.
    >
    > *Reference: [Report themes in Power BI Desktop](https://learn.microsoft.com/power-bi/create-reports/desktop-report-themes)*
 
 5. Observe how all visuals update immediately to reflect the new colour palette.
+
+6. Visit the [Power BI theme gallery](https://community.fabric.microsoft.com/category/pbi_comm_galleries/discussions/themesgallery) to explore and download additional themes.
+
+7. Download and apply a theme from the gallery to see how it changes the look and feel of your report.
+   - Download a theme file (usually a `.json` file) from the gallery.
+   - In Power BI Desktop, go to the **View** ribbon → **Themes** dropdown → **Browse for themes** and select the downloaded `.json` file to apply it.
 
 ### Add Conditional Formatting — Data Bars
 
