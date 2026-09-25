@@ -1443,7 +1443,7 @@ In this task, you will add a navigation bar so users can move between report pag
 
 1. Navigate to the **Customer Analysis** page.
 
-2. On the **View** ribbon, enable both **Bookmarks pane** and **Selection pane**.
+2. On the **View** ribbon, enable **Filters pane**, **Bookmarks pane** and **Selection pane**.
 
 ### Create an "All Customers" Bookmark
 
@@ -1498,7 +1498,7 @@ In this task, you will add a navigation bar so users can move between report pag
 
 7. Publish your report to the Power BI Service if you haven't already and verify that the bookmarks and buttons work as expected online.
 
-> **Congratulations!** Your report now has professional page navigation, conditional formatting-enhanced tables, and bookmark-driven interactive views — completing a full 150-minute end-to-end Power BI solution.
+> **Congratulations!** Your report now has professional page navigation, conditional formatting-enhanced tables, and bookmark-driven interactive views.
 
 ---
 
