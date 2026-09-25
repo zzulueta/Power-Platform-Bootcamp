@@ -627,20 +627,17 @@ Let's create the first page showing high-level sales KPIs and trends.
 12. The card displays the total revenue across all orders.
 
 13. Format the card:
-    - With the card selected, go to the **Format** pane (paint roller icon)
+    - With the card selected, go to the **Format your visual** pane (paint roller icon)
     - Select the Visual tab
-    - Expand **Callout**
-    - Expand **Apply settings to**
-    - Select **Total Revenue** in the **Cards** dropdown
-    - Expand **Value**
+    - Expand **Callout value**
     - Set **Display units** to **Thousands**
     - Set **Value decimal places** to **0**
-    - Turn **Label** to **Off** (optional, hides the "Total Revenue" label on the card)
+    - Turn **Category label** to **Off** (optional, hides the "Total Revenue" label on the card)
 
 14. Resize the card to make it smaller and position it in the upper-left corner of the canvas.
 
 15. Add a title to the card:
-    - In the Format pane, expand **General** → **Title**
+    - In the Format your visualpane, expand **General** → **Title**
     - Turn **Title** to **On**
     - Expand **Title**
     - Change **Text** to "Total Revenue"
