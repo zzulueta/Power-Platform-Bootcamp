@@ -854,7 +854,7 @@ Create a third page focusing on product-level insights.
    - Select **Sort by** → **Total Revenue**
    - Select **Sort descending**
 
-4. Resize to take up about 60% of the page width on the left side.
+4. Resize to take up about half of the page width on the left side.
    
 5. Add title: "Product Sales Performance"
    - In Format your visual pane, go to General tab
@@ -879,8 +879,8 @@ Create a third page focusing on product-level insights.
    - Select **Apply filter**
 
 4. Format the chart:
-   - Rotate X-axis labels for better readability
-   - Go to Format pane → **Visual** → **X-axis**
+   - Resize X-axis labels for better readability
+   - Go to Format your visual pane → **Visual** → **X-axis**
    - Set **Text size** to 8
 
 5. Position on the right side of the page.
@@ -897,7 +897,7 @@ Create a third page focusing on product-level insights.
 2. Drag **CategoryID** from Products table to the Field well.
 
 3. Format as a vertical list.
-   - Go to Format pane → Visual → Slicer settings → Options
+   - Go to Format your visual pane → Visual → Slicer settings → Options
    - Select **Vertical list** (shows all categories in a list)
 
 4. Position at the bottom of the page.
@@ -906,6 +906,11 @@ Create a third page focusing on product-level insights.
    - In Format your visual pane, go to General tab
    - Turn **Title** to **On**
    - Change **Text** to "Filter by Category"
+
+6. Turn Background to **On**
+   - In Format your visual pane, go to General tab
+   - Expand Effects
+   - Turn **Background** to **On**
 
 #### Rename Page 3
 
@@ -1047,7 +1052,7 @@ Dashboards in Power BI provide a single-page view of your most important metrics
 
 3. Let's pin the Total Revenue card to a new dashboard:
    - Hover over the **Total Revenue** card visual
-   - Click the **Pin** icon (looks like a pushpin) that appears in the top-right corner of the visual
+   - Click the **Pin** icon (looks like a pushpin) that appears in the top-right or bottom-right corner of the visual
 
 4. The **Pin to dashboard** dialog appears.
 
