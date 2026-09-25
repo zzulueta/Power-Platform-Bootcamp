@@ -472,9 +472,9 @@ Let's create the first relationship connecting customers to their orders.
 
 > **Note:** Power BI may have already auto-detected and created these relationships for you based on matching column names (CustomerID, OrderID, ProductID). If you see relationship lines already connecting your tables, you can skip the manual creation steps and proceed directly to step 4 to verify the relationship properties. The following steps show you how to manually create relationships if needed.
 
-1. In the **Customers** table, locate the **customerID** column.
+1. In the **Customers** table, locate the **CustomerID** column.
 
-2. **If a relationship line doesn't already exist**, click and drag the **customerID** column from the **Customers** table to the **CustomerID** column in the **Orders** table. If a line already exists, proceed to step 4.
+2. **If a relationship line doesn't already exist**, click and drag the **CustomerID** column from the **Customers** table to the **CustomerID** column in the **Orders** table. If a line already exists, proceed to step 4.
 
 3. A line appears between the two tables, indicating a relationship has been created.
 
@@ -524,7 +524,7 @@ Now connect the Orders table to the OrderDetails table.
 
 Finally, connect products to order details.
 
-1. **If a relationship line doesn't already exist**, drag the **productID** column from the **Products** table to the **ProductID** column in the **OrderDetails** table. If a line already exists, proceed to step 3.
+1. **If a relationship line doesn't already exist**, drag the **ProductID** column from the **Products** table to the **ProductID** column in the **OrderDetails** table. If a line already exists, proceed to step 3.
 
 2. A relationship line appears.
 
@@ -533,7 +533,7 @@ Finally, connect products to order details.
    | Setting | Value |
    | --- | --- |
    | From: Table (Column) | OrderDetails (ProductID) |
-   | To: Table (Column) | Products (productID) |
+   | To: Table (Column) | Products (ProductID) |
    | Cardinality | Many to one (\*:1) |
    | Cross filter direction | Single |
    | Make this relationship active | ✓ Checked |
@@ -559,9 +559,9 @@ The relationships allow filters to flow from dimension tables to fact tables:
 1. On the **Home** tab in Model view, select **Manage relationships**.
 
 2. The **Manage relationships** dialog shows all three relationships you created:
-   - Customers (customerID) to Orders (CustomerID) - Active
+   - Customers (CustomerID) to Orders (CustomerID) - Active
    - Orders (OrderID) to OrderDetails (OrderID) - Active
-   - Products (productID) to OrderDetails (ProductID) - Active
+   - Products (ProductID) to OrderDetails (ProductID) - Active
 
 3. All relationships should show **Active** status.
 
@@ -573,7 +573,7 @@ Let's verify that the relationships work correctly by creating a quick test visu
 
 1. Select the **Report** view icon on the left (it looks like a bar chart).
 
-2. In the **Fields** pane, expand the **Customers** table and check the box next to **country**.
+2. In the **Fields** pane, expand the **Customers** table and check the box next to **Country**.
 
 3. Expand the **OrderDetails** table and check the box next to **Quantity**.
 
