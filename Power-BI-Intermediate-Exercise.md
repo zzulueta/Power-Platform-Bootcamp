@@ -637,7 +637,7 @@ Let's create the first page showing high-level sales KPIs and trends.
 14. Resize the card to make it smaller and position it in the upper-left corner of the canvas.
 
 15. Add a title to the card:
-    - In the Format your visualpane, expand **General** → **Title**
+    - In the Format your visual pane, expand **General** → **Title**
     - Turn **Title** to **On**
     - Expand **Title**
     - Change **Text** to "Total Revenue"
@@ -657,7 +657,7 @@ Let's create the first page showing high-level sales KPIs and trends.
 
 5. Drag the **Total Orders** measure to your new card visual.
 
-6. Format the card similarly (display units: Auto, no decimal places).
+6. Format the card similarly (display units: Auto, no decimal places, Category label: Off).
 
 7. Add title: "Total Orders"
 
@@ -678,7 +678,7 @@ Let's create the first page showing high-level sales KPIs and trends.
 
 5. Drag the **Average Order Value** measure to the card.
 
-6. Format: Display units None, 2 decimal places.
+6. Format: Display units None, 2 decimal places, Category label: Off.
 
 7. Add title: "Average Order Value"
 
