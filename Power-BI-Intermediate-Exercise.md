@@ -744,6 +744,11 @@ Let's create the first page showing high-level sales KPIs and trends.
    - Turn **Title** to **On**
    - Change **Text** to "Select Date Range"
 
+6. Turn Background to **On**
+   - In Format your visual pane, go to General tab
+   - Expand Effects
+   - Turn **Background** to **On**
+
 #### Rename Page 1
 
 1. At the bottom of the screen, right-click **Page 1** and select **Rename**.
@@ -819,6 +824,7 @@ Let's create a second page focused on customer insights.
 
 6. Turn Background to **On**
    - In Format your visual pane, go to General tab
+   - Expand Effects
    - Turn **Background** to **On**
 
 #### Rename Page 2
