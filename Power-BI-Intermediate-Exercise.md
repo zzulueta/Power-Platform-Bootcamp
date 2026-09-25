@@ -1347,7 +1347,7 @@ In this task, you will apply a report theme for consistent styling and use condi
 
 2. Select the **Themes** dropdown.
 
-3. Hover over each built-in theme to preview it applied to your report.
+3. Browse through the available built-in themes.
 
 4. Select any built-in theme to apply it to your report.
 
