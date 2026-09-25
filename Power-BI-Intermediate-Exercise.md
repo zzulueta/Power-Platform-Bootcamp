@@ -433,8 +433,8 @@ Let's rename our queries to follow a consistent naming convention (PascalCase wi
 
 5. In the **Fields** pane on the right, you should now see all four tables listed with their columns:
    - Customers
-   - Orders
    - OrderDetails
+   - Orders
    - Products
 
 > **Congratulations!** You've successfully connected to and imported data from multiple sources. Your data is now ready to be modeled and analyzed.
