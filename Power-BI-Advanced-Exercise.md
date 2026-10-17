@@ -345,13 +345,6 @@ By completing this lab, you will gain hands-on experience with the following ski
 | Repeated subexpressions and `VAR` | Task 2, 3 | [DAX query performance best practices](https://learn.microsoft.com/power-bi/guidance/dax-variables) |
 | Column cardinality with `COLUMNSTATISTICS()` | Task 4 | [Optimize semantic model performance](https://learn.microsoft.com/training/modules/optimize-semantic-model-performance/) |
 
-### Recommended References
-
-- [Optimize semantic model performance (Microsoft Learn module)](https://learn.microsoft.com/training/modules/optimize-semantic-model-performance/)
-- [Use Performance Analyzer in Power BI Desktop](https://learn.microsoft.com/power-bi/create-reports/desktop-performance-analyzer)
-- [DAX query performance best practices](https://learn.microsoft.com/power-bi/guidance/dax-variables)
-- Source exercise: [Optimize semantic model performance — mslearn-fabric](https://microsoftlearning.github.io/mslearn-fabric/Instructions/Labs/16-optimize-semantic-model-performance.html)
-
 ---
 
 # Lab B: Row-Level Security, Dynamic RLS & Object Level Security
