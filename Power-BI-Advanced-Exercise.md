@@ -92,6 +92,8 @@ By completing this lab, you will gain hands-on experience with the following ski
 | Task 3 | Optimize the DAX measure using a variable |
 | Task 4 | Examine column cardinality |
 | Task 5 | Verify the improvements |
+| Task 6 | Create a Slow Measure and observe its performance compared to the Optimized Measure |
+
 
 ---
 
