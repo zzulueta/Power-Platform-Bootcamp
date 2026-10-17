@@ -304,10 +304,15 @@ By completing this lab, you will gain hands-on experience with the following ski
 ### What You Accomplished
 
 ✅ **Task 1**: Used Performance Analyzer to capture a baseline DAX query time for the Table visual
+
 ✅ **Task 2**: Exported and analyzed a slow DAX query, then located the repeated-subexpression pattern in the Sales YoY Growth measure
+
 ✅ **Task 3**: Optimized the measure using a `VAR` to evaluate the prior-year calculation only once
+
 ✅ **Task 4**: Used `COLUMNSTATISTICS()` to examine column cardinality and identify where memory consumption is highest
+
 ✅ **Task 5**: Re-ran Performance Analyzer to verify the DAX query time improved against the baseline
+
 ✅ **Task 6**: Created a Slow Measure and observed its performance compared to the Optimized Measure
 
 ### Key Concepts You Practised
