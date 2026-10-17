@@ -249,19 +249,53 @@ Note: The repeated use of `CALCULATE([Total Sales], SAMEPERIODLASTYEAR('Date'[Da
 6. Select **Stop**
 7. Expand the **Table** visual entry and records its **DAX query time**
 8. In the **Data** pane, expand the **Sales** table and create a new measure with the definition:
-```
-Optimized Measure =
-VAR PriorYearSales = CALCULATE([Total Sales], SAMEPERIODLASTYEAR('Date'[Date]))
-RETURN
-    PriorYearSales + PriorYearSales + PriorYearSales + PriorYearSales + PriorYearSales +
-    PriorYearSales + PriorYearSales + PriorYearSales + PriorYearSales + PriorYearSales +
-    PriorYearSales + PriorYearSales + PriorYearSales + PriorYearSales + PriorYearSales +
-    PriorYearSales + PriorYearSales + PriorYearSales + PriorYearSales + PriorYearSales +
-    PriorYearSales + PriorYearSales + PriorYearSales + PriorYearSales + PriorYearSales +
-    PriorYearSales + PriorYearSales + PriorYearSales + PriorYearSales + PriorYearSales
-```
+   ```
+   Optimized Measure =
+   VAR PriorYearSales = CALCULATE([Total Sales], SAMEPERIODLASTYEAR('Date'[Date]))
+   RETURN
+      PriorYearSales + PriorYearSales + PriorYearSales + PriorYearSales + PriorYearSales +
+      PriorYearSales + PriorYearSales + PriorYearSales + PriorYearSales + PriorYearSales +
+      PriorYearSales + PriorYearSales + PriorYearSales + PriorYearSales + PriorYearSales +
+      PriorYearSales + PriorYearSales + PriorYearSales + PriorYearSales + PriorYearSales +
+      PriorYearSales + PriorYearSales + PriorYearSales + PriorYearSales + PriorYearSales +
+      PriorYearSales + PriorYearSales + PriorYearSales + PriorYearSales + PriorYearSales
+   ```
 9. Add the Optimized Measure to the Card visual and observe the improved performance compared to the Slow Measure.
+10. Other DAX queries to compare:
+   Table Filter vs. KEEPFILTERS example
+   ```
+   Red Sales = 
+   CALCULATE(Sales[Total Sales],FILTER('Product', 'Product'[Color] = "Red"))
+   ```
+   vs.
+   ```
+   Red Sales =
+   CALCULATE(Sales[Total Sales],KEEPFILTERS('Product'[Color] = "Red"))
+   ```
+   Note: 
+   First Query: FILTER scans every row of Product and builds an entire filtered table before CALCULATE can use it.
+   Second Query: The Boolean expression is passed directly as a filter argument. VertiPaq's in-memory column store is optimized to filter this way — no intermediate table is materialized. (KEEPFILTERS preserves any existing filter on Color rather than overwriting it.)
 
+   Count with FILTER example
+   ```
+   High Value Orders =
+   COUNTROWS(
+       FILTER(Sales, Sales[Total Sales] > 1000)
+   )
+   ```
+   vs.
+   ```
+   High Value Orders =
+   CALCULATE(
+       COUNTROWS(Sales),
+       Sales[Total Sales] > 1000
+   )
+   ```
+   Note: 
+   First Query: FILTER builds a filtered copy of Sales row by row before COUNTROWS can count it.
+   Second Query: COUNTROWS counts the base table directly, while the condition is applied as a native CALCULATE filter argument — no intermediate FILTER table required.
+   
+  
 ---
 
 ## Lab A Summary
