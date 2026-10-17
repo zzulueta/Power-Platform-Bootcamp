@@ -100,13 +100,21 @@ By completing this lab, you will gain hands-on experience with the following ski
 ## Task 1: Capture a Performance Baseline
 
 1. Download the AdvancedSalesReport.pbix found in Power-BI-Advanced-Ref/PBIX folder and save it to your local machine.
+
 2. Open the pbix file.
+
 3. Navigate to the **Sales Overview** report page
+
 4. On the **Optimize** ribbon, select **Performance analyzer** — the pane opens on the right side of the report canvas
+
 5. In the Performance analyzer pane, select **Start recording**
+
 6. Select **Refresh visuals** to reload all visuals on the current page
+
 7. Wait for all visuals to finish loading, then select **Stop**
+
 8. Expand the entry for the **Table** visual (showing Year, Total Sales, and Sales YoY Growth)
+
 9. Note the **DAX query time** (in milliseconds) for this visual — this is your baseline
    > **Note:** With this dataset, query times may be small (under 500 ms) — that's expected since the dataset isn't large. The goal is to learn the diagnostic process. Even a change from 80 ms to 30 ms demonstrates the optimization worked. If all timings appear identical, select **Clear**, then select **Refresh visuals** again to get uncached measurements.
 
@@ -199,9 +207,13 @@ By completing this lab, you will gain hands-on experience with the following ski
 ## Task 5: Verify the Improvements
 
 1. Switch to **Report** view and open the Performance analyzer pane if it isn't already open
+
 2. Select **Clear**, then select **Start recording**
+
 3. Select **Refresh visuals** and wait for all visuals to finish loading
+
 4. Select **Stop**
+
 5. Expand the **Table** visual entry and compare its **DAX query time** to the baseline you recorded in Task 1
    > **Note:** The absolute difference may be small with this dataset. The important takeaway is the process: measure → diagnose → fix → verify.
 
@@ -242,12 +254,19 @@ By completing this lab, you will gain hands-on experience with the following ski
     CALCULATE([Total Sales], SAMEPERIODLASTYEAR('Date'[Date]))
    ```
 > Note: The repeated use of `CALCULATE([Total Sales], SAMEPERIODLASTYEAR('Date'[Date]))` demonstrates a scenario where a `VAR` can be used to optimize performance by avoiding repeated subexpression evaluation.
+
 2. Create a new Card visual in your report and add the Slow Measure to it to observe the performance.
+
 3. Open the Performance analyzer pane if it isn't already open
+
 4. Select **Clear**, then select **Start recording**
+
 5. Select **Refresh visuals** and wait for all visuals to finish loading
+
 6. Select **Stop**
+
 7. Expand the **Table** visual entry and records its **DAX query time**
+
 8. In the **Data** pane, expand the **Sales** table and create a new measure with the definition:
    ```
    Optimized Measure =
@@ -260,7 +279,9 @@ By completing this lab, you will gain hands-on experience with the following ski
       PriorYearSales + PriorYearSales + PriorYearSales + PriorYearSales + PriorYearSales +
       PriorYearSales + PriorYearSales + PriorYearSales + PriorYearSales + PriorYearSales
    ```
+
 9. Add the Optimized Measure to the Card visual and observe the improved performance compared to the Slow Measure.
+
 10. Other DAX queries to compare:
 
    Table Filter vs. KEEPFILTERS example
