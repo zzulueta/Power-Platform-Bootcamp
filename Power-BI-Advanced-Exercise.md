@@ -262,6 +262,7 @@ Note: The repeated use of `CALCULATE([Total Sales], SAMEPERIODLASTYEAR('Date'[Da
    ```
 9. Add the Optimized Measure to the Card visual and observe the improved performance compared to the Slow Measure.
 10. Other DAX queries to compare:
+
    Table Filter vs. KEEPFILTERS example
    ```
    Red Sales = 
