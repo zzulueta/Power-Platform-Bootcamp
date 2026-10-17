@@ -273,9 +273,9 @@ By completing this lab, you will gain hands-on experience with the following ski
    Red Sales =
    CALCULATE(Sales[Total Sales],KEEPFILTERS('Product'[Color] = "Red"))
    ```
-   Note: 
-   First Query: FILTER scans every row of Product and builds an entire filtered table before CALCULATE can use it.
-   Second Query: The Boolean expression is passed directly as a filter argument. VertiPaq's in-memory column store is optimized to filter this way — no intermediate table is materialized. (KEEPFILTERS preserves any existing filter on Color rather than overwriting it.)
+   > Note: 
+   > First Query: FILTER scans every row of Product and builds an entire filtered table before CALCULATE can use it.
+   > Second Query: The Boolean expression is passed directly as a filter argument. VertiPaq's in-memory column store is optimized to filter this way — no intermediate table is materialized. (KEEPFILTERS preserves any existing filter on Color rather than overwriting it.)
 
    Count with FILTER example
    ```
@@ -292,9 +292,9 @@ By completing this lab, you will gain hands-on experience with the following ski
        Sales[Total Sales] > 1000
    )
    ```
-   Note: 
-   First Query: FILTER builds a filtered copy of Sales row by row before COUNTROWS can count it.
-   Second Query: COUNTROWS counts the base table directly, while the condition is applied as a native CALCULATE filter argument — no intermediate FILTER table required.
+   > Note: 
+   > First Query: FILTER builds a filtered copy of Sales row by row before COUNTROWS can count it.
+   > Second Query: COUNTROWS counts the base table directly, while the condition is applied as a native CALCULATE filter argument — no intermediate FILTER table required.
    
   
 ---
