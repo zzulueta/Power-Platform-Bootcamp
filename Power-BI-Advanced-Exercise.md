@@ -241,7 +241,7 @@ By completing this lab, you will gain hands-on experience with the following ski
     CALCULATE([Total Sales], SAMEPERIODLASTYEAR('Date'[Date])) +
     CALCULATE([Total Sales], SAMEPERIODLASTYEAR('Date'[Date]))
    ```
-Note: The repeated use of `CALCULATE([Total Sales], SAMEPERIODLASTYEAR('Date'[Date]))` demonstrates a scenario where a `VAR` can be used to optimize performance by avoiding repeated subexpression evaluation.
+> Note: The repeated use of `CALCULATE([Total Sales], SAMEPERIODLASTYEAR('Date'[Date]))` demonstrates a scenario where a `VAR` can be used to optimize performance by avoiding repeated subexpression evaluation.
 2. Create a new Card visual in your report and add the Slow Measure to it to observe the performance.
 3. Open the Performance analyzer pane if it isn't already open
 4. Select **Clear**, then select **Start recording**
