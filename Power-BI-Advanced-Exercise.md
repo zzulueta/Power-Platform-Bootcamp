@@ -372,22 +372,22 @@ Row-Level Security & Object Level Security
 
 AdvancedSalesReport.pbix (Power BI Desktop)
 ├── Static Roles
-│   ├── North Region  → Sales[Region] = "North"
-│   └── South Region  → Sales[Region] = "South"
+│   ├── NW Region  → Region[Region] = "Northwest"
+│   └── SW Region  → Region[Region] = "Southwest"
 │
 ├── Dynamic Role
 │   └── Dynamic RLS → UserMapping[UserEmail] = USERPRINCIPALNAME()
 │         └── Relationship: UserMapping[Region] → Sales[Region]
 │
+Tabular Editor 
+└── Roles → NW Region
+      ├── Sales[Unit Cost] → OLS Permission: None    (column hidden)
+      └── UserMapping table → Permission: None        (table hidden)
+
                     ↓ (Publish)
 
 Power BI Service — Dataset → Security
-└── Assign users/test accounts to North Region / South Region roles
-
-Tabular Editor 2 (connected via External Tools)
-└── Roles → North Region
-      ├── Sales[Unit Cost] → OLS Permission: None    (column hidden)
-      └── UserMapping table → Permission: None        (table hidden)
+└── Assign users/test accounts to NW Region / SW Region roles
 ```
 
 ## Job Skills
@@ -398,48 +398,131 @@ By completing this lab, you will gain hands-on experience with the following ski
 |---|---|
 | Task 1 | Create static RLS roles in Power BI Desktop |
 | Task 2 | Create a dynamic RLS role with `USERPRINCIPALNAME()` |
-| Task 3 | Assign users to roles in the Power BI Service |
-| Task 4 | Apply Object Level Security with Tabular Editor |
+| Task 3 | Apply Object Level Security with Tabular Editor |
+| Task 4 | Assign users to roles in the Power BI Service |
+
 
 ---
 
 ## Task 1: Create Static RLS Roles (Power BI Desktop)
 
-1. Open `AdvancedSalesReport.pbix` in Power BI Desktop
-2. Go to **Modeling → Manage roles** and create a new role named `North Region`
-3. In the role editor, select the **Sales** table and add the filter: `[Region] = "North"`
-4. Create a second role `South Region` with filter `[Region] = "South"`
-5. Test the roles: **Modeling → View as → North Region** — verify only North data is visible across all visuals
-6. Exit the role view and return to normal mode
+1. Open `AdvancedSalesReport.pbix` in Power BI Desktop and go to the **Model** view.
+
+2. Select the Region to SalespersonRegion relationship and disable Apply security filter in both directions.
+
+3. Click Save.
+
+4. Go to **Manage roles** and create a new role named `NW Region`
+
+5. In the role editor, select the **Region** table and add the filter: `Region = "Northwest"`
+
+6. Create a second role `SW Region` with filter `Region = "Southwest"`
+
+7. Click **Save** to save the roles. Then Close the role editor.
+
+8. Test the roles by selecting **View as → NW Region**.
+
+9. Go to the **Report** view, select Page 3, and verify only Northwest data is visible across all visuals
+
+10. Exit the role view by selecting **Stop viewing** to return to normal mode
+
+11. Verify as well that the SW Region role correctly filters the data to only show Southwest region information.
 
 ## Task 2: Create a Dynamic RLS Role (Power BI Desktop)
 
-1. Add a **UserMapping** table to the model (via **Enter data**) with columns: `UserEmail` and `Region`, populated with sample user email addresses mapped to regions
-2. Create a relationship between `UserMapping[Region]` and `Sales[Region]`
-3. In **Manage roles**, create a new role named `Dynamic RLS` and apply the DAX filter to the **UserMapping** table:
+1. Go back to the **Model** view
+
+2. In **Manage roles**, create a new role named `Dynamic RLS`.
+
+3. In the role editor, select the **Salesperson** table and select **Switch to DAX editor**
+
+4. Apply the DAX filter:
    ```
-   [UserEmail] = USERPRINCIPALNAME()
+   [UPN] = USERPRINCIPALNAME()
    ```
-4. This ensures each user sees only rows where their email matches the UserMapping table — no static role per region needed
-5. Test with **View as → Other user** and enter a sample email from the UserMapping table — verify the correct region data is returned
 
-## Task 3: Assign Users to Roles in the Power BI Service
+5. Select the **Salesperson (Performance)**, select **Switch to DAX editor**, and apply the same DAX filter:
+   ```
+   [UPN] = USERPRINCIPALNAME()
+   ```
 
-1. Publish the report to a shared workspace in the Power BI Service
-2. Navigate to the **dataset → Security** in the Service
-3. Assign colleagues or test accounts to the `North Region` and `South Region` static roles
-4. Discuss: with dynamic RLS, no manual role assignment is needed per user — the DAX expression handles it automatically
+6. Select Save to save the role and close the role editor.
 
-## Task 4: Apply Object Level Security with Tabular Editor
+7. To test the Dynamic RLS role, select **View as**. 
+    - Select Other user and enter a sample email: `michael-blythe@adventureworks.com`
+    - Select Dynamic RLS
+    - Click **OK** to apply the role
 
-1. Download and install **Tabular Editor 2** (free, open-source: [tabulareditor.com](https://tabulareditor.com)) if not already installed
-2. In Power BI Desktop, go to **External Tools → Tabular Editor** to launch it connected to the open model
-3. In Tabular Editor, expand the **Roles** node and select the `North Region` role
-4. In the role properties, select the **Sales** table → find the `Unit Cost` column → set **OLS Permission** to **None** — this hides the column from users in this role
-5. To hide an entire table: select the **UserMapping** table in the role and set its table permission to **None**
-6. Save and close Tabular Editor — changes apply immediately to the open model in Desktop
-7. Test with **Modeling → View as → North Region** — the `Unit Cost` column and **UserMapping** table should no longer appear in the field list
-8. Discuss the key difference: **RLS hides rows** (data is filtered but columns remain visible); **OLS hides structure** (the field name itself is invisible regardless of filter context)
+8. Go to the **Report** view, select Page 1, and verify only Michael Blythe's data is visible across all visuals for the Dynamic RLS role
+
+9. Exit the role view by selecting **Stop viewing** to return to normal mode
+
+## Task 3: Apply Object Level Security with Tabular Editor
+
+1. In Power BI Desktop, select **Transform data** to open the Power Query Editor.
+
+2. Rename the query `Salesperson (Performance)` to `Performance`
+
+3. Select **Close & Apply** to close the Power Query Editor and apply the changes.
+
+4. In Power BI Desktop, go to **TMDL** in the left pane to go to the Tabular Editor.
+
+5. In Tabular Editor, enter the following formula:
+    ```
+    createOrReplace  
+        role UPN
+            modelPermission: read
+
+            tablePermission Salesperson = Salesperson[UPN] = USERPRINCIPALNAME()
+            tablePermission Performance = Performance[UPN] = USERPRINCIPALNAME()
+
+            tablePermission Sales
+                columnPermission Cost
+                    metadataPermission: none
+                columnPermission 'Cost Price'
+                    metadataPermission: none
+    ```
+
+6. Select **Apply** to apply the changes in Tabular Editor.
+
+7. Go to the Model view and select **View as** to test the UPN role with Object Level Security applied.
+    - Select Other user and enter a sample email: `michael-blythe@adventureworks.com`
+    - Select UPN
+    - Click **OK** to apply the role
+
+8. Go to the **Report** view, select Page 1, and verify that the first table shows an issue. Verify that the second table works correctly and shows only the users data.
+
+9. Select **See details** to view the specific issue caused by Object Level Security in the first table. The error indicates that the user does not have access to the (Sales) Profit, and (Sales) Profit Margin. 
+
+10. Go to the Data section of the Report view and verify that the sensitive columns are hidden for the UPN role.
+
+11. Exit the role view by selecting **Stop viewing** to return to normal mode.
+
+12. Verify that the Table now shows the data correctly for the user after exiting the role view and that the Profit and Profit Margin columns are visible again.
+
+## Task 4: Assign Users to Roles in the Power BI Service
+
+1. Go to the Power Query Editor in Power BI Desktop.
+
+2. Select the Performance query.
+
+3. Right-click the UPN column header to edit it.
+
+3. Select **Replace Values**.
+
+4. Value to Find: rachel-valdez@adventureworks.com
+
+5. Replace With: the new email you want (select a colleague or test account).
+
+6. Click OK then select Close & Apply.
+
+7. Publish the report to a shared workspace in the Power BI Service
+
+8. Navigate to the **dataset → Security** in the Service
+
+9. Assign colleagues or test accounts to the `NW Region` and `SW Region` static roles
+
+10. Discuss: with dynamic RLS, no manual role assignment is needed per user — the DAX expression handles it automatically
 
 ---
 
@@ -451,9 +534,11 @@ By completing this lab, you will gain hands-on experience with the following ski
 
 ✅ **Task 2**: Created a dynamic RLS role using `USERPRINCIPALNAME()` and a UserMapping table
 
-✅ **Task 3**: Assigned users to static roles in the Power BI Service
+✅ **Task 3**: Used Tabular Editor to hide a sensitive column and a table from a role with Object Level Security
 
-✅ **Task 4**: Used Tabular Editor to hide a sensitive column and a table from a role with Object Level Security
+✅ **Task 4**: Assigned users to roles in the Power BI Service
+
+
 
 ### Key Concepts You Practised
 
@@ -461,15 +546,11 @@ By completing this lab, you will gain hands-on experience with the following ski
 |---|---|---|
 | Static row-level security | Task 1 | [Row-level security in Power BI Desktop](https://learn.microsoft.com/power-bi/enterprise/service-admin-rls) |
 | Dynamic RLS with `USERPRINCIPALNAME()` | Task 2 | [Dynamic row-level security](https://learn.microsoft.com/power-bi/guidance/rls-guidance) |
-| Role assignment in the Service | Task 3 | [Row-level security in Power BI Desktop](https://learn.microsoft.com/power-bi/enterprise/service-admin-rls) |
-| Object Level Security (OLS) | Task 4 | [Dynamic row-level security](https://learn.microsoft.com/power-bi/guidance/rls-guidance) |
+| Object Level Security (OLS) | Task 3 | [Object-level security in Power BI](https://learn.microsoft.com/power-bi/enterprise/service-admin-ols) |
+| Role assignment in the Service | Task 4 | [Row-level security in Power BI Desktop](https://learn.microsoft.com/power-bi/enterprise/service-admin-rls) |
 
 RLS and OLS are complementary: use OLS to restrict sensitive columns and tables, RLS to filter sensitive rows. Always test both before publishing; untested security can expose or incorrectly restrict data.
 
-### Recommended References
-
-- [Row-level security in Power BI Desktop](https://learn.microsoft.com/power-bi/enterprise/service-admin-rls)
-- [Dynamic row-level security with USERPRINCIPALNAME](https://learn.microsoft.com/power-bi/guidance/rls-guidance)
 
 ---
 
