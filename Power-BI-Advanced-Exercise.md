@@ -567,8 +567,6 @@ RLS and OLS are complementary: use OLS to restrict sensitive columns and tables,
 
 # Lab C: Version Control with PBIP & Git Integration
 
-> **Access requirements:** Tasks 1–5 can be completed locally with Power BI Desktop, Git, and VS Code. Task 4 includes a GitHub pull-request path and a local-only alternative. Task 6 requires a capacity-backed workspace, workspace Admin access, an approved GitHub connection, and tenant settings permitting Git integration and GitHub synchronisation. PPU alone does not enable workspace Git integration.
-
 ## Lab Introduction
 
 In this lab, you will save a Power BI report as a Power BI Project (PBIP), track its report and semantic model definitions in Git, and review changes before merging them. You will also practise reverting a change without deleting history. Where capacity is available, you will connect a development workspace to the repository and verify changes in both directions.
@@ -585,8 +583,6 @@ This lab will guide you through the following tasks:
 ## Lab Scenario
 
 Your team currently shares files named `AdvancedSalesReport_v2.pbix` and `AdvancedSalesReport_FINAL.pbix`. It is difficult to tell which version is current or whether a change affects a visual, a measure, or security. You will replace filename-based versioning with a Git history of readable project definitions. Lab D then builds on this foundation by promoting approved content through deployment stages.
-
-Use only the supplied AdventureWorks sample or a sanitised copy. If you completed Lab B with real colleagues' email addresses, replace those values with fictitious sample identities before creating this repository. Do not commit credentials, tokens, confidential source details, or personal data.
 
 ## Architecture Overview
 
@@ -631,23 +627,26 @@ By completing this lab, you will gain hands-on experience with the following ski
 
 ## Task 1: Save the Report as a Power BI Project
 
-1. Open [AdvancedSalesReport.pbix](./Power-BI-Advanced-Ref/PBIX/AdvancedSalesReport.pbix), or your sanitised copy from the previous labs, in Power BI Desktop.
+1. Open [AdvancedSalesReport.pbix](./Power-BI-Advanced-Ref/PBIX/AdvancedSalesReport.pbix), or your copy from the previous labs, in Power BI Desktop.
+
 2. Note the current Sales Overview page title, the **Total Sales** measure's description, and a displayed sales total. These are your baseline checks.
-3. Select **File → Save as** and choose **Power BI Project (.pbip)**. Use the name `AdvancedSalesReport` in a short, writable folder outside this bootcamp repository and outside OneDrive/SharePoint, for example `C:\PowerBILabs\SalesVersionControl`. If the file type is unavailable, check your Desktop build's preview options for the PBIP save feature and restart if required, or update Desktop.
+
+3. Select **File → Save as → Browse this device** and choose **Power BI project files (.pbip)**. Save the file in your local drive under a new folder called `SalesVersionControl`. 
+
 4. In File Explorer, verify that the folder contains the `.pbip` file, `.Report` and `.SemanticModel` folders, and a `.gitignore`. Keep the original PBIX as a backup outside the new project folder.
-5. Inspect the semantic model folder:
-   - With **TMDL**, the `definition` folder contains readable model files, including tables and measures.
-   - With the older **TMSL** format, the model is stored in `model.bim`. Git still works, but changes are concentrated in a larger file.
-   - Inspect the report definition files as well; their layout varies with the report format used by Desktop.
-6. Close Desktop, reopen `AdvancedSalesReport.pbip`, and verify that the report, sales total, and any existing security role definitions are still present. Do not rename or delete generated item identifiers.
+
+5. Close Power BIDesktop, reopen `AdvancedSalesReport.pbip`, and verify that the report, sales total, and any existing security role definitions are still present. Do not rename or delete anything.
 
 > **Checkpoint:** PBIP is a project structure, not just a renamed PBIX. Commit the report and semantic model definitions together; the `.pbip` pointer alone cannot reproduce the report. A fresh clone without the ignored data cache will need a data refresh.
 
 ## Task 2: Initialise Git and Commit a Baseline
 
-1. Install [Git](https://git-scm.com/downloads) and [Visual Studio Code](https://code.visualstudio.com/) if needed, then open the **SalesVersionControl** folder in VS Code.
-2. Open **Source Control → Initialise Repository**. This must be a separate lab repository, not a repository initialised inside the bootcamp checkout.
+1. Install [Visual Studio Code](https://code.visualstudio.com/) if needed, then open the **SalesVersionControl** folder in VS Code.
+
+2. Open **Source Control → Initialise Repository**. This must be a separate lab repository.
+
 3. Verify that the initial branch is named `main`; use **Git: Rename Branch** from the Command Palette if necessary.
+
 4. Open `.gitignore` and confirm it includes the default PBIP exclusions below. Add them if missing, before staging any files:
 
    ```gitignore
@@ -655,25 +654,69 @@ By completing this lab, you will gain hands-on experience with the following ski
    **/.pbi/cache.abf
    ```
 
-5. Review the untracked files. Confirm that `cache.abf`, `localSettings.json`, and the backup PBIX are not being staged. Review Power Query expressions and other metadata for secrets or private information; ignoring the data cache does not sanitise the definitions.
-6. Stage the project definitions, the `.pbip` file, and `.gitignore`, then commit with the message `Add AdventureWorks PBIP baseline`. If Git requests an author name and email, configure your approved Git author identity and retry.
-7. Verify that the commit appears in VS Code's **Source Control Graph** and the working tree is clean.
+5. Review the untracked files. Confirm that `cache.abf`, `localSettings.json`, and the backup PBIX are not being staged. 
+
+6. Open **Terminal → New Terminal** in the **SalesVersionControl** repository root and check your Git author identity:
+
+   ```shell
+   git config --get user.name
+   git config --get user.email
+   ```
+
+   If either value is missing or incorrect, run the following with your approved name and email. These settings apply only to this repository; skip them if the existing values are correct.
+
+   ```shell
+   git config --local user.name "Your Name"
+   git config --local user.email "your.name@example.com"
+   ```
+
+7. In the same terminal, run the following to stage all project files at once, respecting the `.gitignore` rules:
+
+   ```shell
+   git status --short
+   git add .
+   git diff --cached --stat
+   ```
+
+   Press **q** if the diff viewer opens—no Enter needed. Review the staged file list: include the `.pbip`, report and semantic model definitions, and `.gitignore`. Then create the local baseline commit (this saves locally; it does not push to GitHub):
+
+   ```shell
+   git commit -m "Add AdventureWorks PBIP baseline"
+   ```
+8. Verify that the commit appears in VS Code's **Source Control Graph** and the working tree is clean.
 
 > **Checkpoint:** You have one baseline commit containing the project definitions, with no cached model data or machine-specific local settings. Do not ignore the entire `.pbi` folder: some files in it are shared project metadata.
 
 ## Task 3: Make a Change on a Feature Branch and Review the Diff
 
-1. In VS Code, select the current branch in the status bar and create `feature/sales-title` from `main`.
+1. With Power BI Desktop closed, create and switch to a feature branch in the terminal so your changes stay off `main`:
+
+   ```shell
+   git switch -c feature/sales-title
+   git branch --show-current
+   ```
+
+   The second command should return `feature/sales-title`.
+
 2. Open the PBIP in Power BI Desktop and go to **Sales Overview**.
-3. Change the page's visible title to `Sales Overview - Version Control Lab`. If the page has no title text box, add one with that text instead; do not rename the report page.
+
+3. Add a text box and set its text to `Sales Overview - Version Control Lab`. Place it prominently on the top of the report page with font size of 24.
+
 4. In **Model** view, select the **Total Sales** measure and set its **Description** property to `AdventureWorks sales total reviewed in the version control lab`. Do not change its DAX expression.
-5. Save the project. In VS Code **Source Control**, open the changed files to view the before-and-after diff:
+
+5. Save the file and close Power BI Desktop.
+
+6. In VS Code **Source Control**, open the changed files to view the before-and-after diff:
    - Locate the title change in the report definition.
-   - Locate the description change in the semantic model's TMDL files or `model.bim`.
-   - Review any additional Desktop-generated changes; do not assume that every changed file is part of the intended edit.
-6. Confirm the displayed sales total is unchanged. If unrelated changes appear, investigate them before committing.
-7. Stage the reviewed changes and commit with the message `Update Sales Overview title and measure description`.
-8. Save and close Power BI Desktop before switching branches or pulling changes in the following tasks, so an open session cannot overwrite the files you are reviewing.
+   - Locate the description change in the semantic model's TMDL files.
+   - Review any additional Desktop-generated changes
+
+7. Stage the reviewed changes and commit them in the terminal:
+
+   ```shell
+   git add .
+   git commit -m "Created Sales Overview Page title and measure description"
+   ```
 
 > **Checkpoint:** The feature branch contains a reviewable report change and a model metadata change. The sales calculation still produces the baseline result.
 
@@ -681,40 +724,110 @@ By completing this lab, you will gain hands-on experience with the following ski
 
 ### GitHub pull-request path
 
-1. In VS Code, check out `main`. Use **Publish to GitHub** to create an organisation-approved **private** lab repository containing the baseline. Authenticate using the approved sign-in flow. If your organisation requires a pre-created repository, use its approved remote instead.
-2. Check out `feature/sales-title` and select **Publish Branch** to push the feature branch to the same repository.
-3. In GitHub, open a pull request from `feature/sales-title` into `main`. Confirm the diff contains the intended title and measure description changes and no secrets, local settings, or data cache.
-4. Ask a colleague or the trainer to review the change. For a solo exercise, inspect the pull request's **Files changed** tab yourself; follow any repository review requirements before merging.
-5. Merge the pull request. In VS Code, check out `main`, select **Pull**, and verify the working tree is clean. A merge on GitHub does not automatically update your local files.
-6. Reopen the PBIP and verify the new title and measure description, with the sales total unchanged. Close Desktop again before Task 5.
+1. Create an empty organisation-approved **private** repository on GitHub (no README, `.gitignore`, or license), then copy its URL. In the terminal, switch to `main`, connect the remote, and push the baseline:
 
-### Local-only alternative
+   ```shell
+   git switch main
+   git remote add origin <repository-url>
+   git push -u origin main
+   ```
 
-If an approved remote is unavailable, keep Desktop closed, check out `main` in VS Code, run **Git: Merge Branch**, and select `feature/sales-title`. Reopen the PBIP and perform the same checks as step 6 above. This practises branching and merging, but does not replace a hosted pull-request review.
+2. Push the feature branch to the same repository:
+
+   ```shell
+   git push -u origin feature/sales-title
+   ```
+
+3. In GitHub, open the repository's **Pull requests** tab and select **Compare & pull request** in the banner for `feature/sales-title`. If the banner is not shown, select **New pull request** and choose the same branches.
+   - Confirm **base** is `main` and **compare** is `feature/sales-title`.
+   - Enter the title `Create Sales Overview title and measure description` and select **Create pull request**.
+
+4. Open the **Files changed** tab. Confirm the diff contains the intended title and measure description changes and no secrets, local settings, or data cache.
+
+5. Merge the pull request on GitHub: Go to the Conversation tab, select **Merge pull request**, then **Confirm merge**. 
+
+6. Update your local files in VS Code. A merge on GitHub does not automatically update your local files. In the terminal, run:
+
+   ```shell
+   git switch main
+   git pull
+   git status
+   ```
+
+   `git status` should report a clean working tree.
+
+7. Reopen the PBIP and verify the new title and measure description, with the sales total unchanged. Close Desktop again before Task 5.
 
 > **Checkpoint:** `main` contains the approved change, and you have verified the merged project in Power BI Desktop. Fabric also supports Azure DevOps repositories; the hosted steps here use GitHub consistently to keep the exercise focused.
 
 ## Task 5: Revert a Change Without Deleting History
 
-1. With Desktop closed, a clean working tree, and the updated `main` checked out, create a branch named `revert/sales-title`.
-2. In VS Code's terminal, run:
+1. With Desktop closed and a clean working tree, create a branch named `revert/sales-title` from the updated `main`:
 
    ```shell
-   git log --oneline -5
+   git switch main
+   git pull
+   git switch -c revert/sales-title
    ```
 
-3. Identify the **non-merge commit on `main`** that introduced the title and description changes. For a squash-merged pull request, use the squash commit now on `main`, not the original feature-branch commit.
-4. Replace the placeholder below with that commit's actual hash, then run:
+2. List recent commits:
+
+   ```shell
+   git --no-pager log --oneline -5
+   ```
+
+3. In the `git log` output from step 2, find the commit that made your title and description changes. Each line starts with a short commit hash followed by its message. Skip the line that starts with **Merge pull request**, which only records the pull request merge, and choose the line with the message you committed in Task 3. Copy that line's hash (the first 7 characters).
+
+   For example, in this output the commit to revert is `6e4e743`:
+
+   ```text
+   63a27a9 (HEAD -> revert/sales-title, origin/main, main) Merge pull request #1 from <user>/feature/sales-title
+   6e4e743 (origin/feature/sales-title, feature/sales-title) Update Sales Overview title and measure description
+   94bc170 Add AdventureWorks PBIP baseline
+   ```
+
+   Your hashes will differ. If you used **Squash and merge**, there is no separate merge line: choose the top commit that has your change.
+
+4. Run `git revert`, replacing `<change-commit-sha>` with the hash you copied in step 3. For the example above, the command is `git revert --no-edit 6e4e743`:
 
    ```shell
    git revert --no-edit <change-commit-sha>
    ```
 
-   If Git reports a conflict, stop and review it with the trainer; do not discard files or use a hard reset to bypass the conflict.
+   Git creates a new commit that undoes that change. If Git reports a conflict, stop and review it with the trainer; do not discard files or use a hard reset to bypass the conflict.
 
-5. Inspect the new revert commit and reopen the PBIP. Verify the title and measure description match the baseline from Task 1 (or the added title text box is gone), and the sales total remains unchanged.
-6. Close Desktop. Publish `revert/sales-title` and merge it into `main` through another pull request using the review process in Task 4. For the local-only alternative, check out `main` and use **Git: Merge Branch** to merge `revert/sales-title` (not the original feature branch). Return to `main` and pull if using a remote.
-7. Verify that history contains both the original change and its revert, and that the working tree is clean.
+5. Inspect the new revert commit, then reopen the PBIP. Verify the title and measure description match the baseline from Task 1 (or the added title text box is gone), and the sales total remains unchanged.
+
+   ```shell
+   git --no-pager show --stat HEAD
+   ```
+
+6. Close Power BI Desktop, then push the revert branch to GitHub. The revert commit exists only on your computer until you push it, and `main` is unchanged:
+
+   ```shell
+   git push -u origin revert/sales-title
+   ```
+
+7. In GitHub, open the repository's **Pull requests** tab and select **Compare & pull request** in the banner for `revert/sales-title`. If the banner is not shown, select **New pull request** and choose the same branches.
+   - Confirm **base** is `main` and **compare** is `revert/sales-title`.
+   - Enter the title `Revert Sales Overview title and measure description` and select **Create pull request**.
+   - Open the **Files changed** tab and confirm the diff reverses your Task 3 changes and contains nothing else.
+
+8. Merge the pull request on GitHub: go to the **Conversation** tab, select **Merge pull request**, then **Confirm merge**. Follow any repository review requirements before merging. This is the step that puts the revert on `main`.
+
+9. Update your local files. A merge on GitHub does not automatically update your computer. In the terminal, run:
+
+   ```shell
+   git switch main
+   git pull
+   ```
+
+10. Verify that history contains both the original change and its revert, and that the working tree is clean:
+
+    ```shell
+    git --no-pager log --oneline -5
+    git status
+    ```
 
 > **Checkpoint:** Recovery created a new commit rather than erasing history. Reverting definitions does not roll back source data, refreshes, permissions, or other service-side configuration.
 
