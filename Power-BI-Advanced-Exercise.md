@@ -493,7 +493,7 @@ By completing this lab, you will gain hands-on experience with the following ski
     - Select UPN
     - Click **OK** to apply the role
 
-8. Go to the **Report** view, select Page 1, and verify that the first table shows an issue. Verify that the second table works correctly and shows only the users data.
+8. Go to the **Report** view, select Page 1, and verify that the first table shows an issue. Verify that the second table works correctly and shows only the user's data.
 
 9. Select **See details** to view the specific issue caused by Object Level Security in the first table. The error indicates that the user does not have access to the (Sales) Profit, and (Sales) Profit Margin. 
 
@@ -519,19 +519,19 @@ By completing this lab, you will gain hands-on experience with the following ski
 
 6. Click OK then select Close & Apply.
 
-7. Create a workspace in Power BI and provide the colleagues or test accounts Viewer access to it.
+7. Create a workspace in Power BI and provide the colleague or the test account Viewer access.
 
 8. Publish the report to the shared workspace in the Power BI Service
 
 9. Navigate to the **Security** settings of the semantic model in the Power BI Service
 
-10. Assign colleagues or test accounts to the different roles:
+10. Assign colleague or the test account to the different roles:
     - No role assigned
     - `NW Region` and `SW Region`
     - Dynamic RLS
-    - UPN role 
+    - UPN 
 
-11. Verify that the users have the correct access according to the roles assigned.
+11. Verify that the user has the correct access according to the roles assigned.
 
 ---
 
@@ -553,7 +553,7 @@ By completing this lab, you will gain hands-on experience with the following ski
 
 | Concept | Where it appeared | Learn reference |
 |---|---|---|
-| Static row-level security | Task 1 | [Row-level security in Power BI Desktop](https://learn.microsoft.com/power-bi/enterprise/service-admin-rls) |
+| Static row-level security | Task 1 | [Secure data access in Power BI](https://learn.microsoft.com/en-us/training/modules/row-level-security-power-bi/) |
 | Dynamic RLS with `USERPRINCIPALNAME()` | Task 2 | [Dynamic row-level security](https://learn.microsoft.com/power-bi/guidance/rls-guidance) |
 | Object Level Security (OLS) | Task 3 | [Object-level security in Power BI](https://learn.microsoft.com/power-bi/enterprise/service-admin-ols) |
 | Role assignment in the Service | Task 4 | [Row-level security in Power BI Desktop](https://learn.microsoft.com/power-bi/enterprise/service-admin-rls) |
