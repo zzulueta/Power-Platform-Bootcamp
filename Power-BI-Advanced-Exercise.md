@@ -839,10 +839,10 @@ By completing this lab, you will gain hands-on experience with the following ski
     - Go to the [GitHub Personal Access Tokens page](https://github.com/settings/personal-access-tokens)
     - Select **Fine-grained tokens** in the left-hand menu.
     - Select **Generate new token**, provide the following:
-        Token name: Sales Dev PAT
-        Expiration: Select an appropriate expiration
-        Repository access: Select the repository containing the project definitions
-        Permissions: Contents: Read and write
+        - Token name: Sales Dev PAT
+        - Expiration: Select an appropriate expiration
+        - Repository access: Select the repository containing the project definitions
+        - Permissions: Contents: Read and write
     - Select **Generate token** to create the PAT.
     - Select **Generate token** again.
     - Copy the generated token and store it securely; you will need it to connect the workspace to Git.
