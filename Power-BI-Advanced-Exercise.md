@@ -7,7 +7,7 @@
 
 ## Lab Introduction
 
-These exercises accompany the Power BI Advanced training session. Each lab can be completed independently or in sequence and builds on a shared `AdvancedSalesReport.pbix` file covering performance tuning, security, governance, and AI-assisted analysis.
+These exercises accompany the Power BI Advanced training session. Each lab can be completed independently or in sequence and builds on a shared file covering performance tuning, security, governance, and AI-assisted analysis.
 
 This set of exercises covers the following labs:
 
@@ -357,12 +357,12 @@ This lab will guide you through the following tasks:
 
 - Create static RLS roles filtered by region
 - Create a dynamic RLS role using `USERPRINCIPALNAME()`
-- Assign users to static roles in the Power BI Service
-- Hide a column and a table from a role using Object Level Security
+- Create a role that applies dynamic RLS role using `USERPRINCIPALNAME()` and hides a column using Object Level Security
+- Assign users to different roles in the Power BI Service
 
 ## Lab Scenario
 
-In enterprise Power BI deployments, different users should only see data relevant to their role — a regional manager should see only their region's data, not the entire company's. Row-Level Security (RLS) enforces this at the data model level, regardless of which visual or page the user views.
+In enterprise Power BI deployments, different users should only see data relevant to their role — a regional manager should see only their region's data, not the entire company's. Row-Level Security (RLS) enforces this at the data model level, regardless of which visual or page the user views. In addition, Object Level Security (OLS) allows you to hide specific columns or tables from certain roles, providing an extra layer of data protection.
 
 ## Architecture Overview
 
@@ -375,19 +375,22 @@ AdvancedSalesReport.pbix (Power BI Desktop)
 │   ├── NW Region  → Region[Region] = "Northwest"
 │   └── SW Region  → Region[Region] = "Southwest"
 │
-├── Dynamic Role
-│   └── Dynamic RLS → UserMapping[UserEmail] = USERPRINCIPALNAME()
-│         └── Relationship: UserMapping[Region] → Sales[Region]
+├── Dynamic RLS Role
+│   └── Dynamic RLS
+│         └── Performance[UPN] = USERPRINCIPALNAME()
+│         └── Salesperson[UPN] = USERPRINCIPALNAME()
 │
-Tabular Editor 
-└── Roles → NW Region
-      ├── Sales[Unit Cost] → OLS Permission: None    (column hidden)
-      └── UserMapping table → Permission: None        (table hidden)
+├── UPN Role
+│   └── Dynamic RLS
+│         └── Performance[UPN] = USERPRINCIPALNAME()
+│         └── Salesperson[UPN] = USERPRINCIPALNAME()
+│   └── No access to Sales[Cost] and Sales[Cost Price] (column hidden)
+│
 
                     ↓ (Publish)
 
-Power BI Service — Dataset → Security
-└── Assign users/test accounts to NW Region / SW Region roles
+Power BI Service — Semantic Model → Security
+└── Assign users/test accounts to roles
 ```
 
 ## Job Skills
