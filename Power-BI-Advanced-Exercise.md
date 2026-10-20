@@ -16,7 +16,7 @@ This set of exercises covers the following labs:
 - **Lab C**: Version Control with PBIP & Git Integration
 - **Lab D**: Deployment Pipelines & Report Governance
 - **Lab E**: Sharing Semantic Models
-- **Lab F**: AI Visuals & Copilot Capabilities
+- **Lab F**: AI Visuals & Preparing a Semantic Model for AI
 
 ---
 
@@ -28,7 +28,7 @@ This set of exercises covers the following labs:
 - **Lab C** (Version Control) requires **Git** and **Visual Studio Code** for the local exercises; no Fabric capacity is needed. The pull-request exercise uses an organisation-approved private **GitHub** repository. Workspace Git integration additionally requires a **Fabric capacity** (or an existing supported Power BI Premium capacity), workspace **Admin** access, repository access, and the relevant tenant settings enabled — **PPU alone is not sufficient**; use a trainer-led demo for this task if unavailable
 - **Lab D** (Deployment Pipelines) requires workspaces assigned to a **Fabric capacity (any F SKU, including F2)** or a **PPU** workspace — trainer-led demo if neither is available
 - **Lab E** (Sharing Semantic Models) requires the **Sales Production** workspace from Lab D (or any workspace containing the published semantic model), **Admin or Member** access to that workspace, and a **second user or test account** with a Power BI Pro or PPU license whose email matches the UPN value you set in Lab B, Task 4 (the `UPN` role is used in Lab E). Free-license users can only build on a shared model hosted on **Fabric F64 or higher** (or Premium) capacity
-- **Lab F** (Copilot) requires **any Fabric F SKU (F2+)** or **PPU** — trainer-led demo if unavailable; built-in AI visuals (anomaly detection, forecasting, Smart Narrative, Q&A) work for all participants in Power BI Desktop
+- **Lab F** (AI Visuals & Preparing a Semantic Model for AI) uses the `AdvancedSalesReport.pbix` file in Power BI Desktop. The decomposition tree, key influencers, and custom smart narrative (Tasks 1–3) work for all participants. Testing the **Prep data for AI** changes with **Copilot** (Tasks 4–6) requires a Copilot-enabled workspace on **any Fabric F SKU (F2+)** or **PPU** — trainer-led demo if unavailable. Marking the model **Approved for Copilot** (Task 7) requires publishing to the Power BI service
 
 ---
 
@@ -1217,41 +1217,54 @@ Security defined on the shared model applies to everyone who builds on it.
 
 ---
 
-# Lab F: AI Visuals & Copilot Capabilities
+# Lab F: AI Visuals & Preparing a Semantic Model for AI
 
-> **License note:** Built-in AI visuals (anomaly detection, forecasting, Smart Narrative, Q&A) are available in Power BI Desktop and Service to all participants. Copilot requires **any Fabric F SKU (F2+) or PPU** — trainer-led demo if unavailable.
+> **License note:** The decomposition tree, key influencers, and custom-mode smart narrative are available in Power BI Desktop and the Power BI service to all participants. The Copilot mode of the Narrative visual, and testing **Prep data for AI** with Copilot, require a Copilot-enabled workspace on **any Fabric F SKU (F2+) or PPU** — trainer-led demo if unavailable.
+>
+> **Lab A dependency (optional):** If you completed Lab A, Task 6, your model contains the `Slow Measure` and `Optimized Measure` measures. Task 5 uses them as examples of fields to keep away from Copilot. If you skipped it, ignore those two names.
 
 ## Lab Introduction
 
-In this lab, you will use Power BI's built-in AI visuals to detect anomalies and forecast trends, then use Copilot to summarise a report and generate a new report page from natural language prompts.
+In this lab, you use Power BI's AI visuals to explore the AdventureWorks sales model: a **decomposition tree** to drill into sales and find root causes, **key influencers** to find what drives sales, and a **smart narrative** to summarize the page in plain language. You then prepare the same semantic model for AI by using **Prep data for AI** (a simplified AI data schema, AI instructions, and verified answers), test the result with Copilot against a baseline, and mark the model **Approved for Copilot**.
 
 This lab will guide you through the following tasks:
 
-- Enable anomaly detection and forecasting on a line chart, and add Smart Narrative and Q&A visuals
-- Use Copilot in the Power BI Service and Desktop to summarise and generate report content
+- Break down Total Sales across several dimensions with a decomposition tree and AI splits
+- Identify the factors that drive sales with the key influencers visual
+- Summarize the page and individual visuals with a custom smart narrative
+- Capture a Copilot baseline on the unprepared model
+- Prepare the semantic model for AI: simplify the data schema, add AI instructions, and set verified answers
+- Test the prepared model with Copilot and compare it to the baseline
+- Publish the model and mark it as Approved for Copilot
 
 ## Lab Scenario
 
-Power BI's built-in AI capabilities allow report consumers to discover insights they might otherwise miss — detecting unexpected spikes, forecasting future trends, and asking questions in plain English. Copilot further accelerates report creation and exploration by generating summaries and visuals from natural language prompts.
+Your sales leaders keep asking the same "why" questions: *Where do our sales come from? What drives a large sale? Can the report just tell me what changed?* You will add AI visuals to the AdventureWorks report so consumers can answer these questions themselves. Because the same semantic model will also back Copilot, you then clean it up so that Copilot uses the right measures, ignores technical fields, and gives consistent answers to the questions people ask most.
 
 ## Architecture Overview
 
-```
-AI Visuals & Copilot
-=======================
+```text
+AdvancedSalesReport.pbix  -> new page: AI Insights
+|-- Decomposition tree   Analyze: Total Sales   Explain by: Category, Business Type, Region, Year
+|-- Key influencers      Analyze: Sales Amount  Explain by: Category, Business Type, Country-Region, Channel
+|-- Narrative (Custom)   Page summary + dynamic value + visual summary
+`-- Supporting visuals   Line chart (Total Sales by Year) and bar chart (Total Sales by Region)
 
-AdvancedSalesReport.pbix — Line Chart (Sales Amount over time)
-├── Analytics pane → Anomaly detection (sensitivity)
-├── Analytics pane → Forecast (3-month horizon + confidence interval)
-├── Smart Narrative visual → auto-generated page summary
-└── Q&A visual → natural language question → auto-generated visual
+        |
+        v
+Prep data for AI (saved on the semantic model, not the report)
+|-- Simplify data schema   keep business-friendly fields, remove keys / UPN / cost / test measures
+|-- Add AI instructions    metrics, dates, terminology, ambiguity rules
+`-- Verified answers       trigger phrases mapped to approved visuals
 
-                    ↓ (Publish to Fabric/Premium workspace)
+        |
+        v
+Copilot pane in Desktop (skill picker: Answer questions about the data)
+Baseline prompts (before)  ->  same prompts (after)  ->  compare
 
-Power BI Service — Copilot
-├── "Summarise this report page"
-├── "What are the top-performing regions?"
-└── Power BI Desktop Copilot → "Create a report page showing sales trends by category"
+        |
+        v  Publish
+Power BI service -> semantic model Settings -> Approved for Copilot
 ```
 
 ## Job Skills
@@ -1260,27 +1273,287 @@ By completing this lab, you will gain hands-on experience with the following ski
 
 | Task | Description |
 |---|---|
-| Task 1 | Use built-in AI visuals in Power BI Desktop |
-| Task 2 | Use Copilot in the Power BI Service and Desktop |
+| Task 1 | Explore Total Sales with a decomposition tree and AI splits |
+| Task 2 | Find what drives sales with key influencers |
+| Task 3 | Summarize the page and visuals with a smart narrative |
+| Task 4 | Capture a Copilot baseline on the unprepared model |
+| Task 5 | Prepare the semantic model for AI |
+| Task 6 | Test the prepared model and compare with the baseline |
+| Task 7 | Publish and mark the model as Approved for Copilot |
+
+> **Field names:** The steps use the AdventureWorks tables in `AdvancedSalesReport.pbix` (`Sales`, `Date`, `Product`, `Reseller`, `Region`, `Salesperson`). If a column in your copy has a slightly different name, use the closest equivalent. Absolute numbers will differ from any examples you see on screen.
 
 ---
 
-## Task 1: Use Built-in AI Visuals in Power BI Desktop (hands-on)
+## Task 1: Explore Total Sales with a Decomposition Tree
 
-1. Open `AdvancedSalesReport.pbix` and navigate to a page with a **Line Chart** showing Sales Amount over time
-2. With the line chart selected, go to **Add further analysis to your visual** (the analytics pane, magnifying glass icon) and enable **Anomaly detection** — adjust sensitivity and observe flagged anomalies
-3. In the same pane, enable **Forecast** — set a forecast length of 3 months and observe the projected trend and confidence interval
-4. Add a **Smart Narrative** visual (from the Visualizations pane) — Power BI auto-generates a plain-English text summary of the report page; observe how it updates as slicers are applied
-5. Add a **Q&A** visual — type natural language questions such as "total sales by region as a bar chart" and observe the auto-generated visual response
+The decomposition tree aggregates a measure and lets you drill into any dimension in any order. It is useful for ad hoc exploration and root-cause analysis.
 
-## Task 2: Use Copilot in the Power BI Service (trainer demo or hands-on with Fabric/Premium capacity)
+1. Open `AdvancedSalesReport.pbix` in Power BI Desktop. Add a new report page and rename it **AI Insights**.
 
-1. Open the published report in a **Fabric or Premium capacity** workspace
-2. Click the **Copilot** button in the report toolbar
-3. Ask Copilot to: *"Summarise this report page"* — review the generated narrative summary
-4. Ask Copilot: *"What are the top-performing regions?"* — observe the AI-driven insight extraction
-5. In Power BI Desktop with Copilot enabled, ask Copilot to *"Create a report page showing sales trends by category"* — observe the auto-generated page layout
-6. Discuss responsible use: Copilot insights should be validated before being acted on; understand what data is sent to the AI service
+2. Add a **Line chart** with `Date[Year]` on the X-axis and `Sales[Total Sales]` on the Y-axis. Sort the line chart by Ascending Year. Add a **Clustered bar chart** with `Region[Region]` on the Y-axis and `Sales[Total Sales]` on the X-axis. Resize them to the left of the page.  These give the other AI visuals something to cross-filter with and summarize.
+
+3. Select an empty area of the canvas and, from the **Visualizations** pane, select **Decomposition tree**.
+
+4. Set the two inputs:
+   - **Analyze**: `Sales[Total Sales]`. This must be a measure or an aggregate.
+   - **Explain by**: `Product[Category]`, `Reseller[Business Type]`, `Region[Region]`, `Date[Year]`, and `Salesperson[Salesperson]`.
+
+   The visual shows a single root node with the aggregated Total Sales.
+
+5. Select the **+** next to the root node and choose **Category**. The tree expands to show Total Sales by category. Select the **+** next to a category node and choose **Region** to drill further. You can drill into the fields in any order.
+
+6. Select a node from an **earlier level**. Notice that the path changes. Selecting a node on the **last level** cross-filters the other visuals on the page instead.
+
+7. Now use **AI splits**. Select the **+** next to a node and choose **High value**. The tree adds a level marked with a **light bulb**, with a dotted line pointing to the node that has the highest Total Sales. Hover over the light bulb to read the explanation, for example "Total Sales is highest when Region is …".
+
+8. Repeat with **Low value** on another node and compare the field that Power BI chooses.
+
+9. Select the decomposition tree, then open **Format visual** and find the Analysis type setting for AI splits. Switch it from **Absolute** to **Relative**, then run **High value** again. Relative mode looks for a value that stands out compared with the rest of the values in the same column, which is often more interesting than the largest absolute value. To stop using AI splits entirely, turn them off in the same formatting section.
+
+10. Select one region in the bar chart. The decomposition tree is cross-filtered and the AI splits are recalculated, so Power BI might now recommend a different field or node. Select the bar again to clear the selection.
+
+11. Hover over the header of the first level of the tree and select the **lock** icon. A locked level can't be removed or changed by report consumers, who can still explore the nodes beneath it.
+
+> **Note:** The tree supports up to 50 levels, shows the top 10 values per level, and can visualize up to 5,000 data points at a time. AI splits aren't supported in Publish to web or Power BI Report Server.
+
+> **Checkpoint:** You can drill into Total Sales by any dimension, use High value and Low value AI splits, and lock the first level of the tree.
+
+## Task 2: Find What Drives Sales with Key Influencers
+
+The key influencers visual analyzes your data, ranks the factors that matter, and displays them as key influencers. Here you ask: *what influences the value of a sales order line to be higher or lower?*
+
+1. On the **AI Insights** page, select an empty area and, from **Visualizations**, select **Key influencers**. Place it so it doesn't cover the other visuals; you can resize the decomposition tree to make room.
+
+2. Drag `Sales[Sales]` into **Analyze**. Select the drop-down arrow on the field in the well and choose **Don't summarize** so the analysis runs on each row of the Sales table rather than on a total.
+
+3. Drag these fields into **Explain by**: `Product[Category]`, `Reseller[Business Type]`, `Region[Country]`, `Salesperson[Salesperson]`, and `Date[Year]`. Leave **Expand by** empty for now.
+
+   > **Note:** Every explanatory field must be at the same level as the metric you analyze. The fields above are attributes of a sales row (many-to-one from `Sales`), so Power BI can use them directly. Fields on the "many" side, such as a count of orders, must first be aggregated to that level.
+
+4. Because Sales Amount has many unique values, it isn't meaningful to ask "what influences Sales Amount to be 1,234.56?". Open **Format visual**, find the **Analysis → Analysis type** setting, and select **Continuous**. 
+
+5. In the drop-down at the top of the visual, select **Increase**, so the question reads *What influences Sales to Increase?*
+
+6. On the **Key influencers** tab, select the top influencer in the left pane. Use the sentence above each pane to read it. The bubble shows how much the average Sales increases by (for example "$2.29K") when that condition is true. In the right pane, the blue bar is the average when the condition is true and the dotted line is the average of all the other values.
+
+7. Select the second influencer and notice that the dotted line (average) changes. 
+
+8. Select the **Only show values that are influencers** checkbox under the right-hand chart to remove values that have no effect.
+
+9. Change the question to **Decrease** and compare which fields drive lower sales.
+
+10. Select the **Top segments** tab and select **High**. Each bubble is a combination of conditions. 
+   - The higher the bubble, the higher the average Sales in the segment. 
+   - The bigger the bubble, the more rows it holds. 
+   
+   Select the first segment and read the description of which values make it up and how its average compares with the overall average.
+
+11. Return to the **Key influencers** tab. In **Format visual**, open the **Analysis → Analysis type** card and turn on **Counts**. A ring now shows how much of the data each influencer covers. A big effect that covers very little data may not be worth acting on.
+
+12. In the bar chart, select one region. Every selection reruns the analysis on that slice of data. Compare the top influencers for one region against the whole company, then clear the selection.
+
+> **Checkpoint:** You can explain what the top influencer is, how it is calculated, and the difference between the **Key influencers** and **Top segments** tabs.
+
+## Task 3: Summarize the Page and Visuals with a Smart Narrative
+
+The **Narrative** visual has two modes: **Copilot** (AI-generated text, needs a Copilot license) and **Custom** (a dynamic, editable summary). This task uses **Custom** mode, which works for everyone.
+
+1. On the **AI Insights** page, select an empty area of the canvas and, from **Visualizations**, select **Narrative**.
+
+2. If the visual opens in Copilot mode, select the **Copilot** drop-down and choose **Custom** to generate an editable summary of the visuals on the page. The text covers the trends and highest and lowest values in the line chart and the bar chart, and it can also include a sentence about the key influencers visual, such as which field contributed most to the increase in sales.
+
+   > **Note:** Custom mode doesn't summarize every visual type. Tables, matrices, and custom visuals are not summarized, and it generates up to four summaries per visual and up to 16 per page. Which visuals are summarized, and how many summaries each gets, depends on their size and position on the page, so your text might differ from a classmate's. Key influencers summaries are only available for some analyses; if you don't see one, the other summaries are unaffected.
+
+3. Add your own text to the summary and format it with the text box toolbar (font, **B**, *I*, alignment, bullets). The toolbar appears when you select the narrative visual and click inside the text.
+   - Click at the very beginning of the first sentence, press **Enter** to create two blank lines above it, then click in the top blank line and type `Sales Insights`.
+   - Select the text `Sales Insights` and select **B** (Bold) on the toolbar. Increase the font size to 14.
+
+   > **Note:** The underlined parts of the generated text are dynamic values that update with your data and filters. Type around them rather than inside them. To remove a generated sentence you don't need, select the whole sentence and delete it.
+
+4. Add a new blank line at the very end.  Select **+ Value**. Under **Data**, select `Sales[SalesOrderNumber]`, set **Summarization** to **Count (Distinct)**, name the value `OrderCount`, and select **Save**. Type `distinct orders were placed.` after it.
+
+5. Add two new blank lines at the very end. Add a second dynamic value that uses the `Total Sales` measure, and format it as Currency, name it as `TotalSales`, and select **Save**. Type `Total Sales:` before it.
+
+7. Select a region in the bar chart. The summary and your dynamic values change to reflect the selection. Clear the selection.
+
+8. Right-click the **line chart** and select **Summarize**. Notice that summarizing a single visual can produce more insights than the page summary does.
+
+9. Select the **bar chart**, open **Format visual → General**, expand **Header icons → Icons**, and set **Smart narrative** to **On**. Hover over the visual and select the **Smart narrative** icon to see an on-demand description. Unlike the narrative visual, readers can't add this text to the page.
+
+10. **Optional (Copilot required):** Add another Narrative visual, keep it in **Copilot** mode, and use the suggested prompt to generate a summary. Compare it with the custom narrative: custom mode is dynamic and repeatable, while Copilot output varies with each prompt.
+
+> Note: To enable Copilot, select the Settings gear in the top-right corner of Power BI Desktop, then choose **Options → Global → Copilot (preview)** and select a workspace with a Fabric capacity.
+
+> **Checkpoint:** The page has a custom narrative with two dynamic values that update when you select a region, and the bar chart has a smart narrative icon.
+
+## Task 4: Capture a Copilot Baseline on the Unprepared Model
+
+Before you prepare the model, record how Copilot responds to the same questions you will test again later.
+
+> **Copilot is required for Tasks 4 and 6.** To enable Copilot, select the Settings gear in the top-right corner of Power BI Desktop, then choose **Options → Global → Copilot (preview)** and select a workspace with a Fabric capacity. If Copilot isn't available, the trainer demonstrates these tasks. You can still complete Task 5.
+
+1. In Power BI Desktop, select **Copilot** on the **Home** ribbon to open the Copilot pane.
+
+2. Ask each of the following prompts, and note the answer and which fields or measures Copilot used. Use **How Copilot arrived at this** under each answer to see the details.
+   1. `What were total sales for FY2020?`
+   2. `Which region performs best?`
+   3. `Show sales by product category.`
+   4. `What is the margin by reseller business type?`
+   5. `Show sales by salesperson.`
+
+3. Record your baseline in a table like this one:
+
+   | Prompt | Measure or column Copilot used | Was it the right one? |
+   |---|---|---|
+   | 1 |  |  |
+   | 2 |  |  |
+   | 3 |  |  |
+   | 4 |  |  |
+   | 5 |  |  |
+
+> **Checkpoint:** You have a record of how Copilot answers five prompts before any preparation.
+
+## Task 5: Prepare the Semantic Model for AI
+
+**Prep data for AI** has three features that give Copilot the context it needs to reduce ambiguity: an **AI data schema**, **AI instructions**, and **verified answers**. All three are saved on the **semantic model**, not the report, so every report built on the model benefits.
+
+### Part A: Turn on Prep data for AI
+
+1. On the **Home** ribbon, select **Prep data for AI**. If the button isn't visible, go to **File → Options and settings → Options → Preview features**, select **Prep data for AI**, and restart Power BI Desktop.
+
+2. If the tabs in the dialog are disabled, select **Turn on Q&A** (Q&A must be enabled on the model for these features to work), then continue.
+
+   > **Note:** The Q&A *visual* is being retired in February 2027. The model-level Q&A setting is still required by **Prep data for AI**, and Copilot is the supported way to ask questions in natural language.
+
+### Part B: Simplify the data schema
+
+An AI data schema is a focused subset of the model that Copilot prioritizes when it answers data questions. Keep clean, business-friendly fields and remove anything that could confuse Copilot.
+
+3. In the dialog, open the **Simplify data schema** tab.
+
+4. Keep these fields selected:
+
+   | Table | Keep |
+   |---|---|
+   | `Sales` | `Total Sales`, `Sales Amount`, `Profit`, `Profit Margin`, `Sales YoY Growth`, `Order Quantity` |
+   | `Date` | `Date`, `Year`, `Month`, and any Quarter field |
+   | `Product` | `Category`, `Subcategory`, `Product` |
+   | `Reseller` | `Reseller`, `Business Type` |
+   | `Region` | `Region`, `Country-Region`, `Group` |
+   | `Salesperson` | `Salesperson` |
+
+5. Clear everything else, including:
+   - Key and ID columns such as `ResellerKey`, `ProductKey`, and `SalesOrderNumber`
+   - The `UPN` columns in `Salesperson` and `Performance`, and the whole `Performance` table
+   - `Sales[Cost]` and `Sales[Cost Price]`, which Lab B restricts with object-level security
+   - The `Slow Measure` and `Optimized Measure` test measures from Lab A, if present
+
+   > **Note:** Fields hidden in the model start unselected the first time you set a schema, but all fields appear in this pane regardless of visibility. Copilot still respects relationships, so a field on a kept table can still be filtered by a related table you removed.
+
+6. Select **Apply**.
+
+### Part C: Add AI instructions
+
+AI instructions give Copilot business context, terminology, and rules for analysis. They are saved at the model level and consumers can't see them.
+
+7. Open the **Add AI instructions** tab and enter the following text. Adjust names that don't match your model:
+
+   ```text
+   Metrics
+   - When a user asks about "sales" or "revenue" without another qualifier,
+     use [Total Sales].
+   - For margin, use [Profit Margin]. Don't average transaction-level margins.
+   - For growth or "year over year", use [Sales YoY Growth].
+
+   Dates
+   - Use 'Date'[Date], related to the order date, for all sales analysis.
+   - 'Date'[Year] holds fiscal years such as FY2019. When a user says "last year",
+     use the most recent complete fiscal year in the data, not today's date.
+
+   Terminology
+   - "Best performing" region means the region with the highest [Total Sales].
+   - "Top sellers" means the three salespeople with the highest [Total Sales].
+   - "Partner" and "dealer" mean a reseller in the 'Reseller' table.
+
+   Ambiguity
+   - If a user asks about "performance" and doesn't say which metric,
+     ask whether they mean sales, margin, or growth.
+   - Don't show UPN, email addresses, or key columns.
+   ```
+
+8. Select **Apply**.
+
+   > **Note:** Keep instructions explicit, grouped by theme, and short. Fewer focused instructions usually beat many broad ones. Instructions guide Copilot but can't guarantee a specific output, and they are limited to 10,000 characters.
+
+### Part D: Set verified answers
+
+A verified answer is a human-approved visual that predefined trigger phrases return. Copilot checks for an exact or semantically similar match to a trigger phrase before it generates its own answer.
+
+9. On the **AI Insights** page, add a **Clustered bar chart** with `Region[Region]` on the Y-axis and `Sales[Total Sales]` on the X-axis. Name it clearly with a title such as `Total Sales by Region`.
+
+10. Add `Date[Year]` to the **Filters** pane of this visual and leave it with no value selected. A filter must already exist in the report and have no specific value to be offered to users as an adjustable filter.
+
+11. Select the visual, then select **More options (…) → Set up a verified answer**.
+
+12. Add the trigger phrases `Sales by region`, `Which region sells the most?`, and `Show me total sales by region`. You can also select suggestions under **Copilot suggestions**.
+
+13. Select the **filter** icon and, under **Available to users**, select `Date[Year]`. Users can now ask for a specific year, such as *Sales by region for FY2020*, and Copilot returns this visual filtered to that year.
+
+14. Select **Apply**.
+
+15. Add a **Line chart** with `Date[Year]` on the X-axis and `Sales[Total Sales]` on the Y-axis, set up a verified answer in the same way with trigger phrases `Sales trend` and `How are sales changing over time?`, and select **Apply**.
+
+   > **Note:** Filters applied to the visual when you set up the answer are saved with it, and slicers aren't carried over. Verified answers support up to three adjustable filters.
+
+> **Checkpoint:** The model has a simplified AI data schema, a set of AI instructions, and two verified answers.
+
+## Task 6: Test the Prepared Model and Compare with the Baseline
+
+1. Close and reopen the **Copilot** pane. You must do this every time you change **Prep data for AI**.
+
+2. Make sure the skill picker still has only **Answer questions about the data** selected.
+
+3. Ask the same five prompts from Task 4 and compare the answers to your baseline table:
+   1. `What were total sales last year?` – should use `[Total Sales]` and the fiscal year logic from your instructions.
+   2. `Which region performs best?` – should use the highest `[Total Sales]` instead of asking what "best" means.
+   3. `Show sales by product category.` – should use `[Total Sales]`.
+   4. `What is the margin by reseller business type?` – should use `[Profit Margin]`.
+   5. `Show sales by salesperson email.` – Copilot shouldn't use the `UPN` field because it is no longer in the schema.
+
+4. Test the verified answers:
+   - Ask `Sales by region` and confirm Copilot returns the visual you approved and marks it as a verified answer.
+   - Ask `Sales by region for FY2020` and confirm the filter is applied.
+   - Ask `How are sales changing over time?` and confirm the line chart is returned, even though the wording differs from your trigger phrases.
+
+5. Test the schema: ask for a field you removed, such as `Show sales by ResellerKey`. Copilot shouldn't return an answer based on that field.
+
+6. Review **How Copilot arrived at this** under an answer, and use **… → Download diagnostics** on the Copilot pane to confirm the AI data schema and instructions were applied.
+
+7. Switch the skill picker to **Create new report pages** only, and ask `Create a page showing sales trends by product category`. Observe that creating a page uses the entire semantic model, so the AI data schema doesn't restrict it.
+
+8. If an answer isn't what you expected, change the instructions or schema in **Prep data for AI**, select **Apply**, close and reopen the Copilot pane, and test again. Preparing a model is iterative, and AI responses vary from run to run.
+
+> **Checkpoint:** Copilot answers are more consistent than the baseline, and the verified answers are returned for the trigger phrases.
+
+## Task 7: Publish and Mark the Model as Approved for Copilot
+
+1. Save the file and select **Publish** on the **Home** ribbon. Publish to the **Sales Production** workspace from Lab D, or to another Copilot-enabled workspace you can publish to. Replace the existing report and semantic model if prompted.
+
+2. In the Power BI service, open the workspace, select the **AdvancedSalesReport** semantic model, and confirm the **Prep data for AI** button is available on the ribbon. You can edit the AI data schema and instructions here too, and manage verified answers from this button.
+
+3. Open the semantic model's **Settings**, expand **Approved for Copilot**, select the **Approved for Copilot** box, and select **Apply**.
+
+4. Open the report and test one of the verified answers in the Copilot pane. Changes can take a few minutes to take effect and may take up to an hour (or up to 24 hours for models with many reports) to show everywhere. Saving a small change to a report can speed up the refresh for that report.
+
+5. **Trainer discussion:** Review these points:
+   - Approving a model removes the friction treatment that standalone Copilot adds to answers from unapproved models, and an admin can restrict standalone Copilot to approved items only.
+   - Only the semantic model can be marked **Approved for Copilot**. You can't mark a report, dashboard, or app.
+   - **Prep data for AI is not a security feature.** Removing a field from the AI data schema keeps Copilot from using it, but it doesn't stop anyone with Build permission from querying it. Keep using RLS and OLS (Lab B) to protect data.
+   - Validate Copilot answers before acting on them. Copilot in Power BI sends query results and metadata to Azure OpenAI, and tenant admins control whether Copilot is enabled.
+   - If you move the model through Git or deployment pipelines (Labs C and D), refresh the model in the service after deployment so the Prep data for AI changes sync.
+
+> **Checkpoint:** The model is published and approved for Copilot, and its AI data schema, instructions, and verified answers apply to every report that uses it.
 
 ---
 
@@ -1288,22 +1561,40 @@ By completing this lab, you will gain hands-on experience with the following ski
 
 ### What You Accomplished
 
-✅ **Task 1**: Enabled anomaly detection and forecasting on a line chart, and added Smart Narrative and Q&A visuals
+✅ **Task 1**: Broke down Total Sales with a decomposition tree, used High value and Low value AI splits, and locked a level
 
-✅ **Task 2**: Used Copilot in the Power BI Service and Desktop to summarise a report and generate a new report page
+✅ **Task 2**: Used key influencers to identify what drives sales up or down and reviewed the top segments
+
+✅ **Task 3**: Created a custom smart narrative with dynamic values, summarized a single visual, and enabled the smart narrative icon
+
+✅ **Task 4**: Recorded a Copilot baseline on the unprepared model
+
+✅ **Task 5**: Simplified the AI data schema, wrote AI instructions, and set verified answers
+
+✅ **Task 6**: Tested the prepared model with Copilot and compared the results with the baseline
+
+✅ **Task 7**: Published the model and marked it as Approved for Copilot
 
 ### Key Concepts You Practised
 
 | Concept | Where it appeared | Learn reference |
 |---|---|---|
-| Anomaly detection and forecasting | Task 1 | [Apply insights to explain fluctuations in visuals](https://learn.microsoft.com/power-bi/create-reports/desktop-insights) |
-| Smart Narrative and Q&A | Task 1 | [AI visuals in Power BI](https://learn.microsoft.com/power-bi/visuals/power-bi-visualization-anomaly-detection) |
-| Copilot in the Power BI Service and Desktop | Task 2 | [Overview of Copilot for Power BI](https://learn.microsoft.com/power-bi/create-reports/copilot-introduction) |
+| Decomposition tree and AI splits | Task 1 | [Create and view decomposition tree visuals in Power BI](https://learn.microsoft.com/power-bi/visuals/power-bi-visualization-decomposition-tree) |
+| Key influencers and top segments | Task 2 | [Create key influencers visualizations](https://learn.microsoft.com/power-bi/visuals/power-bi-visualization-influencers?tabs=powerbi-desktop) |
+| Custom smart narrative and dynamic values | Task 3 | [Create smart narrative summaries](https://learn.microsoft.com/power-bi/visuals/power-bi-visualization-smart-narrative) |
+| Prep data for AI, skill picker, and Approved for Copilot | Tasks 4–7 | [Prepare your data for AI to improve Copilot results](https://learn.microsoft.com/power-bi/create-reports/copilot-prepare-data-ai) |
+| AI data schema | Task 5 | [Prepare your data for AI: AI data schemas](https://learn.microsoft.com/power-bi/create-reports/copilot-prepare-data-ai-data-schema) |
+| AI instructions | Task 5 | [Prepare your data for AI: AI instructions](https://learn.microsoft.com/power-bi/create-reports/copilot-prepare-data-ai-instructions) |
+| Verified answers | Task 5, 6 | [Prepare your data for AI: Verified answers](https://learn.microsoft.com/power-bi/create-reports/copilot-prepare-data-ai-verified-answers) |
+| Lab template | Tasks 4–7 | [Prepare a semantic model for AI (mslearn-fabric)](https://microsoftlearning.github.io/mslearn-fabric/Instructions/Labs/30-prepare-model-ai.html) |
 
-Copilot accelerates report creation but requires review — AI-generated insights can reflect biases or errors in the underlying data. Copilot in Power BI sends query results (not raw data) to Azure OpenAI; tenant admins control Copilot enablement.
+AI visuals show patterns; they don't prove causes. Treat key influencers and AI splits as leads to investigate. Copilot accelerates analysis but requires review, because AI-generated answers can reflect errors or bias in the underlying data and aren't identical on every run.
 
 ### Recommended References
 
-- [Apply insights to explain fluctuations in visuals](https://learn.microsoft.com/power-bi/create-reports/desktop-insights)
+- [Create and view decomposition tree visuals in Power BI](https://learn.microsoft.com/power-bi/visuals/power-bi-visualization-decomposition-tree)
+- [Create key influencers visualizations](https://learn.microsoft.com/power-bi/visuals/power-bi-visualization-influencers?tabs=powerbi-desktop)
+- [Create smart narrative summaries](https://learn.microsoft.com/power-bi/visuals/power-bi-visualization-smart-narrative)
+- [Prepare your data for AI to improve Copilot results](https://learn.microsoft.com/power-bi/create-reports/copilot-prepare-data-ai)
+- [Prepare a semantic model for AI (mslearn-fabric)](https://microsoftlearning.github.io/mslearn-fabric/Instructions/Labs/30-prepare-model-ai.html)
 - [Overview of Copilot for Power BI](https://learn.microsoft.com/power-bi/create-reports/copilot-introduction)
-- [AI visuals in Power BI](https://learn.microsoft.com/power-bi/visuals/power-bi-visualization-anomaly-detection)
