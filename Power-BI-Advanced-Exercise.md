@@ -7,14 +7,15 @@
 
 ## Lab Introduction
 
-These exercises accompany the Power BI Advanced training session. Each lab can be completed independently or in sequence and builds on a shared file covering performance tuning, security, governance, and AI-assisted analysis.
+These exercises accompany the Power BI Advanced training session. Each lab can be completed independently or in sequence and builds on a shared file covering performance tuning, security, version control, deployment, governance, and AI-assisted analysis.
 
 This set of exercises covers the following labs:
 
 - **Lab A**: Performance Tuning & DAX Optimisation
 - **Lab B**: Row-Level Security, Dynamic RLS & Object Level Security
-- **Lab C**: Deployment Pipelines & Report Governance
-- **Lab D**: AI Visuals & Copilot Capabilities
+- **Lab C**: Version Control with PBIP & Git Integration
+- **Lab D**: Deployment Pipelines & Report Governance
+- **Lab E**: AI Visuals & Copilot Capabilities
 
 ---
 
@@ -23,7 +24,8 @@ This set of exercises covers the following labs:
 - **Power BI Pro** license assigned to your account and the ability to sign in at [app.powerbi.com](https://app.powerbi.com)
 - **Power BI Desktop** installed, November 2025 or newer ([aka.ms/pbidesktopstore](https://aka.ms/pbidesktopstore)) — UI elements may vary slightly depending on your version
 - A shared workspace in the Power BI Service that you can publish to
-- **Lab C** (Deployment Pipelines) requires workspaces assigned to a **Fabric capacity (any F SKU, including F2)** or a **PPU** workspace — trainer-led demo if neither is available
+- **Lab C** (Version Control) requires **Git** and **Visual Studio Code** for the local exercises; no Fabric capacity is needed. The pull-request exercise uses an organisation-approved private **GitHub** repository. Workspace Git integration additionally requires a **Fabric capacity** (or an existing supported Power BI Premium capacity), workspace **Admin** access, repository access, and the relevant tenant settings enabled — **PPU alone is not sufficient**; use a trainer-led demo for this task if unavailable
+- **Lab D** (Deployment Pipelines) requires workspaces assigned to a **Fabric capacity (any F SKU, including F2)** or a **PPU** workspace — trainer-led demo if neither is available
 - **Lab E** (Copilot) requires **any Fabric F SKU (F2+)** or **PPU** — trainer-led demo if unavailable; built-in AI visuals (anomaly detection, forecasting, Smart Narrative, Q&A) work for all participants in Power BI Desktop
 
 ---
@@ -563,7 +565,215 @@ RLS and OLS are complementary: use OLS to restrict sensitive columns and tables,
 
 ---
 
-# Lab C: Deployment Pipelines & Report Governance
+# Lab C: Version Control with PBIP & Git Integration
+
+> **Access requirements:** Tasks 1–5 can be completed locally with Power BI Desktop, Git, and VS Code. Task 4 includes a GitHub pull-request path and a local-only alternative. Task 6 requires a capacity-backed workspace, workspace Admin access, an approved GitHub connection, and tenant settings permitting Git integration and GitHub synchronisation. PPU alone does not enable workspace Git integration.
+
+## Lab Introduction
+
+In this lab, you will save a Power BI report as a Power BI Project (PBIP), track its report and semantic model definitions in Git, and review changes before merging them. You will also practise reverting a change without deleting history. Where capacity is available, you will connect a development workspace to the repository and verify changes in both directions.
+
+This lab will guide you through the following tasks:
+
+- Save a PBIX as a PBIP and inspect its text-based project structure
+- Create a local Git repository and commit a clean baseline
+- Make an isolated change on a feature branch and inspect the diff
+- Review and merge changes through a pull request, or merge locally
+- Revert a committed change while preserving history
+- Connect a development workspace to Git and verify a round trip
+
+## Lab Scenario
+
+Your team currently shares files named `AdvancedSalesReport_v2.pbix` and `AdvancedSalesReport_FINAL.pbix`. It is difficult to tell which version is current or whether a change affects a visual, a measure, or security. You will replace filename-based versioning with a Git history of readable project definitions. Lab D then builds on this foundation by promoting approved content through deployment stages.
+
+Use only the supplied AdventureWorks sample or a sanitised copy. If you completed Lab B with real colleagues' email addresses, replace those values with fictitious sample identities before creating this repository. Do not commit credentials, tokens, confidential source details, or personal data.
+
+## Architecture Overview
+
+```text
+AdvancedSalesReport.pbix
+    |
+    | Save as Power BI Project
+    v
+SalesVersionControl\
+|-- AdvancedSalesReport.pbip          (project entry point)
+|-- AdvancedSalesReport.Report\       (report definition)
+|-- AdvancedSalesReport.SemanticModel\ (model definition)
+`-- .gitignore                       (exclude local settings and data cache)
+    |
+    | VS Code + Git: baseline -> feature branch -> diff -> review -> merge
+    v
+Approved private repository: main
+    |
+    | Fabric Git integration: Update from Git / Commit to Git
+    v
+Sales Dev workspace
+    |
+    | Lab D: deployment pipeline
+    v
+Sales Test workspace -> Sales Production workspace
+```
+
+## Job Skills
+
+By completing this lab, you will gain hands-on experience with the following skills:
+
+| Task | Description |
+|---|---|
+| Task 1 | Save and inspect a Power BI Project |
+| Task 2 | Initialise Git and commit a baseline without local data caches |
+| Task 3 | Use a feature branch and inspect report and model diffs |
+| Task 4 | Review and merge a change |
+| Task 5 | Revert a change with an auditable commit |
+| Task 6 | Synchronise a development workspace with Git |
+
+---
+
+## Task 1: Save the Report as a Power BI Project
+
+1. Open [AdvancedSalesReport.pbix](./Power-BI-Advanced-Ref/PBIX/AdvancedSalesReport.pbix), or your sanitised copy from the previous labs, in Power BI Desktop.
+2. Note the current Sales Overview page title, the **Total Sales** measure's description, and a displayed sales total. These are your baseline checks.
+3. Select **File → Save as** and choose **Power BI Project (.pbip)**. Use the name `AdvancedSalesReport` in a short, writable folder outside this bootcamp repository and outside OneDrive/SharePoint, for example `C:\PowerBILabs\SalesVersionControl`. If the file type is unavailable, check your Desktop build's preview options for the PBIP save feature and restart if required, or update Desktop.
+4. In File Explorer, verify that the folder contains the `.pbip` file, `.Report` and `.SemanticModel` folders, and a `.gitignore`. Keep the original PBIX as a backup outside the new project folder.
+5. Inspect the semantic model folder:
+   - With **TMDL**, the `definition` folder contains readable model files, including tables and measures.
+   - With the older **TMSL** format, the model is stored in `model.bim`. Git still works, but changes are concentrated in a larger file.
+   - Inspect the report definition files as well; their layout varies with the report format used by Desktop.
+6. Close Desktop, reopen `AdvancedSalesReport.pbip`, and verify that the report, sales total, and any existing security role definitions are still present. Do not rename or delete generated item identifiers.
+
+> **Checkpoint:** PBIP is a project structure, not just a renamed PBIX. Commit the report and semantic model definitions together; the `.pbip` pointer alone cannot reproduce the report. A fresh clone without the ignored data cache will need a data refresh.
+
+## Task 2: Initialise Git and Commit a Baseline
+
+1. Install [Git](https://git-scm.com/downloads) and [Visual Studio Code](https://code.visualstudio.com/) if needed, then open the **SalesVersionControl** folder in VS Code.
+2. Open **Source Control → Initialise Repository**. This must be a separate lab repository, not a repository initialised inside the bootcamp checkout.
+3. Verify that the initial branch is named `main`; use **Git: Rename Branch** from the Command Palette if necessary.
+4. Open `.gitignore` and confirm it includes the default PBIP exclusions below. Add them if missing, before staging any files:
+
+   ```gitignore
+   **/.pbi/localSettings.json
+   **/.pbi/cache.abf
+   ```
+
+5. Review the untracked files. Confirm that `cache.abf`, `localSettings.json`, and the backup PBIX are not being staged. Review Power Query expressions and other metadata for secrets or private information; ignoring the data cache does not sanitise the definitions.
+6. Stage the project definitions, the `.pbip` file, and `.gitignore`, then commit with the message `Add AdventureWorks PBIP baseline`. If Git requests an author name and email, configure your approved Git author identity and retry.
+7. Verify that the commit appears in VS Code's **Source Control Graph** and the working tree is clean.
+
+> **Checkpoint:** You have one baseline commit containing the project definitions, with no cached model data or machine-specific local settings. Do not ignore the entire `.pbi` folder: some files in it are shared project metadata.
+
+## Task 3: Make a Change on a Feature Branch and Review the Diff
+
+1. In VS Code, select the current branch in the status bar and create `feature/sales-title` from `main`.
+2. Open the PBIP in Power BI Desktop and go to **Sales Overview**.
+3. Change the page's visible title to `Sales Overview - Version Control Lab`. If the page has no title text box, add one with that text instead; do not rename the report page.
+4. In **Model** view, select the **Total Sales** measure and set its **Description** property to `AdventureWorks sales total reviewed in the version control lab`. Do not change its DAX expression.
+5. Save the project. In VS Code **Source Control**, open the changed files to view the before-and-after diff:
+   - Locate the title change in the report definition.
+   - Locate the description change in the semantic model's TMDL files or `model.bim`.
+   - Review any additional Desktop-generated changes; do not assume that every changed file is part of the intended edit.
+6. Confirm the displayed sales total is unchanged. If unrelated changes appear, investigate them before committing.
+7. Stage the reviewed changes and commit with the message `Update Sales Overview title and measure description`.
+8. Save and close Power BI Desktop before switching branches or pulling changes in the following tasks, so an open session cannot overwrite the files you are reviewing.
+
+> **Checkpoint:** The feature branch contains a reviewable report change and a model metadata change. The sales calculation still produces the baseline result.
+
+## Task 4: Review and Merge the Change
+
+### GitHub pull-request path
+
+1. In VS Code, check out `main`. Use **Publish to GitHub** to create an organisation-approved **private** lab repository containing the baseline. Authenticate using the approved sign-in flow. If your organisation requires a pre-created repository, use its approved remote instead.
+2. Check out `feature/sales-title` and select **Publish Branch** to push the feature branch to the same repository.
+3. In GitHub, open a pull request from `feature/sales-title` into `main`. Confirm the diff contains the intended title and measure description changes and no secrets, local settings, or data cache.
+4. Ask a colleague or the trainer to review the change. For a solo exercise, inspect the pull request's **Files changed** tab yourself; follow any repository review requirements before merging.
+5. Merge the pull request. In VS Code, check out `main`, select **Pull**, and verify the working tree is clean. A merge on GitHub does not automatically update your local files.
+6. Reopen the PBIP and verify the new title and measure description, with the sales total unchanged. Close Desktop again before Task 5.
+
+### Local-only alternative
+
+If an approved remote is unavailable, keep Desktop closed, check out `main` in VS Code, run **Git: Merge Branch**, and select `feature/sales-title`. Reopen the PBIP and perform the same checks as step 6 above. This practises branching and merging, but does not replace a hosted pull-request review.
+
+> **Checkpoint:** `main` contains the approved change, and you have verified the merged project in Power BI Desktop. Fabric also supports Azure DevOps repositories; the hosted steps here use GitHub consistently to keep the exercise focused.
+
+## Task 5: Revert a Change Without Deleting History
+
+1. With Desktop closed, a clean working tree, and the updated `main` checked out, create a branch named `revert/sales-title`.
+2. In VS Code's terminal, run:
+
+   ```shell
+   git log --oneline -5
+   ```
+
+3. Identify the **non-merge commit on `main`** that introduced the title and description changes. For a squash-merged pull request, use the squash commit now on `main`, not the original feature-branch commit.
+4. Replace the placeholder below with that commit's actual hash, then run:
+
+   ```shell
+   git revert --no-edit <change-commit-sha>
+   ```
+
+   If Git reports a conflict, stop and review it with the trainer; do not discard files or use a hard reset to bypass the conflict.
+
+5. Inspect the new revert commit and reopen the PBIP. Verify the title and measure description match the baseline from Task 1 (or the added title text box is gone), and the sales total remains unchanged.
+6. Close Desktop. Publish `revert/sales-title` and merge it into `main` through another pull request using the review process in Task 4. For the local-only alternative, check out `main` and use **Git: Merge Branch** to merge `revert/sales-title` (not the original feature branch). Return to `main` and pull if using a remote.
+7. Verify that history contains both the original change and its revert, and that the working tree is clean.
+
+> **Checkpoint:** Recovery created a new commit rather than erasing history. Reverting definitions does not roll back source data, refreshes, permissions, or other service-side configuration.
+
+## Task 6: Connect a Development Workspace to Git (Capacity Required)
+
+1. Confirm the following with the trainer or administrator:
+   - A new, empty workspace named **Sales Dev** is assigned to a Fabric capacity or an existing supported Power BI Premium capacity, and you are its **Admin**.
+   - Tenant settings allow synchronising workspace items with Git repositories and with **GitHub** repositories.
+   - The approved private repository is accessible and `main` contains the merged project. If you previously worked locally only, use **Publish to GitHub** to publish your current `main` to an approved private repository before continuing; you do not need to replay the earlier pull requests.
+   - Your GitHub connection meets the current [Git integration prerequisites](https://learn.microsoft.com/fabric/cicd/git-integration/git-get-started#prerequisites). If a personal access token is required, restrict it to the lab repository with the required **Contents: read and write** permission. Enter it only in the approved connection dialog, never in project files, screenshots, or Git commits.
+2. In **Sales Dev → Workspace settings → Git integration**, select **GitHub**, authorise the connection, and select the repository, `main`, and its root folder.
+3. Select **Connect and sync**. Because the workspace is empty and the repository contains the project definitions, the initial sync should populate the workspace from Git. If asked to choose a direction, review it carefully and choose **Git to workspace**; do not overwrite the repository with empty workspace content.
+4. Verify that the report and semantic model appear with **Synced** status. Configure data-source credentials and any gateway mapping, then refresh the semantic model. Resolve any displayed refresh errors with the trainer before checking the report's data. Git synchronises definitions, not the imported data cache or credentials.
+5. Open the report in the Service, enter edit mode, add a text box containing `Git integration check`, and save. In the workspace **Source control → Changes** pane, select the changed report, enter `Add workspace Git verification text`, and **Commit**. For a protected `main` branch, use **Commit to new branch**, review and merge a pull request, then update the workspace from `main`.
+6. With Desktop closed, pull `main` in VS Code. Review the incoming diff, then reopen the PBIP and verify the text box is present. A service commit does not automatically pull changes to your computer.
+7. In VS Code, create `feature/git-round-trip` from the updated `main`. In Desktop, change the text to `Git integration round-trip verified`, save, and close Desktop. Review, commit, and push the change on the feature branch, then merge a pull request as in Task 4. Return your local checkout to `main` and pull.
+8. In the workspace **Source control → Updates** pane, select **Update all**, review the confirmation, and update. Reopen the report and verify the revised text and **Synced** status. A Git merge does not automatically update workspace items; automation must be configured separately.
+
+> **Checkpoint:** You have verified both **workspace → Git → Desktop** and **Desktop → Git → workspace**. Resolve conflicting workspace edits and incoming Git changes before updating; do not blindly overwrite either side. Security role definitions can be versioned, but service role memberships, access permissions, credentials, refresh schedules, and app distribution must be configured separately.
+
+> **Handoff to Lab D:** Reuse **Sales Dev** as the deployment pipeline's Development workspace. If you completed only the local path, publish the approved PBIP from Desktop to a suitable development workspace before starting Lab D. Git provides version history and review; deployment pipelines provide controlled promotion between environments. This lab establishes the source-control foundation, not an automated CI/CD pipeline.
+
+---
+
+## Lab C Summary
+
+### What You Accomplished
+
+✅ **Task 1**: Saved the sample report as a PBIP and inspected its report and semantic model definitions
+
+✅ **Task 2**: Committed a clean baseline while excluding local settings and the data cache
+
+✅ **Task 3**: Used a feature branch and inspected readable report and model diffs
+
+✅ **Task 4**: Reviewed and merged the change through a pull request, or practised a local merge
+
+✅ **Task 5**: Reverted a committed change and verified recovery without deleting history
+
+✅ **Task 6**: Where capacity was available, connected a development workspace and verified a bidirectional Git round trip
+
+### Key Concepts You Practised
+
+| Concept | Where it appeared | Learn reference |
+|---|---|---|
+| PBIP project structure and cache exclusions | Task 1, 2 | [Power BI Desktop projects](https://learn.microsoft.com/power-bi/developer/projects/projects-overview) |
+| TMDL and semantic model definitions | Task 1, 3 | [Power BI Desktop project semantic model folder](https://learn.microsoft.com/power-bi/developer/projects/projects-dataset) |
+| Local Git history and collaboration | Task 2–5 | [Power BI Desktop projects Git integration](https://learn.microsoft.com/power-bi/developer/projects/projects-git) |
+| Workspace connection, commits, and updates | Task 6 | [Get started with Git integration](https://learn.microsoft.com/fabric/cicd/git-integration/git-get-started) |
+
+### Recommended References
+
+- [Power BI Desktop projects](https://learn.microsoft.com/power-bi/developer/projects/projects-overview)
+- [Power BI Desktop projects Git integration](https://learn.microsoft.com/power-bi/developer/projects/projects-git)
+- [Introduction to Git integration](https://learn.microsoft.com/fabric/cicd/git-integration/intro-to-git-integration)
+- [Get started with Git integration](https://learn.microsoft.com/fabric/cicd/git-integration/git-get-started)
+
+---
+
+# Lab D: Deployment Pipelines & Report Governance
 
 > **License requirement:** Deployment Pipelines require workspaces assigned to a **Fabric capacity (any F SKU, including F2)** or a PPU workspace. If neither is available, this lab is trainer-led demo. Participants can replicate steps in their own environment afterward.
 
@@ -579,7 +789,7 @@ This lab will guide you through the following tasks:
 
 ## Lab Scenario
 
-Without a structured release process, Power BI developers often edit live production reports directly, risking breaking changes for end users. Deployment pipelines provide a formal Dev → Test → Prod promotion process, ensuring reports are validated before reaching consumers.
+Without a structured release process, Power BI developers often edit live production reports directly, risking breaking changes for end users. Deployment pipelines provide a formal Dev → Test → Prod promotion process, ensuring reports are validated before reaching consumers. Lab C established version history and review; this lab uses the approved content as the starting point for release management.
 
 ## Architecture Overview
 
@@ -615,7 +825,7 @@ By completing this lab, you will gain hands-on experience with the following ski
 
 1. In the Power BI Service, navigate to **Deployment pipelines** and click **Create a pipeline**
 2. Name the pipeline (e.g., `Sales Report Pipeline`) and assign three stages: **Development**, **Test**, **Production**
-3. Assign an existing workspace to the **Development** stage (this is where active development happens)
+3. Assign **Sales Dev** from Lab C to the **Development** stage. If you completed only the local Git path or skipped Lab C, first publish the approved project or sample PBIX to a development workspace that meets this lab's capacity requirements.
 4. Create two additional workspaces for **Test** and **Production** and assign them to their respective stages
 5. In the Development stage, click **Deploy to Test** — review the comparison view showing what has changed
 6. Review the **Compare** button between stages — this shows differences in reports, datasets, and dashboards between stages
@@ -633,7 +843,7 @@ By completing this lab, you will gain hands-on experience with the following ski
 
 ---
 
-## Lab C Summary
+## Lab D Summary
 
 ### What You Accomplished
 
@@ -658,7 +868,7 @@ By completing this lab, you will gain hands-on experience with the following ski
 
 ---
 
-# Lab D: AI Visuals & Copilot Capabilities
+# Lab E: AI Visuals & Copilot Capabilities
 
 > **License note:** Built-in AI visuals (anomaly detection, forecasting, Smart Narrative, Q&A) are available in Power BI Desktop and Service to all participants. Copilot requires **any Fabric F SKU (F2+) or PPU** — trainer-led demo if unavailable.
 
@@ -725,7 +935,7 @@ By completing this lab, you will gain hands-on experience with the following ski
 
 ---
 
-## Lab D Summary
+## Lab E Summary
 
 ### What You Accomplished
 
