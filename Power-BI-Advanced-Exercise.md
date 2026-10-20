@@ -569,16 +569,16 @@ RLS and OLS are complementary: use OLS to restrict sensitive columns and tables,
 
 ## Lab Introduction
 
-In this lab, you will save a Power BI report as a Power BI Project (PBIP), track its report and semantic model definitions in Git, and review changes before merging them. You will also practise reverting a change without deleting history. Where capacity is available, you will connect a development workspace to the repository and verify changes in both directions.
+In this lab, you will save a Power BI report as a Power BI Project (PBIP), track its report and semantic model definitions in Git, and review changes before merging them. You will also practise reverting a change without deleting history. Where capacity is available, you will connect a development workspace to the repository, commit a workspace change to Git, and update the workspace and Desktop from `main`.
 
 This lab will guide you through the following tasks:
 
 - Save a PBIX as a PBIP and inspect its text-based project structure
 - Create a local Git repository and commit a clean baseline
 - Make an isolated change on a feature branch and inspect the diff
-- Review and merge changes through a pull request, or merge locally
+- Review and merge changes through a pull request on GitHub
 - Revert a committed change while preserving history
-- Connect a development workspace to Git and verify a round trip
+- Connect a development workspace to Git, commit a workspace change, and update from `main`
 
 ## Lab Scenario
 
@@ -833,22 +833,63 @@ By completing this lab, you will gain hands-on experience with the following ski
 
 ## Task 6: Connect a Development Workspace to Git (Capacity Required)
 
-1. Confirm the following with the trainer or administrator:
-   - A new, empty workspace named **Sales Dev** is assigned to a Fabric capacity or an existing supported Power BI Premium capacity, and you are its **Admin**.
-   - Tenant settings allow synchronising workspace items with Git repositories and with **GitHub** repositories.
-   - The approved private repository is accessible and `main` contains the merged project. If you previously worked locally only, use **Publish to GitHub** to publish your current `main` to an approved private repository before continuing; you do not need to replay the earlier pull requests.
-   - Your GitHub connection meets the current [Git integration prerequisites](https://learn.microsoft.com/fabric/cicd/git-integration/git-get-started#prerequisites). If a personal access token is required, restrict it to the lab repository with the required **Contents: read and write** permission. Enter it only in the approved connection dialog, never in project files, screenshots, or Git commits.
-2. In **Sales Dev → Workspace settings → Git integration**, select **GitHub**, authorise the connection, and select the repository, `main`, and its root folder.
-3. Select **Connect and sync**. Because the workspace is empty and the repository contains the project definitions, the initial sync should populate the workspace from Git. If asked to choose a direction, review it carefully and choose **Git to workspace**; do not overwrite the repository with empty workspace content.
-4. Verify that the report and semantic model appear with **Synced** status. Configure data-source credentials and any gateway mapping, then refresh the semantic model. Resolve any displayed refresh errors with the trainer before checking the report's data. Git synchronises definitions, not the imported data cache or credentials.
-5. Open the report in the Service, enter edit mode, add a text box containing `Git integration check`, and save. In the workspace **Source control → Changes** pane, select the changed report, enter `Add workspace Git verification text`, and **Commit**. For a protected `main` branch, use **Commit to new branch**, review and merge a pull request, then update the workspace from `main`.
-6. With Desktop closed, pull `main` in VS Code. Review the incoming diff, then reopen the PBIP and verify the text box is present. A service commit does not automatically pull changes to your computer.
-7. In VS Code, create `feature/git-round-trip` from the updated `main`. In Desktop, change the text to `Git integration round-trip verified`, save, and close Desktop. Review, commit, and push the change on the feature branch, then merge a pull request as in Task 4. Return your local checkout to `main` and pull.
-8. In the workspace **Source control → Updates** pane, select **Update all**, review the confirmation, and update. Reopen the report and verify the revised text and **Synced** status. A Git merge does not automatically update workspace items; automation must be configured separately.
+1. Create a new development workspace named **Sales Dev**. The workspace must have a Fabric capacity or an existing supported Power BI Premium capacity assigned, and you must be its **Admin**.
 
-> **Checkpoint:** You have verified both **workspace → Git → Desktop** and **Desktop → Git → workspace**. Resolve conflicting workspace edits and incoming Git changes before updating; do not blindly overwrite either side. Security role definitions can be versioned, but service role memberships, access permissions, credentials, refresh schedules, and app distribution must be configured separately.
+2. Create a Personal Access Token (PAT) in GitHub.
+    - Go to the [GitHub Personal Access Tokens page](https://github.com/settings/personal-access-tokens)
+    - Select **Fine-grained tokens** in the left-hand menu.
+    - Select **Generate new token**, provide the following:
+        Token name: Sales Dev PAT
+        Expiration: Select an appropriate expiration
+        Repository access: Select the repository containing the project definitions
+        Permissions: Contents: Read and write
+    - Select **Generate token** to create the PAT.
+    - Select **Generate token** again.
+    - Copy the generated token and store it securely; you will need it to connect the workspace to Git.
 
-> **Handoff to Lab D:** Reuse **Sales Dev** as the deployment pipeline's Development workspace. If you completed only the local path, publish the approved PBIP from Desktop to a suitable development workspace before starting Lab D. Git provides version history and review; deployment pipelines provide controlled promotion between environments. This lab establishes the source-control foundation, not an automated CI/CD pipeline.
+3. Head back to the Power BI Service. In **Sales Dev → Workspace settings → Git integration**, select **GitHub**.
+
+4. Select **+ Add account**. Enter an appropriate display name, the PAT you generated, and the repository URL containing the project definitions, then select **Add**.
+
+5. Select the created account and select **Connect**.
+
+6. Select the main branch then select **Connect and sync**. 
+
+7. Verify that the report and semantic model appear with **Synced** status. 
+
+8. Select your Semantic Model and go to **Settings → Data access → Data source credentials**. Configure the necessary credentials for the data sources used in the semantic model. Refresh the semantic model to ensure the credentials are correctly applied.
+
+9. Open the report in the Service, go to the Sales Overview page, enter Editing mode, add a text box containing `Git Integration Check`, and select Save. 
+
+10. Go back to the Workspace and select **Source control → Changes** pane. 
+    - Select the changed report
+    - Enter `Add workspace Git verification text` in the Commit message
+    - Select **Commit to new branch**. 
+    - Enter a branch name, such as `feature/git-verification`, and select **Create**.
+
+11. In GitHub, open the repository's **Pull requests** tab and select **Compare & pull request** in the banner for `feature/git-verification`. If the banner is not shown, select **New pull request** and choose the same branches.
+   - Confirm **base** is `main` and **compare** is `feature/git-verification`.
+   - Enter the title `Add workspace Git verification text` and select **Create pull request**.
+   - Open the **Files changed** tab and confirm the diff contains your changes and nothing else.
+
+12. Merge the pull request on GitHub: go to the **Conversation** tab, select **Merge pull request**, then **Confirm merge**. Follow any repository review requirements before merging. This is the step that puts the change on `main`.
+
+13. Update your local files. A merge on GitHub does not automatically update your computer. Go back to your VS Code. In the terminal, run:
+
+   ```shell
+   git switch main
+   git pull
+   ```
+
+14. Open the report in Desktop and verify that the `Git Integration Check` text box is present.
+
+15. Go back to your Power BI workspace and update it from `main`. A Git merge does not automatically update workspace items.
+    - Select **Source control** (it shows a pending update count) and open the **Updates** tab.
+    - Confirm the changed report is listed, then select **Update all** and confirm the update.
+    - Wait for the update to complete, then confirm the report's **Git status** shows **Synced**.
+    - Open the report, go to the Sales Overview page, and verify the `Git Integration Check` text box is present.
+
+> **Checkpoint:** You connected the **Sales Dev** workspace to `main` and made a change in the workspace, committed it to a new branch, and merged it through a pull request. You then pulled it to Desktop (**workspace → Git → Desktop**) and updated the workspace from `main` (**Git → workspace**). Git changes only move into the workspace or your computer when you update or pull them. If the workspace has uncommitted edits and Git has incoming changes, resolve them before updating; do not blindly overwrite either side. 
 
 ---
 
@@ -862,11 +903,11 @@ By completing this lab, you will gain hands-on experience with the following ski
 
 ✅ **Task 3**: Used a feature branch and inspected readable report and model diffs
 
-✅ **Task 4**: Reviewed and merged the change through a pull request, or practised a local merge
+✅ **Task 4**: Pushed the baseline and feature branch to GitHub, reviewed the change in a pull request, merged it, and pulled the result into your local `main`
 
-✅ **Task 5**: Reverted a committed change and verified recovery without deleting history
+✅ **Task 5**: Reverted the committed change with a new revert commit, merged it through a pull request, and verified that history keeps both commits
 
-✅ **Task 6**: Where capacity was available, connected a development workspace and verified a bidirectional Git round trip
+✅ **Task 6**: Connected a development workspace to Git, committed a workspace change to a branch, merged it through a pull request, and updated both Desktop and the workspace from `main`
 
 ### Key Concepts You Practised
 
@@ -874,15 +915,9 @@ By completing this lab, you will gain hands-on experience with the following ski
 |---|---|---|
 | PBIP project structure and cache exclusions | Task 1, 2 | [Power BI Desktop projects](https://learn.microsoft.com/power-bi/developer/projects/projects-overview) |
 | TMDL and semantic model definitions | Task 1, 3 | [Power BI Desktop project semantic model folder](https://learn.microsoft.com/power-bi/developer/projects/projects-dataset) |
-| Local Git history and collaboration | Task 2–5 | [Power BI Desktop projects Git integration](https://learn.microsoft.com/power-bi/developer/projects/projects-git) |
+| Git commits, branches, pull requests, and reverts | Task 2–5 | [Power BI Desktop projects Git integration](https://learn.microsoft.com/power-bi/developer/projects/projects-git) |
 | Workspace connection, commits, and updates | Task 6 | [Get started with Git integration](https://learn.microsoft.com/fabric/cicd/git-integration/git-get-started) |
 
-### Recommended References
-
-- [Power BI Desktop projects](https://learn.microsoft.com/power-bi/developer/projects/projects-overview)
-- [Power BI Desktop projects Git integration](https://learn.microsoft.com/power-bi/developer/projects/projects-git)
-- [Introduction to Git integration](https://learn.microsoft.com/fabric/cicd/git-integration/intro-to-git-integration)
-- [Get started with Git integration](https://learn.microsoft.com/fabric/cicd/git-integration/git-get-started)
 
 ---
 
