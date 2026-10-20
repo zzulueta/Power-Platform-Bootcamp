@@ -969,25 +969,41 @@ By completing this lab, you will gain hands-on experience with the following ski
 
 ---
 
-## Task 1: Build a Deployment Pipeline (Trainer demo or hands-on with PPU)
+## Task 1: Build a Deployment Pipeline
 
-1. In the Power BI Service, navigate to **Deployment pipelines** and click **Create a pipeline**
-2. Name the pipeline (e.g., `Sales Report Pipeline`) and assign three stages: **Development**, **Test**, **Production**
-3. Assign **Sales Dev** from Lab C to the **Development** stage. If you completed only the local Git path or skipped Lab C, first publish the approved project or sample PBIX to a development workspace that meets this lab's capacity requirements.
-4. Create two additional workspaces for **Test** and **Production** and assign them to their respective stages
-5. In the Development stage, click **Deploy to Test** — review the comparison view showing what has changed
-6. Review the **Compare** button between stages — this shows differences in reports, datasets, and dashboards between stages
-7. Deploy from Test to Production after review
+1. In the Power BI Service, create two additional workspaces for **Sales Test** and **Sales Production** and assign them to their respective stages
+
+2. Navigate to **Deployment pipelines** and click **+ New pipeline**
+
+3. Name the pipeline (e.g., `Sales Report Pipeline`), click Next, and assign three stages: **Development**, **Test**, **Production**, then click **Create**.
+
+4. Select **Sales Dev** from Lab C to the **Development** stage then click **Assign a workspace**.
+
+5. Do the same for the **Test** and **Production** stages by assigning **Sales Test** and **Sales Production** workspaces respectively.
+
+6. Select the **Compare** button between the Development and Test stages — this shows differences in reports, datasets, and dashboards between stages
+
+7. Click **Deploy** to move content from Development to Test.
+
 8. Demonstrate how a dataset connection rule can be set per stage (e.g., point Production to a Production data source, not Development)
 
-## Task 2: Apply Report Endorsement & Governance (hands-on with Pro)
+9. Repeat the comparison and deployment process to move content from Test to Production.
 
-1. In the Power BI Service, navigate to a published dataset in a shared workspace
+## Task 2: Apply Report Endorsement & Governance
+
+1. In the Power BI Service, navigate to the Sales Production workspace and select the Semantic Model.
+
 2. Click **More options (…) → Settings → Endorsement**
+
 3. Apply **Promoted** status to the dataset — discuss what this signals to report consumers
-4. Discuss **Certified** status — this requires a tenant admin to enable and designate certifiers; it signals organizational trust and quality assurance
-5. Apply a **sensitivity label** (e.g., Internal) to the dataset — observe that the label propagates downstream to reports built on it
-6. Navigate to **Settings → Lineage view** for the workspace — explore upstream data sources and downstream reports built on shared datasets
+
+4. Discuss **Certified** status — this requires a tenant admin to enable and designate certifiers (Admin portal → Tenant settings → Certification); it signals organizational trust and quality assurance
+
+5. Go to **Sensitivity label** to apply a Sensitivity label (e.g., Internal) to the dataset — observe that the label propagates downstream to reports built on it
+
+6. Navigate to **Lineage view** for the workspace to explore upstream data sources and downstream reports built on shared datasets
+
+7. Go to **OneLake catalog** and navigate to Endorsed items to see the Promoted semantic model.
 
 ---
 
@@ -1006,13 +1022,8 @@ By completing this lab, you will gain hands-on experience with the following ski
 | Deployment pipelines (Dev/Test/Prod) | Task 1 | [Get started with deployment pipelines](https://learn.microsoft.com/power-bi/deployment-pipelines/get-started-with-deployment-pipelines) |
 | Stage-specific dataset connection rules | Task 1 | [Introduction to deployment pipelines](https://learn.microsoft.com/power-bi/developer/projects/projects-git) |
 | Endorsement (Promoted/Certified) | Task 2 | [Endorse your content in Power BI](https://learn.microsoft.com/power-bi/collaborate-share/service-endorse-content) |
-| Sensitivity labels and lineage | Task 2 | [Endorse your content in Power BI](https://learn.microsoft.com/power-bi/collaborate-share/service-endorse-content) |
+| Sensitivity labels and lineage | Task 2 | [Apply sensitivity labels in Power BI](https://learn.microsoft.com/power-bi/admin/service-security-data-classification) |
 
-### Recommended References
-
-- [Introduction to deployment pipelines](https://learn.microsoft.com/power-bi/developer/projects/projects-git)
-- [Get started with deployment pipelines](https://learn.microsoft.com/power-bi/deployment-pipelines/get-started-with-deployment-pipelines)
-- [Endorse your content in Power BI](https://learn.microsoft.com/power-bi/collaborate-share/service-endorse-content)
 
 ---
 
