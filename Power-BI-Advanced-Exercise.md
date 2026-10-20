@@ -1019,10 +1019,10 @@ By completing this lab, you will gain hands-on experience with the following ski
 
 | Concept | Where it appeared | Learn reference |
 |---|---|---|
-| Deployment pipelines (Dev/Test/Prod) | Task 1 | [Get started with deployment pipelines](https://learn.microsoft.com/power-bi/deployment-pipelines/get-started-with-deployment-pipelines) |
-| Stage-specific dataset connection rules | Task 1 | [Introduction to deployment pipelines](https://learn.microsoft.com/power-bi/developer/projects/projects-git) |
+| Deployment pipelines (Dev/Test/Prod) | Task 1 | [Get started with deployment pipelines](https://learn.microsoft.com/en-us/fabric/cicd/deployment-pipelines/get-started-with-deployment-pipelines) |
+| Create deployment rules | Task 1 | [Introduction to deployment pipelines](https://learn.microsoft.com/en-us/fabric/cicd/deployment-pipelines/create-rules) |
 | Endorsement (Promoted/Certified) | Task 2 | [Endorse your content in Power BI](https://learn.microsoft.com/power-bi/collaborate-share/service-endorse-content) |
-| Sensitivity labels and lineage | Task 2 | [Apply sensitivity labels in Power BI](https://learn.microsoft.com/power-bi/admin/service-security-data-classification) |
+| Sensitivity labels and lineage | Task 2 | [Apply sensitivity labels in Power BI](https://learn.microsoft.com/en-us/fabric/enterprise/powerbi/service-security-sensitivity-label-overview) |
 
 
 ---
