@@ -868,18 +868,18 @@ By completing this lab, you will gain hands-on experience with the following ski
     - Enter a branch name, such as `feature/git-verification`, and select **Create**.
 
 11. In GitHub, open the repository's **Pull requests** tab and select **Compare & pull request** in the banner for `feature/git-verification`. If the banner is not shown, select **New pull request** and choose the same branches.
-   - Confirm **base** is `main` and **compare** is `feature/git-verification`.
-   - Enter the title `Add workspace Git verification text` and select **Create pull request**.
-   - Open the **Files changed** tab and confirm the diff contains your changes and nothing else.
+    - Confirm **base** is `main` and **compare** is `feature/git-verification`.
+    - Enter the title `Add workspace Git verification text` and select **Create pull request**.
+    - Open the **Files changed** tab and confirm the diff contains your changes and nothing else.
 
 12. Merge the pull request on GitHub: go to the **Conversation** tab, select **Merge pull request**, then **Confirm merge**. Follow any repository review requirements before merging. This is the step that puts the change on `main`.
 
 13. Update your local files. A merge on GitHub does not automatically update your computer. Go back to your VS Code. In the terminal, run:
 
-   ```shell
-   git switch main
-   git pull
-   ```
+    ```shell
+    git switch main
+    git pull
+    ```
 
 14. Open the report in Desktop and verify that the `Git Integration Check` text box is present.
 
