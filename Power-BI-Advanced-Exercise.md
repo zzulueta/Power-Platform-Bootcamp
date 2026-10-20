@@ -1373,13 +1373,13 @@ The **Narrative** visual has two modes: **Copilot** (AI-generated text, needs a 
 
 5. Add two new blank lines at the very end. Add a second dynamic value that uses the `Total Sales` measure, and format it as Currency, name it as `TotalSales`, and select **Save**. Type `Total Sales:` before it.
 
-7. Select a region in the bar chart. The summary and your dynamic values change to reflect the selection. Clear the selection.
+6. Select a region in the bar chart. The summary and your dynamic values change to reflect the selection. Clear the selection.
 
-8. Right-click the **line chart** and select **Summarize**. Notice that summarizing a single visual can produce more insights than the page summary does.
+7. Right-click the **line chart** and select **Summarize**. Notice that summarizing a single visual can produce more insights than the page summary does.
 
-9. Select the **bar chart**, open **Format visual → General**, expand **Header icons → Icons**, and set **Smart narrative** to **On**. Hover over the visual and select the **Smart narrative** icon to see an on-demand description. Unlike the narrative visual, readers can't add this text to the page.
+8. Select the **bar chart**, open **Format visual → General**, expand **Header icons → Icons**, and set **Smart narrative** to **On**. Hover over the visual and select the **Smart narrative** icon to see an on-demand description. Unlike the narrative visual, readers can't add this text to the page.
 
-10. **Optional (Copilot required):** Add another Narrative visual, keep it in **Copilot** mode, and use the suggested prompt to generate a summary. Compare it with the custom narrative: custom mode is dynamic and repeatable, while Copilot output varies with each prompt.
+9. **Optional (Copilot required):** Add another Narrative visual, keep it in **Copilot** mode, and use the suggested prompt to generate a summary. Compare it with the custom narrative: custom mode is dynamic and repeatable, while Copilot output varies with each prompt.
 
 > Note: To enable Copilot, select the Settings gear in the top-right corner of Power BI Desktop, then choose **Options → Global → Copilot (preview)** and select a workspace with a Fabric capacity.
 
@@ -1506,11 +1506,11 @@ A verified answer is a human-approved visual that predefined trigger phrases ret
 1. Close and reopen the **Copilot** pane. You must do this every time you change **Prep data for AI**.
 
 2. Ask the same five prompts from Task 4 and compare the answers to your baseline table:
-   1. `What were total sales last year?` – should use `[Total Sales]` and the fiscal year logic from your instructions.
-   2. `Which region performs best?` – should use the verified answer.
-   3. `Show sales by product category.` – should use Total Sales by Category.
-   4. `What is the margin by reseller business type?` – should use `[Profit Margin]`.
-   5. `Show sales by salesperson.` – should use the Total Sales by Salesperson.
+   - `What were total sales last year?` – should use `[Total Sales]` and the fiscal year logic from your instructions.
+   - `Which region performs best?` – should use the verified answer.
+   - `Show sales by product category.` – should use Total Sales by Category.
+   - `What is the margin by reseller business type?` – should use `[Profit Margin]`.
+   - `Show sales by salesperson.` – should use the Total Sales by Salesperson.
 
 3. Test the verified answers:
    - Ask `Sales by region` and confirm Copilot returns the visual you approved and marks it as a verified answer.
@@ -1580,11 +1580,4 @@ A verified answer is a human-approved visual that predefined trigger phrases ret
 
 AI visuals show patterns; they don't prove causes. Treat key influencers and AI splits as leads to investigate. Copilot accelerates analysis but requires review, because AI-generated answers can reflect errors or bias in the underlying data and aren't identical on every run.
 
-### Recommended References
 
-- [Create and view decomposition tree visuals in Power BI](https://learn.microsoft.com/power-bi/visuals/power-bi-visualization-decomposition-tree)
-- [Create key influencers visualizations](https://learn.microsoft.com/power-bi/visuals/power-bi-visualization-influencers?tabs=powerbi-desktop)
-- [Create smart narrative summaries](https://learn.microsoft.com/power-bi/visuals/power-bi-visualization-smart-narrative)
-- [Prepare your data for AI to improve Copilot results](https://learn.microsoft.com/power-bi/create-reports/copilot-prepare-data-ai)
-- [Prepare a semantic model for AI (mslearn-fabric)](https://microsoftlearning.github.io/mslearn-fabric/Instructions/Labs/30-prepare-model-ai.html)
-- [Overview of Copilot for Power BI](https://learn.microsoft.com/power-bi/create-reports/copilot-introduction)
