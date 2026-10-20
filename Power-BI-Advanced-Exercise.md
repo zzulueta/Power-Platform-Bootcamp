@@ -516,13 +516,19 @@ By completing this lab, you will gain hands-on experience with the following ski
 
 6. Click OK then select Close & Apply.
 
-7. Publish the report to a shared workspace in the Power BI Service
+7. Create a workspace in Power BI and provide the colleagues or test accounts Viewer access to it.
 
-8. Navigate to the **dataset → Security** in the Service
+8. Publish the report to the shared workspace in the Power BI Service
 
-9. Assign colleagues or test accounts to the `NW Region` and `SW Region` static roles
+9. Navigate to the **Security** settings of the semantic model in the Power BI Service
 
-10. Discuss: with dynamic RLS, no manual role assignment is needed per user — the DAX expression handles it automatically
+10. Assign colleagues or test accounts to the different roles:
+    - No role assigned
+    - `NW Region` and `SW Region`
+    - Dynamic RLS
+    - UPN role 
+
+11. Verify that the users have the correct access according to the roles assigned.
 
 ---
 
