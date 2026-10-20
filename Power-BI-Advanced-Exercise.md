@@ -15,7 +15,8 @@ This set of exercises covers the following labs:
 - **Lab B**: Row-Level Security, Dynamic RLS & Object Level Security
 - **Lab C**: Version Control with PBIP & Git Integration
 - **Lab D**: Deployment Pipelines & Report Governance
-- **Lab E**: AI Visuals & Copilot Capabilities
+- **Lab E**: Sharing Semantic Models
+- **Lab F**: AI Visuals & Copilot Capabilities
 
 ---
 
@@ -26,7 +27,8 @@ This set of exercises covers the following labs:
 - A shared workspace in the Power BI Service that you can publish to
 - **Lab C** (Version Control) requires **Git** and **Visual Studio Code** for the local exercises; no Fabric capacity is needed. The pull-request exercise uses an organisation-approved private **GitHub** repository. Workspace Git integration additionally requires a **Fabric capacity** (or an existing supported Power BI Premium capacity), workspace **Admin** access, repository access, and the relevant tenant settings enabled — **PPU alone is not sufficient**; use a trainer-led demo for this task if unavailable
 - **Lab D** (Deployment Pipelines) requires workspaces assigned to a **Fabric capacity (any F SKU, including F2)** or a **PPU** workspace — trainer-led demo if neither is available
-- **Lab E** (Copilot) requires **any Fabric F SKU (F2+)** or **PPU** — trainer-led demo if unavailable; built-in AI visuals (anomaly detection, forecasting, Smart Narrative, Q&A) work for all participants in Power BI Desktop
+- **Lab E** (Sharing Semantic Models) requires the **Sales Production** workspace from Lab D (or any workspace containing the published semantic model), **Admin or Member** access to that workspace, and a **second user or test account** with a Power BI Pro or PPU license whose email matches the UPN value you set in Lab B, Task 4 (the `UPN` role is used in Lab E). Free-license users can only build on a shared model hosted on **Fabric F64 or higher** (or Premium) capacity
+- **Lab F** (Copilot) requires **any Fabric F SKU (F2+)** or **PPU** — trainer-led demo if unavailable; built-in AI visuals (anomaly detection, forecasting, Smart Narrative, Q&A) work for all participants in Power BI Desktop
 
 ---
 
@@ -989,6 +991,10 @@ By completing this lab, you will gain hands-on experience with the following ski
 
 9. Repeat the comparison and deployment process to move content from Test to Production.
 
+10. Provide Viewer access to the deployed content in the Test and Production workspaces to demonstrate role-based access control.
+
+11. View Deployment history to verify that the content has been successfully deployed to the Test and Production stages.
+
 ## Task 2: Apply Report Endorsement & Governance
 
 1. In the Power BI Service, navigate to the Sales Production workspace and select the Semantic Model.
@@ -1027,7 +1033,191 @@ By completing this lab, you will gain hands-on experience with the following ski
 
 ---
 
-# Lab E: AI Visuals & Copilot Capabilities
+# Lab E: Sharing Semantic Models
+
+> **Access requirements:** You need **Admin or Member** access to the workspace that holds the semantic model, and a **second user or test account** (the "colleague") with a Power BI Pro or PPU license. Pair up with another participant if you have no second account; each of you plays the owner in one half and the colleague in the other. Free-license users can only build on a shared model hosted on Fabric F64 or higher (or Premium) capacity, and can only save reports to **My workspace**.
+>
+> **Lab B dependency:** This lab uses the `UPN` role from Lab B. The colleague's email address must match the UPN value you set in Lab B, Task 4 (the **Replace Values** step in the `Performance` query), and the published model must include that change. Otherwise the role returns no rows for the colleague.
+
+## Lab Introduction
+
+In this lab, you will share one governed semantic model so other people can build their own reports on it instead of keeping separate copies. You grant Build permission, build a thin report in Power BI Desktop through a live connection, see how the **UPN** role's dynamic row-level and object-level security still applies to shared models, and then remove access.
+
+This lab will guide you through the following tasks:
+
+- Prepare the semantic model and configure how people request access
+- Grant a colleague Build permission
+- Build a thin report from the shared semantic model, and assign the `UPN` role so the colleague can read it
+- Observe the `UPN` role's dynamic RLS and OLS in the thin report
+- Remove Build permission and review governance controls
+
+## Lab Scenario
+
+Several analysts each keep their own copy of the AdventureWorks model, so their reports show different numbers. You will publish one promoted semantic model, share it with a colleague, and let them build a report that contains no model of its own. Every report then uses the same measures, relationships, and security.
+
+## Architecture Overview
+
+```text
+Sales Production workspace (owner)
+`-- AdvancedSalesReport semantic model   (Promoted, `UPN` role from Lab B)
+        |
+        | Share: Read + Build
+        v
+Colleague
+|-- Power BI Desktop: Get data -> Power BI semantic models (live connection)
+|-- Thin report: no model, uses shared measures and tables
+`-- Publish -> colleague's own workspace
+        |
+        | Role membership: UPN
+        |   RLS: Performance[UPN] / Salesperson[UPN] = USERPRINCIPALNAME()
+        |   OLS: Sales[Cost] and Sales[Cost Price] hidden
+        v
+Colleague sees only their own rows; Profit and Profit Margin fail
+```
+
+## Job Skills
+
+By completing this lab, you will gain hands-on experience with the following skills:
+
+| Task | Description |
+|---|---|
+| Task 1 | Prepare the semantic model and configure access requests |
+| Task 2 | Grant Build permission |
+| Task 3 | Connect to the shared model, assign the `UPN` role, and build a thin report |
+| Task 4 | Observe dynamic RLS and OLS in the thin report |
+| Task 5 | Remove Build permission and review governance controls |
+
+---
+
+## Task 1: Prepare the Semantic Model and Configure Access Requests
+
+*Performed by the owner.*
+
+1. In the Power BI service, open the **Sales Production** workspace from Lab D. If you skipped Lab D, use any workspace where you are Admin or Member and publish `AdvancedSalesReport.pbix` to it from Desktop.
+
+2. Confirm the **AdvancedSalesReport** semantic model is **Promoted** (the badge from Lab D). Promoted models are easier to find.
+
+3. Select the semantic model, then **More options (…) → Settings → Data access → Data source credentials**. Confirm the credentials are configured, then select **Refresh now** and wait for it to succeed. A thin report can't show data until the shared model has been refreshed.
+
+4. In the same settings, find **Sharing and access → Request access**. 
+    - Select the option: User requesting access will get the following instructions
+    - Enter `Contact the Sales BI team to request Build permission.` 
+    - Select Apply. People without Build permission now see this message instead of sending you an email.
+
+   > **Note:** When you provide instructions, your email address is visible to people who request access.
+
+> **Checkpoint:** The semantic model is promoted, refreshed, and has request-access instructions configured.
+
+## Task 2: Grant Build Permission
+
+*Performed by the owner.*
+
+1. In the **Sales Production** workspace, select **More options (…) → Manage permissions** next to the semantic model, then **Add user**.
+
+2. Enter the colleague's name or email address.
+
+3. Select only **Allow recipients to build content with the data associated with this semantic model**. Leave **modify** and **share** cleared. Select **Grant access**.
+
+   > **Note:** Build includes Read. If you cleared all three checkboxes, the colleague would get Read only.
+
+4. Select **Direct access** tab and confirm the colleague is listed with **Read** and **Build** permission.
+
+> **Checkpoint:** The colleague has Read and Build permission, and no Write or Reshare permission.
+
+## Task 3: Build a Thin Report on the Shared Semantic Model
+
+*Performed by the colleague.*
+
+1. Open Power BI Desktop and select **Get data → Power BI semantic models**.
+
+2. In the list, find **AdvancedSalesReport**. Look for the **Promoted** badge or filter to **Endorsed in your org**. Select it and select **Connect**.
+
+   > **Note:** This creates a live connection. You haven't copied the model; it stays in the owner's workspace.
+
+3. **Expected result:** Desktop shows **Cannot load model**, with a message that the database doesn't exist or you don't have permission to access it. This is expected. The semantic model has row-level security roles, and a user who has Read and Build permission but belongs to **no role** can discover the model but can't read it. Close the message and tell the owner to provide you the proper Security role.
+
+4. **Owner:** In the **Sales Production** workspace, select **More options (…)** next to the semantic model, then **Security**. Select the **UPN** role, add the colleague's account, and select **Add**, then **Save**.
+
+   > **Note:** If the `UPN` role is missing because you skipped Lab B, or the model wasn't redeployed after you created it, ask the trainer to demonstrate this lab. Role definitions are deployed with the model, but role membership is configured separately in each workspace.
+
+5. **Colleague:** Close the Desktop error, open a new Desktop file, and repeat steps 1 and 2. The connection now succeeds. Allow a few minutes for the role assignment to take effect if it still fails.
+
+6. Review the **Data** pane. The tables and measures, including **Total Sales**, come from the shared model. There is no Power Query to load.
+
+7. Add a **Clustered bar chart** with **Region[Region]** on the axis and **Total Sales** as the value.
+
+8. Add a **Table** visual with **Salesperson[Salesperson]** and **Sales[Sales Amount]**. Notice that the Cost, Cost Price, Profit, and Profit Margin columns from the Sales Table are not visible as they are affected by object-level security.
+
+9. Save the report as `SalesThinReport.pbix`, then select **Publish** and choose a workspace you can publish to, such as a new workspace named **Sales Reports**. Ensure that the Owner of the shared semantic model has permissions in the same workspace to access the report.
+
+10. In the service, open the published report. Confirm that the report opens and shows data. Notice as well that the published report does not have a semantic model of its own; it relies entirely on the shared model.
+
+> **Checkpoint:** The colleague has a published report built entirely on the shared semantic model. Build permission let the colleague discover the model; the `UPN` role let them read it. Owners can change a measure in the shared model and every report built on it would reflect that change.
+
+## Task 4: Observe Dynamic RLS and OLS in the Thin Report
+
+*Performed by the colleague, then the owner.*
+
+Security defined on the shared model applies to everyone who builds on it. 
+
+1. **Colleague:** Open the thin report in the service and observe the two controls working together:
+   - **Row-level security:** The bar chart and table show only the colleague's own sales rows, matched on their email address, not the whole company.
+   - **Object-level security:** The table cannot display the Cost, Cost Price, Profit, and Profit Margin columns from the Sales Table.
+
+2. **Colleague:** Open the report in Editing mode. In the **Data** pane of the report, confirm that Cost, Cost Price, Profit, and Profit Margin columns from the Sales Table aren't listed.
+
+3. **Owner:** Open the same thin report. The owner isn't restricted by the role: the report shows **all** sales rows and all salespersons, and the Cost, Cost Price, Profit, and Profit Margin columns from the Sales Table are visible. Users with Write permission on the semantic model aren't limited by RLS.
+
+> **Checkpoint:** Security follows the shared model. The colleague can only see rows allowed by their UPN, and can't see hidden columns, regardless of which report they use. Don't rely on withholding Build or Read permission to protect sensitive data; use RLS and OLS.
+
+## Task 5: Remove Build Permission and Review Governance Controls
+
+*Performed by the owner, with a trainer discussion.*
+
+1. Open **Manage permissions → Direct access** for the semantic model.
+
+2. Find the colleague, select **More options (…)**, and **Remove Build** permission. The colleague must only have Read permission.
+
+3. **Colleague:** Open the thin report in the service. The report is still visible, but the colleague can no longer edit it or export the underlying data. 
+
+4. **Colleague:** Close the Power BI Desktop and reopen again the SalesThinReport.pbix file. Observe that the colleague can no longer access the semantic model.
+
+4. **Trainer discussion:** Review these governance points:
+   - The Power BI admin tenant setting **Use semantic models across workspaces** can restrict or turn off semantic model reuse for the whole tenant or specific security groups. When it's off, report copying is unavailable and discovery only shows models in the current workspace.
+   - If you publish an app, the audience also needs access to the underlying semantic model. Otherwise reports in the app won't open.
+   - *Publish to web* doesn't work for reports based on a shared semantic model.
+
+---
+
+## Lab E Summary
+
+### What You Accomplished
+
+✅ **Task 1**: Prepared a promoted, refreshed semantic model and configured how people request access
+
+✅ **Task 2**: Granted a colleague Read and Build permission without Write or Reshare
+
+✅ **Task 3**: Saw why Build permission alone isn't enough on a model with RLS, assigned the `UPN` role, and built and published a thin report using a live connection to the shared semantic model
+
+✅ **Task 4**: Observed dynamic row-level security and object-level security on the shared model, compared with the owner's view
+
+✅ **Task 5**: Removed Build permission and reviewed tenant-level governance controls
+
+### Key Concepts You Practised
+
+| Concept | Where it appeared | Learn reference |
+|---|---|---|
+| Sharing semantic models across workspaces | Task 1, 3 | [Introduction to semantic models across workspaces](https://learn.microsoft.com/power-bi/connect-data/service-datasets-across-workspaces) |
+| Share dialog, Read, Build, Reshare and Write | Task 2 | [Share access to a semantic model](https://learn.microsoft.com/power-bi/connect-data/service-datasets-share) |
+| Build permission and access requests | Task 1, 2, 5 | [Build permission for shared semantic models](https://learn.microsoft.com/power-bi/connect-data/service-datasets-build-permissions) |
+| Live connection from Power BI Desktop | Task 3 | [Connect to semantic models from Power BI Desktop](https://learn.microsoft.com/power-bi/connect-data/desktop-report-lifecycle-datasets) |
+| Dynamic RLS and OLS on a shared model | Task 4 | [Semantic model permissions](https://learn.microsoft.com/power-bi/connect-data/service-datasets-permissions) and [Object-level security in Power BI](https://learn.microsoft.com/power-bi/enterprise/service-admin-ols) |
+| Manage direct access | Task 2, 5 | [Manage semantic model access permissions](https://learn.microsoft.com/power-bi/connect-data/service-datasets-manage-access-permissions) |
+| Tenant control of model reuse | Task 5 | [Control the use of semantic models across workspaces](https://learn.microsoft.com/power-bi/connect-data/service-datasets-admin-across-workspaces) |
+
+---
+
+# Lab F: AI Visuals & Copilot Capabilities
 
 > **License note:** Built-in AI visuals (anomaly detection, forecasting, Smart Narrative, Q&A) are available in Power BI Desktop and Service to all participants. Copilot requires **any Fabric F SKU (F2+) or PPU** — trainer-led demo if unavailable.
 
@@ -1094,7 +1284,7 @@ By completing this lab, you will gain hands-on experience with the following ski
 
 ---
 
-## Lab E Summary
+## Lab F Summary
 
 ### What You Accomplished
 
