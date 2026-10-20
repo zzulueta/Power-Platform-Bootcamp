@@ -1220,8 +1220,6 @@ Security defined on the shared model applies to everyone who builds on it.
 # Lab F: AI Visuals & Preparing a Semantic Model for AI
 
 > **License note:** The decomposition tree, key influencers, and custom-mode smart narrative are available in Power BI Desktop and the Power BI service to all participants. The Copilot mode of the Narrative visual, and testing **Prep data for AI** with Copilot, require a Copilot-enabled workspace on **any Fabric F SKU (F2+) or PPU** — trainer-led demo if unavailable.
->
-> **Lab A dependency (optional):** If you completed Lab A, Task 6, your model contains the `Slow Measure` and `Optimized Measure` measures. Task 5 uses them as examples of fields to keep away from Copilot. If you skipped it, ignore those two names.
 
 ## Lab Introduction
 
@@ -1396,11 +1394,11 @@ Before you prepare the model, record how Copilot responds to the same questions 
 1. In Power BI Desktop, select **Copilot** on the **Home** ribbon to open the Copilot pane.
 
 2. Ask each of the following prompts, and note the answer and which fields or measures Copilot used. Use **How Copilot arrived at this** under each answer to see the details.
-   1. `What were total sales for FY2020?`
-   2. `Which region performs best?`
-   3. `Show sales by product category.`
-   4. `What is the margin by reseller business type?`
-   5. `Show sales by salesperson.`
+   - `What were total sales last year?`
+   - `Which region performs best?`
+   - `Show sales by product category.`
+   - `What is the margin by reseller business type?`
+   - `Show sales by salesperson.`
 
 3. Record your baseline in a table like this one:
 
@@ -1422,7 +1420,10 @@ Before you prepare the model, record how Copilot responds to the same questions 
 
 1. On the **Home** ribbon, select **Prep data for AI**. If the button isn't visible, go to **File → Options and settings → Options → Preview features**, select **Prep data for AI**, and restart Power BI Desktop.
 
-2. If the tabs in the dialog are disabled, select **Turn on Q&A** (Q&A must be enabled on the model for these features to work), then continue.
+2. If the tabs in the dialog are disabled, Q&A isn't turned on for the model. Select **Turn on Q&A** in the dialog, or turn it on manually:
+   - In Power BI Desktop, go to **File → Options and settings → Options**.
+   - Under **Current File → Data Load**, select **Turn on Q&A to ask natural language questions about your data**, then select **OK**.
+   - Reopen **Prep data for AI**. The tabs are now enabled.
 
    > **Note:** The Q&A *visual* is being retired in February 2027. The model-level Q&A setting is still required by **Prep data for AI**, and Copilot is the supported way to ask questions in natural language.
 
@@ -1430,34 +1431,26 @@ Before you prepare the model, record how Copilot responds to the same questions 
 
 An AI data schema is a focused subset of the model that Copilot prioritizes when it answers data questions. Keep clean, business-friendly fields and remove anything that could confuse Copilot.
 
-3. In the dialog, open the **Simplify data schema** tab.
+1. In the dialog, open the **Simplify data schema** tab.
 
-4. Keep these fields selected:
+2. Keep these fields selected:
 
    | Table | Keep |
    |---|---|
-   | `Sales` | `Total Sales`, `Sales Amount`, `Profit`, `Profit Margin`, `Sales YoY Growth`, `Order Quantity` |
-   | `Date` | `Date`, `Year`, `Month`, and any Quarter field |
+   | `Sales` | `Total Sales`, `Profit`, `Profit Margin`, `Sales YoY Growth`, `Orders` |
+   | `Date` | `Date`, `Year`, `Quarter`, `Month` |
    | `Product` | `Category`, `Subcategory`, `Product` |
    | `Reseller` | `Reseller`, `Business Type` |
-   | `Region` | `Region`, `Country-Region`, `Group` |
+   | `Region` | `Region`, `Country`, `Group` |
    | `Salesperson` | `Salesperson` |
 
-5. Clear everything else, including:
-   - Key and ID columns such as `ResellerKey`, `ProductKey`, and `SalesOrderNumber`
-   - The `UPN` columns in `Salesperson` and `Performance`, and the whole `Performance` table
-   - `Sales[Cost]` and `Sales[Cost Price]`, which Lab B restricts with object-level security
-   - The `Slow Measure` and `Optimized Measure` test measures from Lab A, if present
-
    > **Note:** Fields hidden in the model start unselected the first time you set a schema, but all fields appear in this pane regardless of visibility. Copilot still respects relationships, so a field on a kept table can still be filtered by a related table you removed.
-
-6. Select **Apply**.
 
 ### Part C: Add AI instructions
 
 AI instructions give Copilot business context, terminology, and rules for analysis. They are saved at the model level and consumers can't see them.
 
-7. Open the **Add AI instructions** tab and enter the following text. Adjust names that don't match your model:
+1. Open the **Add AI instructions** tab and enter the following text. Adjust names that don't match your model:
 
    ```text
    Metrics
@@ -1482,7 +1475,7 @@ AI instructions give Copilot business context, terminology, and rules for analys
    - Don't show UPN, email addresses, or key columns.
    ```
 
-8. Select **Apply**.
+2. Select **OK**.
 
    > **Note:** Keep instructions explicit, grouped by theme, and short. Fewer focused instructions usually beat many broad ones. Instructions guide Copilot but can't guarantee a specific output, and they are limited to 10,000 characters.
 
@@ -1490,19 +1483,19 @@ AI instructions give Copilot business context, terminology, and rules for analys
 
 A verified answer is a human-approved visual that predefined trigger phrases return. Copilot checks for an exact or semantically similar match to a trigger phrase before it generates its own answer.
 
-9. On the **AI Insights** page, add a **Clustered bar chart** with `Region[Region]` on the Y-axis and `Sales[Total Sales]` on the X-axis. Name it clearly with a title such as `Total Sales by Region`.
+1. Create a new page called **Sales**. Add a **Clustered bar chart** with `Region[Region]` on the Y-axis and `Sales[Total Sales]` on the X-axis. Name it clearly with a title such as `Total Sales by Region`.
 
-10. Add `Date[Year]` to the **Filters** pane of this visual and leave it with no value selected. A filter must already exist in the report and have no specific value to be offered to users as an adjustable filter.
+2. Add `Date[Year]` to the **Filters** pane of this visual and leave it with no value selected. A filter must already exist in the report and have no specific value to be offered to users as an adjustable filter.
 
-11. Select the visual, then select **More options (…) → Set up a verified answer**.
+3. Select the visual, then select **More options (…) → Set up a verified answer**.
 
-12. Add the trigger phrases `Sales by region`, `Which region sells the most?`, and `Show me total sales by region`. You can also select suggestions under **Copilot suggestions**.
+4. Add the trigger phrases `Sales by region`, `Which region sells the most?`, and `Show me total sales by region`. You can also select suggestions under **Copilot suggestions**.
 
-13. Select the **filter** icon and, under **Available to users**, select `Date[Year]`. Users can now ask for a specific year, such as *Sales by region for FY2020*, and Copilot returns this visual filtered to that year.
+5. Select the **filter** icon and, under **Available to viewers**, select `Year`. Users can now ask for a specific year, such as *Sales by region for FY2020*, and Copilot returns this visual filtered to that year.
 
-14. Select **Apply**.
+6. Select **OK**.
 
-15. Add a **Line chart** with `Date[Year]` on the X-axis and `Sales[Total Sales]` on the Y-axis, set up a verified answer in the same way with trigger phrases `Sales trend` and `How are sales changing over time?`, and select **Apply**.
+7. Add a **Line chart** with `Date[Year]` on the X-axis and `Sales[Total Sales]` on the Y-axis. Sort by Ascending Year. Set up a verified answer in the same way with trigger phrases `Sales trend` and `How are sales changing over time?`, and select **OK**.
 
    > **Note:** Filters applied to the visual when you set up the answer are saved with it, and slicers aren't carried over. Verified answers support up to three adjustable filters.
 
@@ -1512,27 +1505,25 @@ A verified answer is a human-approved visual that predefined trigger phrases ret
 
 1. Close and reopen the **Copilot** pane. You must do this every time you change **Prep data for AI**.
 
-2. Make sure the skill picker still has only **Answer questions about the data** selected.
-
-3. Ask the same five prompts from Task 4 and compare the answers to your baseline table:
+2. Ask the same five prompts from Task 4 and compare the answers to your baseline table:
    1. `What were total sales last year?` – should use `[Total Sales]` and the fiscal year logic from your instructions.
-   2. `Which region performs best?` – should use the highest `[Total Sales]` instead of asking what "best" means.
-   3. `Show sales by product category.` – should use `[Total Sales]`.
+   2. `Which region performs best?` – should use the verified answer.
+   3. `Show sales by product category.` – should use Total Sales by Category.
    4. `What is the margin by reseller business type?` – should use `[Profit Margin]`.
-   5. `Show sales by salesperson email.` – Copilot shouldn't use the `UPN` field because it is no longer in the schema.
+   5. `Show sales by salesperson.` – should use the Total Sales by Salesperson.
 
-4. Test the verified answers:
+3. Test the verified answers:
    - Ask `Sales by region` and confirm Copilot returns the visual you approved and marks it as a verified answer.
    - Ask `Sales by region for FY2020` and confirm the filter is applied.
    - Ask `How are sales changing over time?` and confirm the line chart is returned, even though the wording differs from your trigger phrases.
 
-5. Test the schema: ask for a field you removed, such as `Show sales by ResellerKey`. Copilot shouldn't return an answer based on that field.
+4. Test the schema: ask for a field you removed, such as `Show sales by ResellerKey`. Copilot shouldn't return an answer based on that field.
 
-6. Review **How Copilot arrived at this** under an answer, and use **… → Download diagnostics** on the Copilot pane to confirm the AI data schema and instructions were applied.
+5. Ask `Create a page showing sales trends by product category`. Observe that creating a page uses the entire semantic model, so the AI data schema doesn't restrict it.
 
-7. Switch the skill picker to **Create new report pages** only, and ask `Create a page showing sales trends by product category`. Observe that creating a page uses the entire semantic model, so the AI data schema doesn't restrict it.
+6. Ask `Analyze the Total Sales by Month line chart`. Observe that Copilot uses the visual and the underlying data to provide insights.
 
-8. If an answer isn't what you expected, change the instructions or schema in **Prep data for AI**, select **Apply**, close and reopen the Copilot pane, and test again. Preparing a model is iterative, and AI responses vary from run to run.
+7. If an answer isn't what you expected, change the instructions or schema in **Prep data for AI**, select **Apply**, close and reopen the Copilot pane, and test again. Preparing a model is iterative, and AI responses vary from run to run.
 
 > **Checkpoint:** Copilot answers are more consistent than the baseline, and the verified answers are returned for the trigger phrases.
 
@@ -1540,19 +1531,18 @@ A verified answer is a human-approved visual that predefined trigger phrases ret
 
 1. Save the file and select **Publish** on the **Home** ribbon. Publish to the **Sales Production** workspace from Lab D, or to another Copilot-enabled workspace you can publish to. Replace the existing report and semantic model if prompted.
 
-2. In the Power BI service, open the workspace, select the **AdvancedSalesReport** semantic model, and confirm the **Prep data for AI** button is available on the ribbon. You can edit the AI data schema and instructions here too, and manage verified answers from this button.
+2. In the Power BI service, open the workspace, select the **AdvancedSalesReport** semantic model, select Editing mode, and confirm the **Prep data for AI** button is available on the ribbon. You can edit the AI data schema and instructions here too, and manage verified answers from this button.
 
-3. Open the semantic model's **Settings**, expand **Approved for Copilot**, select the **Approved for Copilot** box, and select **Apply**.
+3. Open the semantic model's **Settings**, go to **Copilot**, and enable **Approved for Copilot**.
 
-4. Open the report and test one of the verified answers in the Copilot pane. Changes can take a few minutes to take effect and may take up to an hour (or up to 24 hours for models with many reports) to show everywhere. Saving a small change to a report can speed up the refresh for that report.
+4. Open the report and test one of the questions in the Copilot pane. 
 
 5. **Trainer discussion:** Review these points:
-   - Approving a model removes the friction treatment that standalone Copilot adds to answers from unapproved models, and an admin can restrict standalone Copilot to approved items only.
+   - Approving a model for Copilot boosts the model in Copilot search results, ensures that Copilot can interpret its metadata accurately, and improves the reliability of AI-generated outputs such as DAX measures, visualizations, and natural language summaries.
    - Only the semantic model can be marked **Approved for Copilot**. You can't mark a report, dashboard, or app.
    - **Prep data for AI is not a security feature.** Removing a field from the AI data schema keeps Copilot from using it, but it doesn't stop anyone with Build permission from querying it. Keep using RLS and OLS (Lab B) to protect data.
    - Validate Copilot answers before acting on them. Copilot in Power BI sends query results and metadata to Azure OpenAI, and tenant admins control whether Copilot is enabled.
-   - If you move the model through Git or deployment pipelines (Labs C and D), refresh the model in the service after deployment so the Prep data for AI changes sync.
-
+   
 > **Checkpoint:** The model is published and approved for Copilot, and its AI data schema, instructions, and verified answers apply to every report that uses it.
 
 ---
