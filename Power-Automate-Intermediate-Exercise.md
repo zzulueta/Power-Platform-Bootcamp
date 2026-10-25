@@ -331,10 +331,7 @@ Do this in **both** branches so every request is logged.
    | --- | --- |
    | **Site Address** | Select the site hosting **Purchase Requests** (see note below) |
    | **List Name** | Purchase Requests |
-   | **Title** | Insert **Item requested** |
-   | **EstimatedCost** | Insert **Estimated cost** |
-   | **Justification** | Insert **Business justification** |
-   | **Requester** | Insert **Responders' Email** (from Get response details) |
+   | **Id** | Insert **ID** (from Create item) |
    | **Decision** | `Approved` |
    | **DecisionComments** | First approver's comments (see note below) |
 
