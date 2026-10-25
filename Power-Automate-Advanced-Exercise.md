@@ -1095,8 +1095,8 @@ By completing this lab, you will gain hands-on experience with the following ski
    | --- | --- |
    | **Site Address** | Enter custom value then paste the URL of the site hosting **Customer Feedback** |
    | **List Name** | Customer Feedback |
-   | **Title** | Insert **summary** (from Parse JSON) |
-   | **Category** | Enter custom value then insert **category** (from Parse JSON) |
+   | **Title** | Insert **Body summary** (from Parse JSON) |
+   | **Category** | Enter custom value then insert **Body category** (from Parse JSON) |
    | **OriginalFeedback** | Insert **Your feedback** (from Get response details) |
    | **SubmittedBy** | Insert **Your name** (from Get response details) |
    | **SubmittedEmail** | Insert **Your email** (from Get response details) |
