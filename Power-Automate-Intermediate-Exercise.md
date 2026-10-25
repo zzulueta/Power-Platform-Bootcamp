@@ -569,9 +569,19 @@ Stretch, refill coffee, and reset. When you return, we move from event-driven fl
 
 For a more polished notification:
 
-1. Instead of (or in addition to) the plain message, add **Post adaptive card in a chat or channel - Microsoft Teams** and set **Post in**, **Team**, and **Channel** the same way as in Step 4.
+1. Instead of (or in addition to) the plain message, add **Post adaptive card in a chat or channel - Microsoft Teams**.
 
-2. In the **Adaptive Card** field, paste the JSON below. The `@{...}` expressions pull the file name and path straight from the trigger, so you don't need to insert dynamic content manually:
+2. Configure:
+
+   | Parameter | Value |
+   | --- | --- |
+   | **Post as** | Flow bot (or User) |
+   | **Post in** | Channel |
+   | **Team** | Your team |
+   | **Channel** | Your channel |
+   | **Message** | Compose a message with dynamic content, for example: `New file added: ` + **Name** + ` (` + **Path** + `)` |
+
+3. In the **Adaptive Card** field, paste the JSON below. The `@{...}` expressions pull the file name and path straight from the trigger, so you don't need to insert dynamic content manually:
 
    ```json
    {
