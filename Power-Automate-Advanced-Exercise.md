@@ -1226,7 +1226,7 @@ By completing this lab, you will gain hands-on experience with the following ski
 
    | Column name | Type |
    | --- | --- |
-   | Title (default) | Single line of text – reuse for the **flow name** |
+   | Title (default) | Single line of text – reuse for the **Flow name** |
    | FailedAction | Single line of text |
    | ErrorMessage | Multiple lines of text |
    | RunId | Single line of text |
@@ -1240,7 +1240,7 @@ By completing this lab, you will gain hands-on experience with the following ski
 
 ## Task 2: Add an Error Flag and Wrap the Work in a Try Scope
 
-1. In Power Automate go to My flows and select the  **Invoice Extraction to List** flow you built in Lab B. Select the ellipsis (**…**) and then **Save As**. Name the new flow **Invoice Extraction (resilient)** and select **Save**. Open the new flow and select **Edit**.
+1. In Power Automate go to My flows and select the  **Invoice Extraction to List** flow you built in Lab B. Select the ellipsis (**…**) and then **Save As**. Name the new flow **Invoice Extraction (resilient)** and select **Save**. Disable the original flow. Open the new flow and select **Edit**. 
 
 2. Directly **after the trigger** and before any other action, add **Initialize variable**:
 
