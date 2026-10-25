@@ -268,7 +268,7 @@ You need to install the Power Automate browser extension for Microsoft Edge if y
 
 2. In the PAD designer toolbar, select **Recorder** (the icon shows a browser window with a record button).
 
-3. In the **Recorder** dialog, select the ellipsis (...) and select Microsoft Edge.
+3. In the **Recorder** dialog, select the ellipsis (...), select **Launch new web browser**, and select Microsoft Edge.
 
 4. Select **Record**.
 
