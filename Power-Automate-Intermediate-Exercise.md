@@ -638,10 +638,10 @@ For a more polished notification:
 >    - **File**: insert the trigger's **Id** dynamic content
 >    - **Link type**: `View` (or `Edit`)
 >    - **Link scope**: `Organization` (or `Anonymous`, if your tenant allows it)
-> 2. This action outputs a **Web Url**. Use it in the **Post message** action's **Message** field with Markdown link syntax so the file name becomes a hyperlink:
+> 2. This action outputs a **Web Url**. Use it in the **Post message** action's **Message** field and select Toggle code view. Add the code below:
 >
 >    ```
->    New file added: [Name](Web Url)
+>    <p class="editor-paragraph">New file added: <a href="@{outputs('Create_share_link')?['body/WebUrl']}" class="editor-link">@{triggerOutputs()?['body/Name']}</a></p><br>
 >    ```
 >
 >    i.e. insert the **Name** dynamic content as the link text and the **webUrl** (from Create share link) as the target.
