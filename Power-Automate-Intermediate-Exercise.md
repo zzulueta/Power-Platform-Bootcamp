@@ -343,11 +343,11 @@ Do this in **both** branches so every request is logged.
    > first(outputs('Start_and_wait_for_an_approval')?['body/responses'])?['comments']
    > ```
 
-3. In the **False** branch, add another **Create item - SharePoint** with the same mapping, but set **Decision** to `Rejected`.
+3. In the **False** branch, add another **Update item - SharePoint** with the same mapping, but set **Decision** to `Rejected`.
 
 ### Step 8: Email the requester the outcome
 
-1. In each branch, after **Create item**, add **Send an email (V2) - Office 365 Outlook**.
+1. In each branch, after **Update item**, add **Send an email (V2) - Office 365 Outlook**.
 
 2. Configure:
 
