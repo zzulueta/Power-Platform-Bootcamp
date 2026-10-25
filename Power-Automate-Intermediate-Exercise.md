@@ -255,7 +255,7 @@ By completing this lab, you will gain hands-on experience with the following Pow
    | EstimatedCost | Single line of text |
    | Justification | Multiple lines of text |
    | Requester | Single line of text |
-   | Decision | Choice (Approved, Rejected) |
+   | Decision | Choice (Approved, Rejected, Pending). Set the default value to **Pending** |
    | DecisionComments | Multiple lines of text |
 
 ### Step 3: Build the approval flow
@@ -268,13 +268,30 @@ By completing this lab, you will gain hands-on experience with the following Pow
 
 4. In the trigger, set **Form Id** to **Purchase Request**.
 
-### Step 4: Get the response details
+### Step 4: Get the response details & save details to the Microsoft List
 
 1. Add an action: search **Get response details** and select **Get response details - Microsoft Forms**.
 
 2. Set **Form Id** to **Purchase Request**.
 
 3. Set **Response Id** to the dynamic content **Response Id** from the trigger.
+
+4. Add an action: search **Create item** and select **Create item - SharePoint**.
+
+5. Configure:
+
+   | Parameter | Value |
+   | --- | --- |
+   | **Site Address** | Select the site hosting **Purchase Requests** |
+   | **List Name** | Purchase Requests |
+   | **Title** | Insert **Item requested** |
+   | **EstimatedCost** | Insert **Estimated cost** |
+   | **Justification** | Insert **Business justification** |
+   | **Requester** | Insert **Responders' Email** (from Get response details) |
+   | **Decision** | `Pending` |
+   | **DecisionComments** | Leave blank |
+
+   > **Site Address:** select **Enter custom value** and paste the URL of the SharePoint site hosting your list, then select the list from the **List Name** dropdown. 
 
 ### Step 5: Start and wait for an approval
 
