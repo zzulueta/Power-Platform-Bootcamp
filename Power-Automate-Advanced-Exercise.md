@@ -254,6 +254,8 @@ Before adding any actions, create the three subflows that will hold the browser 
 
 In this task you will use the PAD **Web Recorder** to capture a single manual browser session on weather.com for the city of Paris. The generated actions will be placed inside the **SearchCity** subflow. You will parameterise them in Task 4.
 
+You need to install the Power Automate browser extension for Microsoft Edge if you haven't already: https://learn.microsoft.com/en-us/power-automate/desktop-flows/install-browser-extensions
+
 > **Why record for just one city first?** The recorder captures what you actually do step by step. It is much easier to record one accurate interaction and then replace the hardcoded city name with a variable, rather than trying to build browser actions manually from scratch.
 
 ### Switch to the SearchCity Subflow
@@ -267,7 +269,6 @@ In this task you will use the PAD **Web Recorder** to capture a single manual br
 2. In the PAD designer toolbar, select **Recorder** (the icon shows a browser window with a record button).
 
 3. In the **Recorder** dialog, select the ellipsis (...) and select Microsoft Edge.
-    > Install the Power Automate extension for Edge if prompted.
 
 4. Select **Record**.
 
