@@ -690,4 +690,44 @@ For a more polished notification:
 >
 > **Create share link** respects your tenant's sharing policies — if `Anonymous` is blocked, use `Organization` and ensure recipients have access. Avoid hand-building a URL from the path, as it breaks with special characters and tenant differences.
 
+### Step 7: Exporting your flow
+
+To export your flow, follow these steps:
+
+1. Go to the **My flows** page in Power Automate.
+
+2. Find the flow you want to export and click the ellipsis (**...**) next to it.
+
+3. Select **Export** > **Package (.zip)**.
+
+4. In the export package settings, provide a **Name** and **Description**.
+
+5. Configure the **Import Setup** to either **Create as new** or **Update** then click **Save**.
+
+6. Click **Export** to download the package.
+
+### Step 8: Exporting your flows via a Solution
+
+To export your flows via a Solution, follow these steps:
+
+1. Go to the **Solutions** page in Power Automate.
+
+2. Select **+ New solution** to create a new solution.
+   - Provide a **Display Name**, **Publisher**, and **Version** for the new solution.
+   - Click **Create** to create the new solution.
+
+3. Add the flows you want to export to the solution
+   - Select **Add existing** > **Automation** > **Cloud Flow** to add the flows to the solution.
+   - Select the flows you want to add and click **Add**.
+
+4. Go back to the **Solutions** page in Power Automate and select the solution containing the flows you want to export.
+
+5. Click the ellipsis (**...**) next to the solution and select **Export solution**.
+
+6. Select **Next**.
+
+7. Select **Managed** or **Unmanaged** for the solution type.
+
+8. Click **Export** to download the package.
+
 
