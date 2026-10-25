@@ -579,7 +579,6 @@ For a more polished notification:
    | **Post in** | Channel |
    | **Team** | Your team |
    | **Channel** | Your channel |
-   | **Message** | Compose a message with dynamic content, for example: `New file added: ` + **Name** + ` (` + **Path** + `)` |
 
 3. In the **Adaptive Card** field, paste the JSON below. The `@{...}` expressions pull the file name and path straight from the trigger, so you don't need to insert dynamic content manually:
 
