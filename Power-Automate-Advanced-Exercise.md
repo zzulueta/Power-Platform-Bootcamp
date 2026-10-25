@@ -367,7 +367,7 @@ In this task you will add three actions to the **ExtractForecast** subflow to wa
 
 ### Add the Data Extraction Action
 
-10. Add an **Extract data from web page** action from **Browser automation** → **Web data extraction**.
+10. Add an **Extract data from web page** action from **Browser automation** → **Web data extraction** → **Extract data from web page**.
 
 11. Configure the basic properties:
 
