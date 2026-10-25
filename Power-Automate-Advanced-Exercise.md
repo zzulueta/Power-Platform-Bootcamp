@@ -1102,7 +1102,7 @@ By completing this lab, you will gain hands-on experience with the following ski
    | **SubmittedEmail** | Insert **Your email** (from Get response details) |
 
 3. Add a **Condition** control below **Create item**:
-   - Left value: insert **category** (from Parse JSON)
+   - Left value: insert **Body category** (from Parse JSON)
    - Operator: **is equal to**
    - Right value: `Technical Support`
 
@@ -1112,7 +1112,7 @@ By completing this lab, you will gain hands-on experience with the following ski
    | --- | --- |
    | **To** | Your IT team distribution address (use your own for testing) |
    | **Subject** | `New Technical Support feedback` |
-   | **Body** | Enter the **summary** from the Parse JSON action and **Your feedback** from Get response details dynamic content |
+   | **Body** | Enter the **Body summary** from the Parse JSON action and **Your feedback** from Get response details dynamic content |
 
    > Leave the **False** branch empty — non-technical feedback is simply recorded in the list.
 
