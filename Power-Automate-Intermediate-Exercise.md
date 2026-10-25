@@ -389,7 +389,7 @@ Stretch, refill coffee, and reset. When you return, we move from event-driven fl
 
 ### Step 1: Upload the provided Excel workbook
 
-1. Download the provided **Products.xlsx** workbook from the lab materials.
+1. Download the provided **Products.xlsx** workbook from the lab materials (Power-Automate-Intermediate-Ref folder).
 
 2. Upload it to **OneDrive for Business** (or a SharePoint document library). The file must live in the cloud — the Excel Online (Business) connector cannot read files stored only on your local machine.
 
