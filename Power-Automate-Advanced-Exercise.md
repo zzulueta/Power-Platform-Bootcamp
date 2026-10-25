@@ -485,13 +485,7 @@ Now return to the Main flow to add the city loop and the three subflow calls.
     |---|---|
     | Subflow name | `WriteRows` |
 
-14. Add a **Close web browser** action after the three subflow calls (still inside the loop):
-
-    | Property | Value |
-    |---|---|
-    | Web browser instance | `%Browser%` |
-
-15. Press **Ctrl + S** to save your flow.
+14. Press **Ctrl + S** to save your flow.
 
 ### Parameterise the SearchCity Subflow
 
@@ -531,7 +525,26 @@ When the recorder captured the click on "Paris", it stored an exact text selecto
 
 26. Select **Save** to close the UI Element editor, then **Save** the action.
 
-27. Press **Ctrl + S** to save your flow.
+### Update the ExtractForecast Subflow
+
+27. Open the **ExtractForecast** subflow.
+
+28. Find the **Wait for web page content** action that waits for the forecast table to load.
+
+29. Double-click the action to open its properties.
+
+30. Next to the **UI element** field, select the **Edit** (pencil) icon to open the UI Element editor.
+
+31. In the UI Element editor, toggle Text editor on (top-right of the dialog).
+
+32. Replace the entire selector with:
+    ```
+    [Text*="%CurrentItem% Daily Forecast"]
+    ```
+
+33. Select **Save** to close the UI Element editor, then **Save** the action.
+
+34. Press **Ctrl + S** to save your flow.
 
 ---
 
