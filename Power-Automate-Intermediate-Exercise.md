@@ -282,16 +282,14 @@ By completing this lab, you will gain hands-on experience with the following Pow
 
    | Parameter | Value |
    | --- | --- |
-   | **Site Address** | Select the site hosting **Purchase Requests** |
+   | **Site Address** | Select Enter custom value and paste the URL of the SharePoint site hosting your list |
    | **List Name** | Purchase Requests |
    | **Title** | Insert **Item requested** |
    | **EstimatedCost** | Insert **Estimated cost** |
    | **Justification** | Insert **Business justification** |
-   | **Requester** | Insert **Responders' Email** (from Get response details) |
-   | **Decision** | `Pending` |
+   | **Requester** | Insert **Responders' Email** |
+   | **Decision Value** | `Pending` |
    | **DecisionComments** | Leave blank |
-
-   > **Site Address:** select **Enter custom value** and paste the URL of the SharePoint site hosting your list, then select the list from the **List Name** dropdown. 
 
 ### Step 5: Start and wait for an approval
 
@@ -325,7 +323,7 @@ By completing this lab, you will gain hands-on experience with the following Pow
 
 Do this in **both** branches so every request is logged.
 
-1. In the **True** branch, add **Create item - SharePoint**.
+1. In the **True** branch, add **Update item - SharePoint**.
 
 2. Configure:
 
