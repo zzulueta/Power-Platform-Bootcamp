@@ -578,7 +578,7 @@ These actions go **outside and after** the For each loop, so they run once when 
 
 ### Run the Flow
 
-4. In the PAD designer, select **Run** (the play button in the toolbar).
+4. In the PAD designer, select the Main flow to make it active, select the top most action in the flow, then select **Run** (the play button in the toolbar).
 
 5. Observe the flow executing:
    - A browser window opens and navigates to weather.com
