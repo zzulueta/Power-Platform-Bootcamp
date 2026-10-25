@@ -621,7 +621,6 @@ For each CurrentItem in Cities:
     Run subflow: SearchCity
     Run subflow: ExtractForecast
     Run subflow: WriteRows
-    Close web browser
 End For each
 Save Excel → WeatherReport.xlsx
 Close Excel
