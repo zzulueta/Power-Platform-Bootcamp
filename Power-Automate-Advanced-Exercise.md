@@ -378,11 +378,11 @@ In this task you will add three actions to the **ExtractForecast** subflow to wa
 
 12. To define what to extract, go to the browser that has the Weather.com page open. 
 
-13. In the browser, right-click on the **first forecast row** in the Daily Forecast table (e.g., the row showing "Today or Tonight").
+13. In the browser, right-click on the **first forecast row and first column** in the Daily Forecast table (e.g., "Today or Tonight").
 
-14. From the context menu, select **Extract element value** → **Text: [the full row text]**. PAD adds it in the Extraction preview.
+14. From the context menu, select **Extract element value** → **Text: (Today)**. PAD adds it in the Extraction preview.
 
-15. Right-click on the **second forecast row** (e.g., "Thu 20"). Select **Extract element value** → **Text**.
+15. Right-click on the **second row and first column** (e.g., "Thu 20"). Select **Extract element value** → **Text**.
 
     > **Pattern detection:** After selecting two rows, PAD recognises the repeating structure and automatically generates a pattern to extract **all matching rows** on the page as a DataTable. You will see a preview table appear in the Extract Helper panel showing all forecast rows.
 
