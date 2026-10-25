@@ -434,7 +434,7 @@ Stretch, refill coffee, and reset. When you return, we move from event-driven fl
    | Parameter | Value |
    | --- | --- |
    | **Location** | OneDrive for Business (or the SharePoint site) where you saved the workbook |
-   | **Document Library** | OneDrive / the library |
+   | **Document Library** | OneDrive |
    | **File** | Browse to your workbook |
    | **Table** | Products |
 
@@ -488,7 +488,7 @@ Stretch, refill coffee, and reset. When you return, we move from event-driven fl
    | **File** | Same as Step 4 (Products.xlsx) |
    | **Table** | Products |
    | **Key Column** | ProductID |
-   | **Key Value** | Insert **ProductID** (current row) |
+   | **Key Value** | Insert **ProductID** (from List rows) |
    | **Uploaded** | Yes |
 
    > Marking the flag *inside* the loop, immediately after the item is created, makes the flow **idempotent**: if it runs again, the already-processed rows are filtered out in Step 4 and never duplicated.
@@ -503,7 +503,9 @@ Stretch, refill coffee, and reset. When you return, we move from event-driven fl
 
 3. Open the **Products.xlsx** workbook and confirm every processed row's **Uploaded** column is now **Yes**.
 
-4. Run the flow a second time. Because all rows are already marked **Yes**, the **Filter Query** returns nothing and no duplicate items are created — proving the flow is safe to re-run.
+4. Close the **Products.xlsx** workbook.
+
+5. Run the flow a second time by clicking the **Run** button in the flow overview page. Because all rows are already marked **Yes**, the **Filter Query** returns nothing and no duplicate items are created — proving the flow is safe to re-run.
 
 > **Performance note:** For large tables, this loop can be slow and may hit throttling. In production you would increase (carefully) or leave default the **For each** concurrency, filter rows with the connector's **Filter Query**, or consider a data-flow/import approach. For this lab's small data set, defaults are fine.
 
