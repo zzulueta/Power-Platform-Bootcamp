@@ -497,6 +497,7 @@ You now use the **report editing view** in the Power BI service, which has the s
 #### Rename Page 1
 
 1. Double-click the **Page 1** tab at the bottom (or right-click → **Rename page**).
+
 2. Type `Sales Overview` and press **Enter**.
 
 ### Page 2: Customer Analysis
@@ -614,7 +615,7 @@ Rename the page to `Product Performance`.
 
 In the Desktop lab you publish a `.pbix`. In the online lab your semantic model and report already live in the workspace, so this task focuses on exploring and maintaining them.
 
-### Explore Your Report
+### Explore Your Report and Semantic Model
 
 1. Open **My workspace** from the left navigation pane.
 
@@ -624,13 +625,7 @@ In the Desktop lab you publish a `.pbix`. In the online lab your semantic model 
 
    > **Report vs. semantic model:** The semantic model holds the data model; the report holds the visuals and pages. Many reports can reuse one semantic model.
 
-3. Open the **SalesAnalysis** report and check the toolbar:
-   - **Edit** – switch to the editing view
-   - **Share** – share the report with others
-   - **Export** – export to PowerPoint or PDF
-   - **Subscribe to report** – scheduled email snapshots
-
-4. Test interactivity with slicers and page tabs.
+3. Selecting the semantic model lets you view its tables, relationships, and measures. Selecting the report lets you view its pages and visuals.
 
 ### View Lineage
 
@@ -638,17 +633,30 @@ In the Desktop lab you publish a `.pbix`. In the online lab your semantic model 
 
 2. You see the OData service and CSV sources flowing into the **SalesAnalysis** semantic model and then into the **SalesAnalysis** report. Lineage view helps you understand impact when something changes.
 
+3. Head back to **List** view when done exploring lineage.
+
 ### Understanding Refresh
 
 1. In the workspace, hover over the **SalesAnalysis** semantic model and select **Refresh now** (the circular arrow icon).
 
-2. Open **Settings** (**More options (...)** → **Settings**) → **Data source credentials** and, if prompted, set the OData source to **Authentication method: Anonymous**, **Privacy level: Public**, and select **Sign in**.
+2. Open **Settings** (**More options (...)** → **Data access**) → **Data source credentials**. Verify if you are connected to the data sources. If you receive an error, follow the steps below to resolve it.
+   - Select **Gateway and cloud connections**
+   - Select the configuration for Products data source
+   - Select Create a connection
+   - Enter Connection Name: Products
+   - Authentication method: OAuth 2.0
+   - Select Edit credentials, login with your account
+   - Select Create
+   - Repeat the steps for the Customers data source and name the connection: Customers
+   - Map the appropriate connection to each data source (Products and Customers)
 
-3. Expand **Refresh** → **Configure a refresh schedule** to see the scheduling options.
+3. Head back to the Data source credentials page and verify that there are no more errors.
+
+4. Select **Refresh** to see the scheduling options.
 
    > **Note:** In this lab the data is static (CSV files and a demo OData service), so refresh won't change anything. In production you'd schedule a refresh to keep reports current.
 
-4. Skip scheduling for now.
+5. Skip scheduling for now.
 
 > **Congratulations!** Your report and semantic model are in the Power BI service. Next you create a dashboard.
 
