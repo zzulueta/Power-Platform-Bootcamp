@@ -935,9 +935,9 @@ You create a Date table and time intelligence measures in the web model editor.
 
 ### Add a Page Navigator
 
-1. In editing view, go to **Sales Overview**.
+1. In **Editing** view, go to **Sales Overview**.
 
-2. On the ribbon, select **Buttons** → **Navigator** → **Page navigator**.
+2. On the ribbon, select **Insert** → **Buttons** → **Navigator** → **Page navigator**.
 
    > The page navigator generates one button per report page and stays in sync when pages are added or renamed.
    >
@@ -985,7 +985,7 @@ You create a Date table and time intelligence measures in the web model editor.
 
 ### Wire Buttons to Bookmarks
 
-1. On the ribbon, select **Buttons** → **Blank**.
+1. On the ribbon, select **Insert** → **Buttons** → **Blank**.
 
 2. In **Format button**:
    - **Button** tab → **Style** → turn **Text** **On** and set **Text** to `All Customers`
@@ -995,27 +995,11 @@ You create a Date table and time intelligence measures in the web model editor.
 
 4. Place both buttons side by side below the **Top Customers by Revenue** table.
 
-5. Test: in editing view, hold **Ctrl** and click each button.
+5. Test: in **Editing** view, hold **Ctrl** and click each button.
 
-6. Press **Ctrl + S**, then select **Reading view**. In Reading view, click the buttons without holding **Ctrl** and confirm the views toggle. Also test the page navigator.
+6. Press **Ctrl + S**, then select **Reading** view. In **Reading** view, click the buttons without holding **Ctrl** and confirm the views toggle. Also test the page navigator.
 
 > **Congratulations!** Your report has page navigation, conditional formatting, and bookmark-driven views — all built in the browser.
-
----
-
-## Troubleshooting
-
-| Problem | Fix |
-| --- | --- |
-| **Get data** isn't available on the **Create** page | Select **+ New item** in a workspace and search for **Semantic model**, or ask your admin to enable the service model-editing tenant setting. |
-| CSV upload isn't offered, or the uploaded file can't be refreshed | Upload the CSV files to **OneDrive for Business** or **SharePoint**, then in **Text/CSV** paste the file link into **File path or URL** and sign in with your **Organizational account**. |
-| Accented characters look broken in Customers | In the Text/CSV preview, set **File origin** to **1252: Western European (Windows)**. |
-| OData refresh fails with a credentials error | Semantic model **Settings** → **Data source credentials** → **Edit credentials** → **Anonymous**, **Privacy level: Public**. |
-| Relationships are missing | Relationships aren't imported in the service. Create them in the model editor (Task 3). |
-| New measures or tables don't appear in the report | Save the model, then refresh the report browser tab (**F5**). |
-| **Mark as date table** shows an error | The date column must contain unique, contiguous dates with no blanks. Recreate the table with the DAX in Task 7. |
-| **Open semantic model** is disabled | Hover over the button to see which limitation applies, and confirm you have write permission on the semantic model. |
-| Can't share the dashboard | Check that you and the recipient have Pro/PPU licenses, or move the content to a Fabric/Premium capacity workspace. |
 
 ---
 
