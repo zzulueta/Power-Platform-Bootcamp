@@ -7,7 +7,7 @@
 
 ## Lab Introduction
 
-This lab is the browser-only version of [Power-BI-Intermediate-Exercise.md](./Power-BI-Intermediate-Exercise.md). You build the same end-to-end analytics solution, but **everything is done in the Power BI service at [https://app.powerbi.com](https://app.powerbi.com)**. You don't need to install Power BI Desktop (or anything else) on your machine.
+You build an end-to-end analytics solution using the **Power BI service at [https://app.powerbi.com](https://app.powerbi.com)**. You don't need to install Power BI Desktop (or anything else) on your machine.
 
 This lab will guide you through the following tasks:
 
@@ -20,21 +20,10 @@ This lab will guide you through the following tasks:
 - Create a Date table and time intelligence measures with DAX
 - Apply themes, conditional formatting, bookmarks, buttons, and page navigation
 
-### What changes compared with the Desktop lab?
-
-| Desktop lab | Online lab (this lab) |
-| --- | --- |
-| Get data → Power Query Editor in Desktop | **Create → Get data** (Power Query Online) in the service |
-| Model view in Desktop | **Open semantic model** (web model editor) |
-| Report view in Desktop | **Report editing view** in the browser |
-| Save as `.pbix`, then Publish | Content is **saved directly to a workspace** – no `.pbix`, no publish step |
-| Task 5 "Publish" | Task 5 "Save, explore and refresh" |
-
 ## Pre-requisites
 
 - **A modern web browser** (Microsoft Edge, Chrome, Firefox or Safari). No Power BI Desktop required.
 - **A Power BI account** that can sign in at [https://app.powerbi.com](https://app.powerbi.com).
-- **A license that allows creating and sharing content**: Power BI Pro, Premium Per User, or a Microsoft Fabric trial/capacity workspace. Both you (the creator) and anyone you share with need a Pro (or equivalent) license unless the workspace is on a Fabric/Premium capacity.
 - **Web data modeling enabled**: Editing semantic models in the service is on by default. If **Open semantic model** or **Edit** is disabled, ask your Power BI admin to check the tenant setting *Users can edit data models in the Power BI service*.
 - **Sample data**: `products.csv` and `customers.csv` from [Power-BI-Intermediate-Ref/Data](./Power-BI-Intermediate-Ref/Data) downloaded to your computer. The browser uploads them for you.
 - **Internet connection**: Required for the Northwind OData service (`https://services.odata.org/v4/northwind/northwind.svc/`).
@@ -59,7 +48,7 @@ Your task is to:
   - Which products are our top sellers?
   - How are sales distributed geographically?
 - Create a dashboard that highlights the most important KPIs
-- Share the dashboard with your team
+- Perform data analysis using the reports and dashboard
 
 ## Architecture Overview
 
