@@ -279,9 +279,9 @@ In the **Queries** pane, right-click each query, select **Rename**, and set:
 
    > Choosing **Create a report** would take you straight to report editing. We'll first finish the model, so the semantic-model-only option is better here.
 
-3. If prompted for a name, enter **SalesAnalysis**. The web model editor opens.
+3. Enter **SalesAnalysis**. Then select **Create**. 
 
-   > **Troubleshooting:** If the data source asks for credentials, choose **Anonymous** for the OData source. If uploaded files cannot be connected, see the [Troubleshooting](#troubleshooting) section.
+4. The semantic model editor opens, showing the four queries as tables.
 
 > **Congratulations!** You've imported data from multiple sources without Power BI Desktop. Your data is ready to be modeled.
 
@@ -297,9 +297,9 @@ You use the **web model editor** (the Power BI service's equivalent of Model vie
 
 ### Switch to Editing Mode
 
-1. The model opens in **Viewing mode**. Select **Viewing** at the top right and switch to **Editing**.
+1. The model may open in **Viewing mode**. Select **Viewing** at the top right and switch to **Editing**.
 
-2. Make sure the **Model** (diagram) layout is selected. You see four tables: Customers, OrderDetails, Orders, Products.
+2. You see four tables: Customers, OrderDetails, Orders, Products.
 
 3. Drag tables so they're easy to read:
    - **Customers** on the left
@@ -387,19 +387,19 @@ In the desktop lab you create measures while building the report. In the browser
    Average Order Value = DIVIDE([Total Revenue], [Total Orders], 0)
    ```
 
-5. Select each measure and set its format on the **Measure tools** ribbon (or in the **Properties** pane):
+5. Select each measure and set its format on the **Properties** pane:
 
    | Measure | Format | Decimal places |
    | --- | --- | --- |
-   | Total Revenue | Currency / Decimal number | 0 |
+   | Total Revenue | Currency | 0 |
    | Total Orders | Whole number | 0 |
-   | Average Order Value | Currency / Decimal number | 2 |
+   | Average Order Value | Currency | 2 |
 
 > Changes in the web model editor are saved automatically.
 
 ### Test the Model
 
-1. On the ribbon, select **Create a report** (or **Auto-create report** / **Start from scratch**, depending on the menu) to open report editing view.
+1. On the ribbon, select **File → Create new report**.
 
 2. Add a **Table** visual and add **Country** from **Customers**, then **Quantity** from **OrderDetails**.
 
@@ -422,15 +422,17 @@ You now use the **report editing view** in the Power BI service, which has the s
 1. In the report editing view, select **Save** (or **File** → **Save**).
 2. Enter the name **SalesAnalysis**, choose **My workspace**, and select **Save**.
 
-   > Because the report is browser-based, there's no `.pbix`. Remember to save again after each major change (**Ctrl + S**).
+   > Because the report is browser-based, there's no `.pbix`. Remember to save again after each major change.
 
-3. Delete the test table from Task 3: select it and press **Delete**.
+3. Go to back to the report **Editing** view.
+
+4. Delete the test table from Task 3: select it and press **Delete**.
 
 ### Page 1: Sales Overview
 
 #### Create KPI Cards
 
-1. Select the **Card** icon in the **Visualizations** pane (use the new card visual or the classic one).
+1. In the **Visualizations** pane, select Restore default visuals. Then select the **Card** icon.
 
 2. Drag the **Total Revenue** measure from the **Data** pane (**OrderDetails** table) onto the card.
 
@@ -442,7 +444,7 @@ You now use the **report editing view** in the Power BI service, which has the s
 
 5. On the **General** tab, expand **Title**, turn **Title** **On**, and set **Text** to `Total Revenue`.
 
-6. Add a second **Card** with **Total Orders**. Display units: **Auto** (or **None**), decimals **0**, title `Total Orders`. Position it to the right of Total Revenue.
+6. Add a second **Card** with **Total Orders**. Display units: **None**, decimals **0**, title `Total Orders`. Position it to the right of Total Revenue.
 
 7. Add a third **Card** with **Average Order Value**. Display units **None**, decimals **2**, title `Average Order Value`. Position it to the right of Total Orders.
 
@@ -471,8 +473,8 @@ You now use the **report editing view** in the Power BI service, which has the s
    - **X-axis**: **Total Orders**
 
 3. Sort the chart:
-   - Select the visual → **More options (...)** → **Sort axis** → **Total Orders**
-   - **More options (...)** → **Sort axis** → **Sort descending**
+   - Select the visual → **More options (...)** → **Sort by** → **Total Orders**
+   - **More options (...)** → **Sort by** → **Sort descending**
 
 4. On the **General** tab → **Title**, turn it **On** and set **Text** to `Orders by Country`.
 
@@ -507,7 +509,7 @@ You now use the **report editing view** in the Power BI service, which has the s
 
 2. Add these fields: **CompanyName**, **Country**, **City** (from **Customers**), then the **Total Revenue** and **Total Orders** measures.
 
-3. Sort the table: **More options (...)** → **Sort descending** → **Total Revenue** (or select the **Total Revenue** column header until the sort arrow points down).
+3. Sort the table: **More options (...)** → **Sort by** → **Total Revenue** (or select the **Total Revenue** column header until the sort arrow points down).
 
 4. Resize the table to the left half of the page.
 
@@ -594,7 +596,7 @@ Rename the page to `Product Performance`.
 
 ### Test Interactivity
 
-1. Switch to **Reading view** (select **Reading view** or the **Exit editing** option at the top).
+1. Switch to **Viewing** option at the top.
 
 2. On **Sales Overview**, select a bar (for example USA) in **Orders by Country**. The other visuals filter to that country (**cross-filtering**). Select the bar again to clear it.
 
@@ -603,10 +605,6 @@ Rename the page to `Product Performance`.
 4. On **Product Performance**, pick a category. The table and column chart update.
 
 > **Cross-filtering:** Selecting a visual element filters related visuals on the page. To change this, in editing view select a visual and use **Format** → **Edit interactions**.
-
-### Save Your Work
-
-1. Return to **Edit** mode if needed, go to **Sales Overview**, and press **Ctrl + S**.
 
 > **Congratulations!** You created a three-page interactive report with KPIs, trends, tables, charts, a treemap, and slicers, all in the browser.
 
