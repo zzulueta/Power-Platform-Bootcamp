@@ -673,13 +673,13 @@ Dashboards are single-page canvases of tiles pinned from one or more reports. Th
 
 ### Create a New Dashboard
 
-1. Open the **SalesAnalysis** report in **Reading view** and go to **Sales Overview**.
+1. Open the **SalesAnalysis** report in **Viewing** and go to **Sales Overview**.
 
 2. Hover over the **Total Revenue** card and select the **Pin visual** icon (pushpin).
 
 3. In **Pin to dashboard**, select **New dashboard**.
 
-4. Enter the name `Sales Performance Dashboard` and select **Pin live**.
+4. Enter the name `Sales Performance Dashboard` and select **Pin**.
 
 5. A confirmation says **Pinned to dashboard**.
 
@@ -751,7 +751,7 @@ You create a Date table and time intelligence measures in the web model editor.
 
 ### Open the Semantic Model
 
-1. In the **SalesAnalysis** report in editing view, select **Open semantic model** (or, from **My workspace**, select **More options (...)** on the semantic model → **Open semantic model**).
+1. Go to **My workspace**, select the semantic model.
 
 2. Switch to **Editing** mode if needed.
 
@@ -778,9 +778,11 @@ You create a Date table and time intelligence measures in the web model editor.
 
 1. In the **Data** pane, right-click the **Date** table (or select **More options (...)**).
 
-2. Select **Mark as date table** → **Mark as date table**.
+2. Select **Mark as date table**.
 
-3. In **Choose a date column**, select **Date**, and select **Save**.
+3. Turn on **Mark as a date table**.
+
+4. In **Choose a date column**, select **Date**, and select **Save**.
 
 ### Create the Relationship to Orders
 
@@ -821,11 +823,10 @@ You create a Date table and time intelligence measures in the web model editor.
 
    > *Reference: [Time intelligence functions (DAX)](https://learn.microsoft.com/dax/time-intelligence-functions-dax)*
 
-3. Close the model editor tab and return to the report tab. Reload the report page (**F5**) if the new fields don't appear in the **Data** pane.
 
 ### Add a Sales Analysis Page
 
-1. In the report **editing view**, add a new page with **+**.
+1. Return to the report. In the report **Editing** view, add a new page with **+**.
 
 2. Rename it to `Sales Analysis`.
 
@@ -864,7 +865,7 @@ You create a Date table and time intelligence measures in the web model editor.
 
 9. Arrange the page: year slicer on the left, customer table in the center, comparison chart on the right (see the screenshots in [Power-BI-Intermediate-Ref/Report Screenshots](<./Power-BI-Intermediate-Ref/Report Screenshots>)).
 
-10. Press **Ctrl + S**.
+10. **Save** the report.
 
 > **Congratulations!** Your report now has time intelligence KPIs backed by a proper Date table.
 
@@ -874,7 +875,7 @@ You create a Date table and time intelligence measures in the web model editor.
 
 ### Apply a Report Theme
 
-1. In the report **editing view**, select the **View** tab on the ribbon.
+1. In the report **Editing** view, select the **Design** tab on the ribbon.
 
 2. Select **Theme** and browse the built-in themes.
 
@@ -884,9 +885,9 @@ You create a Date table and time intelligence measures in the web model editor.
    >
    > *Reference: [Use report themes in Power BI](https://learn.microsoft.com/power-bi/create-reports/desktop-report-themes)*
 
-4. Visit the [Power BI theme gallery](https://community.fabric.microsoft.com/category/pbi_comm_galleries/discussions/themesgallery) and download a theme `.json` file.
+4. Select the **Theme gallery** and download a theme `.json` file.
 
-5. In the service, import it from the **Theme** pane (**View** → **Theme** → open the **Theme** pane → **Import theme**) and choose the downloaded `.json` file.
+5. In the service, select **Import theme** and choose the downloaded `.json` file.
 
 ### Add Conditional Formatting — Data Bars
 
