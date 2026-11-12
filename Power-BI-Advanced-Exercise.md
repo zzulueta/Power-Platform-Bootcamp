@@ -678,7 +678,7 @@ By completing this lab, you will gain hands-on experience with the following ski
    git diff --cached --stat
    ```
 
-   Press **q** if the diff viewer opens—no Enter needed. Review the staged file list: include the `.pbip`, report and semantic model definitions, and `.gitignore`. Then create the local baseline commit (this saves locally; it does not push to GitHub):
+   Review the staged file list, then press **q** to exit.  Then create the local baseline commit (this saves locally; it does not push to GitHub):
 
    ```shell
    git commit -m "Add AdventureWorks PBIP baseline"
