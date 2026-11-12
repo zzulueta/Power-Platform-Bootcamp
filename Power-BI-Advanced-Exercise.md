@@ -269,7 +269,7 @@ By completing this lab, you will gain hands-on experience with the following ski
 
 6. Select **Stop**
 
-7. Expand the **Table** visual entry and records its **DAX query time**
+7. Expand the new **Card** visual entry and records its **DAX query time**
 
 8. In the **Data** pane, expand the **Sales** table and create a new measure with the definition:
    ```
