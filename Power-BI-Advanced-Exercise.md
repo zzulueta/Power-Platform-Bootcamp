@@ -505,7 +505,7 @@ By completing this lab, you will gain hands-on experience with the following ski
 
 12. Verify that the Table now shows the data correctly for the user after exiting the role view and that the Profit and Profit Margin columns are visible again.
 
-## Task 4: Assign Users to Roles in the Power BI Service
+## Task 4: Assign Users to Roles in the Power BI Service [READ-ONLY]
 
 1. Go to the Power Query Editor in Power BI Desktop.
 
