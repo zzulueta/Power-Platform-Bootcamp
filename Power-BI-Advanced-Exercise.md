@@ -1144,7 +1144,7 @@ By completing this lab, you will gain hands-on experience with the following ski
 
 7. Add a **Clustered bar chart** with **Region[Region]** on the axis and **Total Sales** as the value.
 
-8. Add a **Table** visual with **Salesperson[Salesperson]** and **Sales[Sales Amount]**. Notice that the Cost, Profit, and Profit Margin columns from the Sales Table are not visible as they are affected by object-level security.
+8. Add a **Table** visual with **Salesperson[Salesperson]** and **Sales[Sales]**. Notice that the Cost, Profit, and Profit Margin columns from the Sales Table are not visible as they are affected by object-level security.
 
 9. Save the report as `SalesThinReport.pbix`, then select **Publish** and choose a workspace you can publish to, such as a new workspace named **Sales Reports**. Ensure that the Owner of the shared semantic model has permissions in the same workspace to access the report.
 
