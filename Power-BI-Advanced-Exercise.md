@@ -862,7 +862,7 @@ By completing this lab, you will gain hands-on experience with the following ski
 9. Open the report in the Service, go to the Sales Overview page, enter Editing mode, add a text box containing `Git Integration Check`, and select Save. 
 
 10. Go back to the Workspace and select **Source control → Changes** pane. 
-    - Select the changed report
+    - Select the changed report and semantic model.
     - Enter `Add workspace Git verification text` in the Commit message
     - Select **Commit to new branch**. 
     - Enter a branch name, such as `feature/git-verification`, and select **Create**.
