@@ -985,7 +985,7 @@ By completing this lab, you will gain hands-on experience with the following ski
 
 7. Click **Deploy** to move content from Development to Test.
 
-8. Demonstrate how a dataset connection rule can be set per stage (e.g., point Production to a Production data source, not Development)
+8. Select **Deployment Rules** to demonstrate how a dataset connection rule can be set per stage (e.g., point Production to a Production data source, not Development)
 
 9. Repeat the comparison and deployment process to move content from Test to Production.
 
