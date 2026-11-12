@@ -466,9 +466,13 @@ By completing this lab, you will gain hands-on experience with the following ski
 
 ## Task 3: Apply Object Level Security with Tabular Editor
 
-1. In Power BI Desktop, select **Transform data** to open the Power Query Editor.
+1. In Power BI Desktop, create a new measure in the **Sales** table. Name the measure `Cost Price` and use the following DAX formula:
+   ```
+   Cost Price = DIVIDE(SUM(Sales[Cost])/SUM(Sales[Quantity]),0)
+   ```
+   Set the Format to **Currency** with 2 decimal places.
 
-2. Rename the query `Salesperson (Performance)` to `Performance`
+2. Select **Transform data** to open the Power Query Editor. Rename the query `Salesperson (Performance)` to `Performance`
 
 3. Select **Close & Apply** to close the Power Query Editor and apply the changes.
 
