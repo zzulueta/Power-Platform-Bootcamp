@@ -1305,7 +1305,7 @@ The decomposition tree aggregates a measure and lets you drill into any dimensio
 
 8. Repeat with **Low value** on another node and compare the field that Power BI chooses.
 
-9. Remove all the nodes then select **High value** again twice. Select the decomposition tree, then open **Format visual** and find the Analysis type setting for AI splits. Switch it from **Absolute** to **Relative**, then run **High value** again. Relative mode looks for a value that stands out compared with the rest of the values in the same column, which is often more interesting than the largest absolute value. To stop using AI splits entirely, turn them off in the same formatting section.
+9. Select the decomposition tree and remove all the nodes then select **High value** again twice. Open **Format visual** and find the **Analysis** > **Enable AI splits** > **Analysis Type** setting. Switch it from **Absolute** to **Relative**, then run **High value** again. Relative mode looks for a value that stands out compared with the rest of the values in the same column, which is often more interesting than the largest absolute value. To stop using AI splits entirely, turn them off in the same formatting section.
 
 10. Select one region in the bar chart. The decomposition tree is cross-filtered and the AI splits are recalculated, so Power BI might now recommend a different field or node. Select the bar again to clear the selection.
 
