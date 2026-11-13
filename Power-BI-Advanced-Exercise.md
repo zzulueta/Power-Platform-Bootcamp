@@ -1307,9 +1307,7 @@ The decomposition tree aggregates a measure and lets you drill into any dimensio
 
 9. Select the decomposition tree and remove all the nodes then select **High value** again twice. Open **Format visual** and find the **Analysis** > **Enable AI splits** > **Analysis Type** setting. Switch it from **Absolute** to **Relative**. Observe the change. Relative mode looks for a value that stands out compared with the rest of the values in the same column, which is often more interesting than the largest absolute value. To stop using AI splits entirely, turn them off in the same formatting section.
 
-10. Select one region in the bar chart. The decomposition tree is cross-filtered and the AI splits are recalculated, so Power BI might now recommend a different field or node. Select the bar again to clear the selection.
-
-11. Hover over the header of the first level of the tree and select the **lock** icon. A locked level can't be removed or changed by report consumers, who can still explore the nodes beneath it.
+10. Hover over the header of the first level of the tree and select the **lock** icon. A locked level can't be removed or changed by report consumers, who can still explore the nodes beneath it.
 
 > **Note:** The tree supports up to 50 levels, shows the top 10 values per level, and can visualize up to 5,000 data points at a time. AI splits aren't supported in Publish to web or Power BI Report Server.
 
