@@ -1329,7 +1329,7 @@ The key influencers visual analyzes your data, ranks the factors that matter, an
 
 5. In the drop-down at the top of the visual, select **Increase**, so the question reads *What influences Sales to Increase?*
 
-6. On the **Key influencers** tab, select the top influencer in the left pane. Use the sentence above each pane to read it. The bubble shows how much the average Sales increases by (for example "$2.29K") when that condition is true. In the right pane, the blue bar is the average when the condition is true and the dotted line is the average of all the other values.
+6. On the **Key influencers** tab, select the top influencer in the left pane. Use the sentence above each pane to read it. The bubble shows how much the average Sales increases by (for example "$2.26K") when that condition is true. In the right pane, the blue bar is the average when the condition is true and the dotted line is the average of all the other values.
 
 7. Select the second influencer and notice that the dotted line (average) changes. 
 
@@ -1371,7 +1371,7 @@ The **Narrative** visual has two modes: **Copilot** (AI-generated text, needs a 
 
 6. Select a region in the bar chart. The summary and your dynamic values change to reflect the selection. Clear the selection.
 
-7. Right-click the **line chart** and select **Summarize**. Notice that summarizing a single visual can produce more insights than the page summary does.
+7. Right-click the **line chart** and select **Summarize**. Notice that summarizing a single visual can produce more insights than the page summary does. Remove the summary after.
 
 8. Select the **bar chart**, open **Format visual → General**, expand **Header icons → Icons**, and set **Smart narrative** to **On**. Hover over the visual and select the **Smart narrative** icon to see an on-demand description. Unlike the narrative visual, readers can't add this text to the page.
 
