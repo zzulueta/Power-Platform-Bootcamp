@@ -1381,34 +1381,9 @@ The **Narrative** visual has two modes: **Copilot** (AI-generated text, needs a 
 
 > **Checkpoint:** The page has a custom narrative with two dynamic values that update when you select a region, and the bar chart has a smart narrative icon.
 
-## Task 4: Capture a Copilot Baseline on the Unprepared Model
+## Task 4: Prepare the Semantic Model for Copilot
 
-Before you prepare the model, record how Copilot responds to the same questions you will test again later.
-
-> **Copilot is required for Tasks 4 and 6.** To enable Copilot, select the Settings gear in the top-right corner of Power BI Desktop, then choose **Options → Global → Copilot (preview)** and select a workspace with a Fabric capacity. If Copilot isn't available, the trainer demonstrates these tasks. You can still complete Task 5.
-
-1. In Power BI Desktop, select **Copilot** on the **Home** ribbon to open the Copilot pane.
-
-2. Ask each of the following prompts, and note the answer and which fields or measures Copilot used. Use **How Copilot arrived at this** under each answer to see the details.
-   - `What were total sales last year?`
-   - `Which region performs best?`
-   - `Show sales by product category.`
-   - `What is the margin by reseller business type?`
-   - `Show sales by salesperson.`
-
-3. Record your baseline in a table like this one:
-
-   | Prompt | Measure or column Copilot used | Was it the right one? |
-   |---|---|---|
-   | 1 |  |  |
-   | 2 |  |  |
-   | 3 |  |  |
-   | 4 |  |  |
-   | 5 |  |  |
-
-> **Checkpoint:** You have a record of how Copilot answers five prompts before any preparation.
-
-## Task 5: Prepare the Semantic Model for AI
+> Note: Copilot is enabled for the remaining tasks. To enable Copilot, select the Settings gear in the top-right corner of Power BI Desktop, then choose **Options → Global → Copilot (preview)** and select a workspace with a Fabric capacity.
 
 **Prep data for AI** has three features that give Copilot the context it needs to reduce ambiguity: an **AI data schema**, **AI instructions**, and **verified answers**. All three are saved on the **semantic model**, not the report, so every report built on the model benefits.
 
@@ -1497,11 +1472,11 @@ A verified answer is a human-approved visual that predefined trigger phrases ret
 
 > **Checkpoint:** The model has a simplified AI data schema, a set of AI instructions, and two verified answers.
 
-## Task 6: Test the Prepared Model and Compare with the Baseline
+## Task 5: Test the Prepared Model
 
 1. Close and reopen the **Copilot** pane. You must do this every time you change **Prep data for AI**.
 
-2. Ask the same five prompts from Task 4 and compare the answers to your baseline table:
+2. Ask the following prompts:
    - `What were total sales last year?` – should use `[Total Sales]` and the fiscal year logic from your instructions.
    - `Which region performs best?` – should use the verified answer.
    - `Show sales by product category.` – should use Total Sales by Category.
@@ -1523,7 +1498,7 @@ A verified answer is a human-approved visual that predefined trigger phrases ret
 
 > **Checkpoint:** Copilot answers are more consistent than the baseline, and the verified answers are returned for the trigger phrases.
 
-## Task 7: Publish and Mark the Model as Approved for Copilot
+## Task 6: Publish and Mark the Model as Approved for Copilot
 
 1. Save the file and select **Publish** on the **Home** ribbon. Publish to the **Sales Production** workspace from Lab D, or to another Copilot-enabled workspace you can publish to. Replace the existing report and semantic model if prompted.
 
@@ -1553,13 +1528,11 @@ A verified answer is a human-approved visual that predefined trigger phrases ret
 
 ✅ **Task 3**: Created a custom smart narrative with dynamic values, summarized a single visual, and enabled the smart narrative icon
 
-✅ **Task 4**: Recorded a Copilot baseline on the unprepared model
+✅ **Task 4**: Simplified the AI data schema, wrote AI instructions, and set verified answers
 
-✅ **Task 5**: Simplified the AI data schema, wrote AI instructions, and set verified answers
+✅ **Task 5**: Tested the prepared model with Copilot
 
-✅ **Task 6**: Tested the prepared model with Copilot and compared the results with the baseline
-
-✅ **Task 7**: Published the model and marked it as Approved for Copilot
+✅ **Task 6**: Published the model and marked it as Approved for Copilot
 
 ### Key Concepts You Practised
 
@@ -1568,11 +1541,11 @@ A verified answer is a human-approved visual that predefined trigger phrases ret
 | Decomposition tree and AI splits | Task 1 | [Create and view decomposition tree visuals in Power BI](https://learn.microsoft.com/power-bi/visuals/power-bi-visualization-decomposition-tree) |
 | Key influencers and top segments | Task 2 | [Create key influencers visualizations](https://learn.microsoft.com/power-bi/visuals/power-bi-visualization-influencers?tabs=powerbi-desktop) |
 | Custom smart narrative and dynamic values | Task 3 | [Create smart narrative summaries](https://learn.microsoft.com/power-bi/visuals/power-bi-visualization-smart-narrative) |
-| Prep data for AI, skill picker, and Approved for Copilot | Tasks 4–7 | [Prepare your data for AI to improve Copilot results](https://learn.microsoft.com/power-bi/create-reports/copilot-prepare-data-ai) |
+| Prep data for AI, skill picker, and Approved for Copilot | Tasks 4–6 | [Prepare your data for AI to improve Copilot results](https://learn.microsoft.com/power-bi/create-reports/copilot-prepare-data-ai) |
 | AI data schema | Task 5 | [Prepare your data for AI: AI data schemas](https://learn.microsoft.com/power-bi/create-reports/copilot-prepare-data-ai-data-schema) |
 | AI instructions | Task 5 | [Prepare your data for AI: AI instructions](https://learn.microsoft.com/power-bi/create-reports/copilot-prepare-data-ai-instructions) |
 | Verified answers | Task 5, 6 | [Prepare your data for AI: Verified answers](https://learn.microsoft.com/power-bi/create-reports/copilot-prepare-data-ai-verified-answers) |
-| Lab template | Tasks 4–7 | [Prepare a semantic model for AI (mslearn-fabric)](https://microsoftlearning.github.io/mslearn-fabric/Instructions/Labs/30-prepare-model-ai.html) |
+| Lab template | Tasks 4–6 | [Prepare a semantic model for AI (mslearn-fabric)](https://microsoftlearning.github.io/mslearn-fabric/Instructions/Labs/30-prepare-model-ai.html) |
 
 AI visuals show patterns; they don't prove causes. Treat key influencers and AI splits as leads to investigate. Copilot accelerates analysis but requires review, because AI-generated answers can reflect errors or bias in the underlying data and aren't identical on every run.
 
