@@ -1483,18 +1483,13 @@ A verified answer is a human-approved visual that predefined trigger phrases ret
    - `What is the margin by reseller business type?` – should use `[Profit Margin]`.
    - `Show sales by salesperson.` – should use the Total Sales by Salesperson.
 
-3. Test the verified answers:
-   - Ask `Sales by region` and confirm Copilot returns the visual you approved and marks it as a verified answer.
-   - Ask `Sales by region for FY2020` and confirm the filter is applied.
-   - Ask `How are sales changing over time?` and confirm the line chart is returned, even though the wording differs from your trigger phrases.
+3. Test the schema: ask for a field you removed, such as `Show sales by ResellerKey`. Copilot shouldn't return an answer based on that field.
 
-4. Test the schema: ask for a field you removed, such as `Show sales by ResellerKey`. Copilot shouldn't return an answer based on that field.
+4. Ask `Create a page showing sales trends by product category`. Observe that creating a page uses the entire semantic model, so the AI data schema doesn't restrict it.
 
-5. Ask `Create a page showing sales trends by product category`. Observe that creating a page uses the entire semantic model, so the AI data schema doesn't restrict it.
+5. Ask `Analyze the Total Sales by Month line chart`. Observe that Copilot uses the visual and the underlying data to provide insights.
 
-6. Ask `Analyze the Total Sales by Month line chart`. Observe that Copilot uses the visual and the underlying data to provide insights.
-
-7. If an answer isn't what you expected, change the instructions or schema in **Prep data for AI**, select **Apply**, close and reopen the Copilot pane, and test again. Preparing a model is iterative, and AI responses vary from run to run.
+6. If an answer isn't what you expected, change the instructions or schema in **Prep data for AI**, select **Apply**, close and reopen the Copilot pane, and test again. Preparing a model is iterative, and AI responses vary from run to run.
 
 > **Checkpoint:** Copilot answers are more consistent than the baseline, and the verified answers are returned for the trigger phrases.
 
