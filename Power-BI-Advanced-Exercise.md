@@ -1539,8 +1539,7 @@ A verified answer is a human-approved visual that predefined trigger phrases ret
 | Prep data for AI, skill picker, and Approved for Copilot | Tasks 4–6 | [Prepare your data for AI to improve Copilot results](https://learn.microsoft.com/power-bi/create-reports/copilot-prepare-data-ai) |
 | AI data schema | Task 5 | [Prepare your data for AI: AI data schemas](https://learn.microsoft.com/power-bi/create-reports/copilot-prepare-data-ai-data-schema) |
 | AI instructions | Task 5 | [Prepare your data for AI: AI instructions](https://learn.microsoft.com/power-bi/create-reports/copilot-prepare-data-ai-instructions) |
-| Verified answers | Task 5, 6 | [Prepare your data for AI: Verified answers](https://learn.microsoft.com/power-bi/create-reports/copilot-prepare-data-ai-verified-answers) |
-| Lab template | Tasks 4–6 | [Prepare a semantic model for AI (mslearn-fabric)](https://microsoftlearning.github.io/mslearn-fabric/Instructions/Labs/30-prepare-model-ai.html) |
+| Verified answers | Task 5 | [Prepare your data for AI: Verified answers](https://learn.microsoft.com/power-bi/create-reports/copilot-prepare-data-ai-verified-answers) |
 
 AI visuals show patterns; they don't prove causes. Treat key influencers and AI splits as leads to investigate. Copilot accelerates analysis but requires review, because AI-generated answers can reflect errors or bias in the underlying data and aren't identical on every run.
 
